@@ -12,8 +12,6 @@ import ARKit
 // MARK: - drawRectResized
 extension PointCloudRenderer {
 
-    /// <#Description#>
-    /// - Parameter size: <#size description#>
     func resizeDrawRect(to size: CGSize) {
         viewportSize = size
     }
@@ -58,7 +56,6 @@ extension PointCloudRenderer {
 // MARK: - draw
 extension PointCloudRenderer {
     
-    /// <#Description#>
     func draw() {
         guard let currentFrame = session.currentFrame,
               let renderDescriptor = renderDestination.currentRenderPassDescriptor,

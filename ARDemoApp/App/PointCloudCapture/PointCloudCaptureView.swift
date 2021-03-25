@@ -23,13 +23,9 @@ struct PointCloudCaptureView: UIViewRepresentable {
         let device = context.coordinator.metalDevice
 
         mtkView.delegate = context.coordinator
-        mtkView.preferredFramesPerSecond = 60
-        mtkView.enableSetNeedsDisplay = true
         mtkView.device = device
-        mtkView.framebufferOnly = false
         mtkView.clearColor = MTLClearColor(red: 0, green: 0, blue: 0, alpha: 0)
         mtkView.drawableSize = mtkView.frame.size
-        mtkView.enableSetNeedsDisplay = true
 
         // Enable depth test
         mtkView.depthStencilPixelFormat = .depth32Float
@@ -55,9 +51,7 @@ struct PointCloudCaptureView: UIViewRepresentable {
         return mtkView
     }
 
-    func updateUIView(_ uiView: MTKView, context: Context) { // UIViewRepresentableContext<PointCloudCaptureView>
-        return 
-    }
+    func updateUIView(_ uiView: MTKView, context: Context) { }
 
     class Coordinator : NSObject, MTKViewDelegate, ARSessionDelegate {
         var parent: PointCloudCaptureView

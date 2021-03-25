@@ -22,6 +22,7 @@
 		EED1CC61260C3C19006E9B33 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = EED1CC60260C3C19006E9B33 /* Shaders.metal */; };
 		EED1CC86260C5F04006E9B33 /* MTKView+RenderDestinationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = EED1CC85260C5F04006E9B33 /* MTKView+RenderDestinationProvider.swift */; };
 		EED1CC9E260C695E006E9B33 /* PointCloudCaptureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EED1CC9D260C695E006E9B33 /* PointCloudCaptureView.swift */; };
+		EED1CCB2260C8628006E9B33 /* PointCloudRenderer+Export.swift in Sources */ = {isa = PBXBuildFile; fileRef = EED1CCB1260C8628006E9B33 /* PointCloudRenderer+Export.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +66,7 @@
 		EED1CC6D260C3D17006E9B33 /* ARDemoApp-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARDemoApp-Bridging-Header.h"; sourceTree = "<group>"; };
 		EED1CC85260C5F04006E9B33 /* MTKView+RenderDestinationProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MTKView+RenderDestinationProvider.swift"; sourceTree = "<group>"; };
 		EED1CC9D260C695E006E9B33 /* PointCloudCaptureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointCloudCaptureView.swift; sourceTree = "<group>"; };
+		EED1CCB1260C8628006E9B33 /* PointCloudRenderer+Export.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PointCloudRenderer+Export.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,6 +159,7 @@
 				EED1CC5E260C3C11006E9B33 /* Metal */,
 				EED1CC50260C3C06006E9B33 /* Utils */,
 				EED1CC45260C3C03006E9B33 /* PointCloudRenderer.swift */,
+				EED1CCB1260C8628006E9B33 /* PointCloudRenderer+Export.swift */,
 				EED1CC46260C3C03006E9B33 /* PointCloudRenderer+Draw.swift */,
 				EED1CC47260C3C03006E9B33 /* PointCloudRenderer+MetalHelpers.swift */,
 				EED1CC48260C3C03006E9B33 /* RenderDestinationProvider.swift */,
@@ -349,6 +352,7 @@
 				EED1CC59260C3C0E006E9B33 /* MetalBuffer.swift in Sources */,
 				EED1CC9E260C695E006E9B33 /* PointCloudCaptureView.swift in Sources */,
 				EED1CC4B260C3C03006E9B33 /* PointCloudRenderer+MetalHelpers.swift in Sources */,
+				EED1CCB2260C8628006E9B33 /* PointCloudRenderer+Export.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -9,9 +9,9 @@ public class PointCloudRenderer {
     // Maximum number of points we store in the point cloud
     let maxPoints = 500_000
     // Number of sample points on the grid <=> How many point are sampled per frame
-    let numGridPoints = 500
+    let numGridPoints = 750 // Apple's Default 500
     // Particle's size in pixels
-    let particleSize: Float = 10
+    let particleSize: Float = 5 // Apple's Default 10
     let orientation = UIInterfaceOrientation.portrait
     // Camera's threshold values for detecting when the camera moves so that we can accumulate the points
     let cameraRotationThreshold = cos(2 * .degreesToRadian)
@@ -105,7 +105,6 @@ public class PointCloudRenderer {
     }
 
     // MARK: - Public
-
 
     /// Using an `MTLDevice`, process the RGBD live data sampled by the `ARSession` object and renders a point cloud at `renderDestination`.
     /// - Parameters:
