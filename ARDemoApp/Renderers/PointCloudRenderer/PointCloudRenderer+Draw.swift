@@ -15,30 +15,30 @@ extension PointCloudRenderer {
     func resizeDrawRect(to size: CGSize) {
         viewportSize = size
     }
-    
+
     private func updateCapturedImageTextures(frame: ARFrame) {
         // Create two textures (Y and CbCr) from the provided frame's captured image
         let pixelBuffer = frame.capturedImage
         guard CVPixelBufferGetPlaneCount(pixelBuffer) >= 2 else {
             return
         }
-        
+
         capturedImageTextureY = makeTexture(fromPixelBuffer: pixelBuffer, pixelFormat: .r8Unorm, planeIndex: 0)
         capturedImageTextureCbCr = makeTexture(fromPixelBuffer: pixelBuffer, pixelFormat: .rg8Unorm, planeIndex: 1)
     }
-    
+
     private func updateDepthTextures(frame: ARFrame) -> Bool {
         guard let depthMap = frame.sceneDepth?.depthMap,
               let confidenceMap = frame.sceneDepth?.confidenceMap else {
             return false
         }
-        
+
         depthTexture = makeTexture(fromPixelBuffer: depthMap, pixelFormat: .r32Float, planeIndex: 0)
         confidenceTexture = makeTexture(fromPixelBuffer: confidenceMap, pixelFormat: .r8Uint, planeIndex: 0)
-        
+
         return true
     }
-    
+
     private func update(frame: ARFrame) {
         // frame dependent info
         let camera = frame.camera
@@ -52,10 +52,9 @@ extension PointCloudRenderer {
     }
 }
 
-
 // MARK: - draw
 extension PointCloudRenderer {
-    
+
     func draw() {
         guard let currentFrame = session.currentFrame,
               let renderDescriptor = renderDestination.currentRenderPassDescriptor,
@@ -63,34 +62,34 @@ extension PointCloudRenderer {
               let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderDescriptor) else {
             return
         }
-        
+
         _ = inFlightSemaphore.wait(timeout: DispatchTime.distantFuture)
-        commandBuffer.addCompletedHandler { [weak self] commandBuffer in
+        commandBuffer.addCompletedHandler { [weak self] _ in
             if let self = self {
                 self.inFlightSemaphore.signal()
             }
         }
-        
+
         // update frame data
         update(frame: currentFrame)
         updateCapturedImageTextures(frame: currentFrame)
-        
+
         // handle buffer rotating
         currentBufferIndex = (currentBufferIndex + 1) % maxInFlightBuffers
         pointCloudUniformsBuffers[currentBufferIndex][0] = pointCloudUniforms
-        
+
         if shouldAccumulate(frame: currentFrame), updateDepthTextures(frame: currentFrame) {
             accumulatePoints(frame: currentFrame, commandBuffer: commandBuffer, renderEncoder: renderEncoder)
         }
-        
+
         // check and render rgb camera image
         if rgbUniforms.radius > 0 {
             var retainingTextures = [capturedImageTextureY, capturedImageTextureCbCr]
-            commandBuffer.addCompletedHandler { buffer in
+            commandBuffer.addCompletedHandler { _ in
                 retainingTextures.removeAll()
             }
             rgbUniformsBuffers[currentBufferIndex][0] = rgbUniforms
-            
+
             renderEncoder.setDepthStencilState(relaxedStencilState)
             renderEncoder.setRenderPipelineState(rgbPipelineState)
             renderEncoder.setVertexBuffer(rgbUniformsBuffers[currentBufferIndex])
@@ -99,7 +98,7 @@ extension PointCloudRenderer {
             renderEncoder.setFragmentTexture(CVMetalTextureGetTexture(capturedImageTextureCbCr!), index: Int(kTextureCbCr.rawValue))
             renderEncoder.drawPrimitives(type: .triangleStrip, vertexStart: 0, vertexCount: 4)
         }
-        
+
         // render particles
         renderEncoder.setDepthStencilState(depthStencilState)
         renderEncoder.setRenderPipelineState(particlePipelineState)
@@ -107,26 +106,26 @@ extension PointCloudRenderer {
         renderEncoder.setVertexBuffer(particlesBuffer)
         renderEncoder.drawPrimitives(type: .point, vertexStart: 0, vertexCount: currentPointCount)
         renderEncoder.endEncoding()
-        
+
         commandBuffer.present(renderDestination.currentDrawable!)
         commandBuffer.commit()
     }
-    
+
     private func shouldAccumulate(frame: ARFrame) -> Bool {
         let cameraTransform = frame.camera.transform
         return currentPointCount == 0
             || dot(cameraTransform.columns.2, lastCameraTransform.columns.2) <= cameraRotationThreshold
             || distance_squared(cameraTransform.columns.3, lastCameraTransform.columns.3) >= cameraTranslationThreshold
     }
-    
+
     private func accumulatePoints(frame: ARFrame, commandBuffer: MTLCommandBuffer, renderEncoder: MTLRenderCommandEncoder) {
         pointCloudUniforms.pointCloudCurrentIndex = Int32(currentPointIndex)
-        
+
         var retainingTextures = [capturedImageTextureY, capturedImageTextureCbCr, depthTexture, confidenceTexture]
-        commandBuffer.addCompletedHandler { buffer in
+        commandBuffer.addCompletedHandler { _ in
             retainingTextures.removeAll()
         }
-        
+
         renderEncoder.setDepthStencilState(relaxedStencilState)
         renderEncoder.setRenderPipelineState(unprojectPipelineState)
         renderEncoder.setVertexBuffer(pointCloudUniformsBuffers[currentBufferIndex])
@@ -137,7 +136,7 @@ extension PointCloudRenderer {
         renderEncoder.setVertexTexture(CVMetalTextureGetTexture(depthTexture!), index: Int(kTextureDepth.rawValue))
         renderEncoder.setVertexTexture(CVMetalTextureGetTexture(confidenceTexture!), index: Int(kTextureConfidence.rawValue))
         renderEncoder.drawPrimitives(type: .point, vertexStart: 0, vertexCount: gridPointsBuffer.count)
-        
+
         currentPointIndex = (currentPointIndex + gridPointsBuffer.count) % maxPoints
         currentPointCount = min(currentPointCount + gridPointsBuffer.count, maxPoints)
         lastCameraTransform = frame.camera.transform

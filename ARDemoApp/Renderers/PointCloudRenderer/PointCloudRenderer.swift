@@ -87,7 +87,6 @@ public class PointCloudRenderer {
     lazy var viewToCamera = sampleFrame.displayTransform(for: orientation, viewportSize: viewportSize).inverted()
     lazy var lastCameraTransform = sampleFrame.camera.transform
 
-
     // MARK: - Public Interfaces
 
     public var confidenceThreshold = 1 {

@@ -220,6 +220,7 @@
 			buildConfigurationList = EE5F3AA8260AD18800945107 /* Build configuration list for PBXNativeTarget "ARDemoApp" */;
 			buildPhases = (
 				EE5F3A7F260AD18700945107 /* Sources */,
+				EED1CCB6260C937E006E9B33 /* Swiftlint */,
 				EE5F3A80260AD18700945107 /* Frameworks */,
 				EE5F3A81260AD18700945107 /* Resources */,
 			);
@@ -335,6 +336,27 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		EED1CCB6260C937E006E9B33 /* Swiftlint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = Swiftlint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		EE5F3A7F260AD18700945107 /* Sources */ = {

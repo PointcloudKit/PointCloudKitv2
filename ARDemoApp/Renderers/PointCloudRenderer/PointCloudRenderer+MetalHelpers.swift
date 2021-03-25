@@ -90,7 +90,7 @@ extension PointCloudRenderer {
         let width = CVPixelBufferGetWidthOfPlane(pixelBuffer, planeIndex)
         let height = CVPixelBufferGetHeightOfPlane(pixelBuffer, planeIndex)
 
-        var texture: CVMetalTexture? = nil
+        var texture: CVMetalTexture?
         let status = CVMetalTextureCacheCreateTextureFromImage(nil, textureCache, pixelBuffer, nil, pixelFormat, width, height, planeIndex, &texture)
 
         if status != kCVReturnSuccess {

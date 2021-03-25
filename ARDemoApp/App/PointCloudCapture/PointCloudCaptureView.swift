@@ -53,13 +53,11 @@ struct PointCloudCaptureView: UIViewRepresentable {
 
     func updateUIView(_ uiView: MTKView, context: Context) { }
 
-    class Coordinator : NSObject, MTKViewDelegate, ARSessionDelegate {
+    class Coordinator: NSObject, MTKViewDelegate, ARSessionDelegate {
         var parent: PointCloudCaptureView
         var metalDevice: MTLDevice
 
-
         var renderer: PointCloudRenderer!
-
 
         init(_ parent: PointCloudCaptureView) {
             self.parent = parent
