@@ -60,6 +60,7 @@
 		EED1CC58260C3C0E006E9B33 /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		EED1CC5F260C3C19006E9B33 /* ShaderTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShaderTypes.h; sourceTree = "<group>"; };
 		EED1CC60260C3C19006E9B33 /* Shaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
+		EED1CC6D260C3D17006E9B33 /* ARDemoApp-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARDemoApp-Bridging-Header.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +115,7 @@
 				EED1CC65260C3C36006E9B33 /* Renderers */,
 				EE5F3A8A260AD18800945107 /* Assets.xcassets */,
 				EE5F3A8F260AD18800945107 /* Info.plist */,
+				EED1CC6D260C3D17006E9B33 /* ARDemoApp-Bridging-Header.h */,
 				EE5F3A8C260AD18800945107 /* Preview Content */,
 			);
 			path = ARDemoApp;
@@ -499,6 +501,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.acammm.pointcloudkit.ARDemoApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "ARDemoApp/ARDemoApp-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -521,6 +524,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.acammm.pointcloudkit.ARDemoApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "ARDemoApp/ARDemoApp-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
