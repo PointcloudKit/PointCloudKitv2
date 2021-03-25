@@ -14,11 +14,11 @@ extension PointCloudRenderer {
 
     /// <#Description#>
     /// - Parameter size: <#size description#>
-    public func drawRectResized(size: CGSize) {
+    func resizeDrawRect(to size: CGSize) {
         viewportSize = size
     }
     
-    func updateCapturedImageTextures(frame: ARFrame) {
+    private func updateCapturedImageTextures(frame: ARFrame) {
         // Create two textures (Y and CbCr) from the provided frame's captured image
         let pixelBuffer = frame.capturedImage
         guard CVPixelBufferGetPlaneCount(pixelBuffer) >= 2 else {
@@ -29,7 +29,7 @@ extension PointCloudRenderer {
         capturedImageTextureCbCr = makeTexture(fromPixelBuffer: pixelBuffer, pixelFormat: .rg8Unorm, planeIndex: 1)
     }
     
-    func updateDepthTextures(frame: ARFrame) -> Bool {
+    private func updateDepthTextures(frame: ARFrame) -> Bool {
         guard let depthMap = frame.sceneDepth?.depthMap,
               let confidenceMap = frame.sceneDepth?.confidenceMap else {
             return false
@@ -41,7 +41,7 @@ extension PointCloudRenderer {
         return true
     }
     
-    func update(frame: ARFrame) {
+    private func update(frame: ARFrame) {
         // frame dependent info
         let camera = frame.camera
         let cameraIntrinsicsInversed = camera.intrinsics.inverse
@@ -59,7 +59,7 @@ extension PointCloudRenderer {
 extension PointCloudRenderer {
     
     /// <#Description#>
-    public func draw() {
+    func draw() {
         guard let currentFrame = session.currentFrame,
               let renderDescriptor = renderDestination.currentRenderPassDescriptor,
               let commandBuffer = commandQueue.makeCommandBuffer(),
@@ -115,14 +115,14 @@ extension PointCloudRenderer {
         commandBuffer.commit()
     }
     
-    func shouldAccumulate(frame: ARFrame) -> Bool {
+    private func shouldAccumulate(frame: ARFrame) -> Bool {
         let cameraTransform = frame.camera.transform
         return currentPointCount == 0
             || dot(cameraTransform.columns.2, lastCameraTransform.columns.2) <= cameraRotationThreshold
             || distance_squared(cameraTransform.columns.3, lastCameraTransform.columns.3) >= cameraTranslationThreshold
     }
     
-    func accumulatePoints(frame: ARFrame, commandBuffer: MTLCommandBuffer, renderEncoder: MTLRenderCommandEncoder) {
+    private func accumulatePoints(frame: ARFrame, commandBuffer: MTLCommandBuffer, renderEncoder: MTLRenderCommandEncoder) {
         pointCloudUniforms.pointCloudCurrentIndex = Int32(currentPointIndex)
         
         var retainingTextures = [capturedImageTextureY, capturedImageTextureCbCr, depthTexture, confidenceTexture]

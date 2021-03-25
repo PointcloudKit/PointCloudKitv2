@@ -1,5 +1,5 @@
 //
-//  ARDemoAppApp.swift
+//  ARDemoApp.swift
 //  ARDemoApp
 //
 //  Created by Alexandre Camilleri on 24/03/2021.
@@ -9,7 +9,7 @@ import SwiftUI
 import ARKit
 
 @main
-struct ARDemoAppApp: App {
+struct ARDemoApp: App {
 
     init() {
         guard ARWorldTrackingConfiguration.isSupported else {
@@ -33,7 +33,7 @@ struct ARDemoAppApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            HomeView()
         }
     }
 }

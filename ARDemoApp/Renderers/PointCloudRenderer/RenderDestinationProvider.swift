@@ -16,5 +16,3 @@ public protocol RenderDestinationProvider {
     var depthStencilPixelFormat: MTLPixelFormat { get set }
     var sampleCount: Int { get set }
 }
-
-extension MTKView: RenderDestinationProvider {}
