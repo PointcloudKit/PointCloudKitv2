@@ -10,7 +10,7 @@ import MetalKit
 import ARKit
 
 // MARK: - drawRectResized
-extension PointCloudRenderer {
+extension PointCloudCaptureRenderingController {
 
     func resizeDrawRect(to size: CGSize) {
         viewportSize = size
@@ -53,10 +53,11 @@ extension PointCloudRenderer {
 }
 
 // MARK: - draw
-extension PointCloudRenderer {
+extension PointCloudCaptureRenderingController {
 
     func draw() {
-        guard let currentFrame = session.currentFrame,
+        guard let renderDestination = renderDestination,
+              let currentFrame = session.currentFrame,
               let renderDescriptor = renderDestination.currentRenderPassDescriptor,
               let commandBuffer = commandQueue.makeCommandBuffer(),
               let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderDescriptor) else {

@@ -9,9 +9,10 @@ import Metal
 import MetalKit
 import ARKit
 
-extension PointCloudRenderer {
+extension PointCloudCaptureRenderingController {
     func makeUnprojectionPipelineState() -> MTLRenderPipelineState? {
-        guard let vertexFunction = library.makeFunction(name: "unprojectVertex") else {
+        guard let renderDestination = renderDestination,
+              let vertexFunction = library.makeFunction(name: "unprojectVertex") else {
             return nil
         }
 
@@ -25,7 +26,8 @@ extension PointCloudRenderer {
     }
 
     func makeRGBPipelineState() -> MTLRenderPipelineState? {
-        guard let vertexFunction = library.makeFunction(name: "rgbVertex"),
+        guard let renderDestination = renderDestination,
+              let vertexFunction = library.makeFunction(name: "rgbVertex"),
               let fragmentFunction = library.makeFunction(name: "rgbFragment") else {
             return nil
         }
@@ -40,7 +42,8 @@ extension PointCloudRenderer {
     }
 
     func makeParticlePipelineState() -> MTLRenderPipelineState? {
-        guard let vertexFunction = library.makeFunction(name: "particleVertex"),
+        guard let renderDestination = renderDestination,
+              let vertexFunction = library.makeFunction(name: "particleVertex"),
               let fragmentFunction = library.makeFunction(name: "particleFragment") else {
             return nil
         }

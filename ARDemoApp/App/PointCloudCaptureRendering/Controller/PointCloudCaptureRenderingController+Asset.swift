@@ -1,5 +1,5 @@
 //
-//  PointCloudRenderer+Export.swift
+//  PointCloudCaptureRenderingController+Asset.swift
 //  ARDemoApp
 //
 //  Created by Alexandre Camilleri on 25/03/2021.
@@ -11,7 +11,7 @@ import ModelIO
 // import ARKit
 // import RealityKit
 
-extension PointCloudRenderer {
+extension PointCloudCaptureRenderingController {
     func generateAsset() -> MDLAsset {
         // Using the Model I/O framework to export the scan, so we're initialising an MDLAsset object,
         // which we can export to a file later, with a buffer allocator
@@ -60,7 +60,7 @@ extension PointCloudRenderer {
     // The actual export code - Need to add that somewhere on a button
     // The above func is a far fetch try to convert the MTL buffer to a MDLMesh>Asset so that it can be exported to Obj/Usdz or rendered costeffectively in a scn scene?
     // But porbably the descriptor part is all wrong and nothing will happen
-    // but to test need to create a way to interact with the PointCloudCaptureView. And probably with either need to make it behave like a UIKit view a bit more
+    // but to test need to create a way to interact with the PointCloudCaptureRenderingView. And probably with either need to make it behave like a UIKit view a bit more
 
 //    // Setting the path to export the OBJ file to
 //    let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!

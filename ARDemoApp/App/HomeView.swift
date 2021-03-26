@@ -9,7 +9,8 @@ import SwiftUI
 
 struct HomeView: View {
     var body: some View {
-        PointCloudCaptureView()
+        PointCloudCaptureRenderingView()
+            .edgesIgnoringSafeArea(.all)
     }
 }
 

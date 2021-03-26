@@ -1,8 +1,9 @@
 import Metal
 import MetalKit
 import ARKit
+import Combine
 
-public class PointCloudRenderer {
+public final class PointCloudCaptureRenderingController {
 
     // MARK: - Settings and Constants
 
@@ -22,12 +23,12 @@ public class PointCloudRenderer {
 
     // MARK: - Engine
 
-    let session: ARSession
+    let session = ARSession()
 
     // Metal objects and textures
     let device: MTLDevice
     let library: MTLLibrary
-    let renderDestination: RenderDestinationProvider
+    var renderDestination: RenderDestinationProvider?
     let relaxedStencilState: MTLDepthStencilState
     let depthStencilState: MTLDepthStencilState
     let commandQueue: MTLCommandQueue
@@ -110,8 +111,7 @@ public class PointCloudRenderer {
     ///   - session: The input providing RGBD samples from the user capture.
     ///   - device: The Metal device used for processing information and generating a render (The phone GPU)
     ///   - renderDestination: Where the render is being draw for the user to see
-    public init(session: ARSession, metalDevice device: MTLDevice, renderDestination: RenderDestinationProvider) {
-        self.session = session
+    public init(metalDevice device: MTLDevice, renderDestination: RenderDestinationProvider? = nil) {
         self.device = device
         self.renderDestination = renderDestination
 
@@ -136,5 +136,19 @@ public class PointCloudRenderer {
         depthStencilState = device.makeDepthStencilState(descriptor: depthStateDescriptor)!
 
         inFlightSemaphore = DispatchSemaphore(value: maxInFlightBuffers)
+    }
+
+    func startCapturing() {
+        // Create a world-tracking configuration, and
+        // enable the scene depth frame-semantic.
+        let configuration = ARWorldTrackingConfiguration()
+        configuration.frameSemantics = .sceneDepth
+
+        // start ARSession
+        session.run(configuration)
+    }
+
+    func stopCapturing() {
+        session.pause()
     }
 }

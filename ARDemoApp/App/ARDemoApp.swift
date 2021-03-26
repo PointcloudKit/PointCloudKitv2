@@ -12,6 +12,7 @@ import ARKit
 struct ARDemoApp: App {
 
     init() {
+        #if !targetEnvironment(simulator)
         guard ARWorldTrackingConfiguration.isSupported else {
             fatalError("""
                 ARKit is not available on this device. For apps that require ARKit
@@ -29,6 +30,7 @@ struct ARDemoApp: App {
                 Scene reconstruction requires a device with a LiDAR Scanner, such as the 4th-Gen iPad Pro.
             """)
         }
+        #endif
     }
 
     var body: some Scene {
