@@ -62,7 +62,7 @@ extension PointCloudCaptureRenderingView {
 }
 
 // MARK: - Preview
-struct PointCloudCaptureView_Previews: PreviewProvider {
+struct PointCloudCaptureRenderingView_Previews: PreviewProvider {
     static var previews: some View {
         PointCloudCaptureRenderingView()
     }

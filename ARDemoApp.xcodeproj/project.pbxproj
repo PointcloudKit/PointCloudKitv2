@@ -13,7 +13,8 @@
 		EE5F3A8E260AD18800945107 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EE5F3A8D260AD18800945107 /* Preview Assets.xcassets */; };
 		EE5F3A99260AD18800945107 /* ARDemoAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5F3A98260AD18800945107 /* ARDemoAppTests.swift */; };
 		EE5F3AA4260AD18800945107 /* ARDemoAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5F3AA3260AD18800945107 /* ARDemoAppUITests.swift */; };
-		EEC0D433260D9AC10093141F /* PointCloudCaptureRenderingController+Asset.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEC0D432260D9AC10093141F /* PointCloudCaptureRenderingController+Asset.swift */; };
+		EEC0D439260D9B140093141F /* PointCloudCaptureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEC0D438260D9B140093141F /* PointCloudCaptureView.swift */; };
+		EEC0D43E260D9B6F0093141F /* PointCloudCaptureRenderingController+Asset.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEC0D43D260D9B6F0093141F /* PointCloudCaptureRenderingController+Asset.swift */; };
 		EED1CC49260C3C03006E9B33 /* PointCloudCaptureRenderingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EED1CC45260C3C03006E9B33 /* PointCloudCaptureRenderingController.swift */; };
 		EED1CC4A260C3C03006E9B33 /* PointCloudCaptureRenderingController+Draw.swift in Sources */ = {isa = PBXBuildFile; fileRef = EED1CC46260C3C03006E9B33 /* PointCloudCaptureRenderingController+Draw.swift */; };
 		EED1CC4B260C3C03006E9B33 /* PointCloudCaptureRenderingController+MetalHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = EED1CC47260C3C03006E9B33 /* PointCloudCaptureRenderingController+MetalHelpers.swift */; };
@@ -55,7 +56,8 @@
 		EE5F3A9F260AD18800945107 /* ARDemoAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ARDemoAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE5F3AA3260AD18800945107 /* ARDemoAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARDemoAppUITests.swift; sourceTree = "<group>"; };
 		EE5F3AA5260AD18800945107 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		EEC0D432260D9AC10093141F /* PointCloudCaptureRenderingController+Asset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "PointCloudCaptureRenderingController+Asset.swift"; path = "../../../../../PointCloudCaptureRenderingController+Asset.swift"; sourceTree = "<group>"; };
+		EEC0D438260D9B140093141F /* PointCloudCaptureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointCloudCaptureView.swift; sourceTree = "<group>"; };
+		EEC0D43D260D9B6F0093141F /* PointCloudCaptureRenderingController+Asset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PointCloudCaptureRenderingController+Asset.swift"; sourceTree = "<group>"; };
 		EED1CC45260C3C03006E9B33 /* PointCloudCaptureRenderingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PointCloudCaptureRenderingController.swift; sourceTree = "<group>"; };
 		EED1CC46260C3C03006E9B33 /* PointCloudCaptureRenderingController+Draw.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PointCloudCaptureRenderingController+Draw.swift"; sourceTree = "<group>"; };
 		EED1CC47260C3C03006E9B33 /* PointCloudCaptureRenderingController+MetalHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PointCloudCaptureRenderingController+MetalHelpers.swift"; sourceTree = "<group>"; };
@@ -100,7 +102,7 @@
 				EED1CC45260C3C03006E9B33 /* PointCloudCaptureRenderingController.swift */,
 				EED1CC46260C3C03006E9B33 /* PointCloudCaptureRenderingController+Draw.swift */,
 				EED1CC47260C3C03006E9B33 /* PointCloudCaptureRenderingController+MetalHelpers.swift */,
-				EEC0D432260D9AC10093141F /* PointCloudCaptureRenderingController+Asset.swift */,
+				EEC0D43D260D9B6F0093141F /* PointCloudCaptureRenderingController+Asset.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -164,6 +166,15 @@
 			path = ARDemoAppUITests;
 			sourceTree = "<group>";
 		};
+		EEC0D437260D9B020093141F /* PointCloudCapture */ = {
+			isa = PBXGroup;
+			children = (
+				EED1CC74260C3E04006E9B33 /* PointCloudCaptureRendering */,
+				EEC0D438260D9B140093141F /* PointCloudCaptureView.swift */,
+			);
+			path = PointCloudCapture;
+			sourceTree = "<group>";
+		};
 		EED1CC44260C3BF1006E9B33 /* PointCloudRenderer */ = {
 			isa = PBXGroup;
 			children = (
@@ -206,7 +217,7 @@
 			children = (
 				EE5F3A86260AD18700945107 /* ARDemoApp.swift */,
 				EE5F3A88260AD18700945107 /* HomeView.swift */,
-				EED1CC74260C3E04006E9B33 /* PointCloudCaptureRendering */,
+				EEC0D437260D9B020093141F /* PointCloudCapture */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -376,13 +387,14 @@
 				EE5F3A89260AD18700945107 /* HomeView.swift in Sources */,
 				EED1CC5A260C3C0E006E9B33 /* Helpers.swift in Sources */,
 				EED1CC86260C5F04006E9B33 /* MTKView+RenderDestinationProvider.swift in Sources */,
-				EEC0D433260D9AC10093141F /* PointCloudCaptureRenderingController+Asset.swift in Sources */,
+				EEC0D439260D9B140093141F /* PointCloudCaptureView.swift in Sources */,
 				EED1CC4C260C3C03006E9B33 /* RenderDestinationProvider.swift in Sources */,
 				EE5F3A87260AD18700945107 /* ARDemoApp.swift in Sources */,
 				EED1CC61260C3C19006E9B33 /* Shaders.metal in Sources */,
 				EED1CC59260C3C0E006E9B33 /* MetalBuffer.swift in Sources */,
 				EED1CC9E260C695E006E9B33 /* PointCloudCaptureRenderingView.swift in Sources */,
 				EED1CC4B260C3C03006E9B33 /* PointCloudCaptureRenderingController+MetalHelpers.swift in Sources */,
+				EEC0D43E260D9B6F0093141F /* PointCloudCaptureRenderingController+Asset.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
