@@ -3,6 +3,7 @@ import MetalKit
 import ARKit
 import Combine
 
+// Rename to PointCloudCaptureAndRenderingService ? Possibly split into two
 public final class PointCloudCaptureRenderingController {
 
     // MARK: - Settings and Constants

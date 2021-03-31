@@ -11,26 +11,18 @@ import ARKit
 
 /// Helper for making PointCloudCaptureView available in SwiftUI.
 struct PointCloudCaptureRenderingView: UIViewRepresentable {
-    let controller: PointCloudCaptureRenderingController
-    let metalDevice: MTLDevice
 
-    init() {
-        metalDevice = MTLCreateSystemDefaultDevice()!
-        controller = PointCloudCaptureRenderingController(metalDevice: metalDevice)
-    }
+    @ObservedObject var viewModel = ViewModel()
 
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
     }
 
     func makeUIView(context: Context) -> PointCloudCaptureMTKView {
-        let mtkView = PointCloudCaptureMTKView(device: metalDevice)
+        let mtkView = PointCloudCaptureMTKView(device: viewModel.metalDevice)
 
         // Need to setup the render destination a posteriori
-        controller.renderDestination = mtkView
-        // And then run the ARSession
-        controller.startCapturing()
-
+        viewModel.renderDestination = mtkView
         mtkView.delegate = context.coordinator
         return mtkView
     }
@@ -52,19 +44,12 @@ extension PointCloudCaptureRenderingView {
         // MARK: MTKViewDelegate
 
         func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
-            parent.controller.resizeDrawRect(to: size)
+            parent.viewModel.resizeDrawRect(to: size)
         }
 
         func draw(in view: MTKView) {
-            parent.controller.draw()
+            parent.viewModel.draw()
         }
-    }
-}
-
-// MARK: - Preview
-struct PointCloudCaptureRenderingView_Previews: PreviewProvider {
-    static var previews: some View {
-        PointCloudCaptureRenderingView()
     }
 }
 

@@ -7,7 +7,25 @@
 		<key>ARDemoApp.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>0</integer>
+			<integer>1</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>EE5F3A82260AD18700945107</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>EE5F3A93260AD18800945107</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>EE5F3A9E260AD18800945107</key>
+		<dict>
+			<key>primary</key>
+			<true/>
 		</dict>
 	</dict>
 </dict>
