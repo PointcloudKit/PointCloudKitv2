@@ -22,16 +22,12 @@ final class PointCloudCaptureViewModel: PointCloudCaptureRenderingViewDelegate, 
     private let fileIOService = FileIO()
 
     /// Current number of point held in buffer
-    @Published var currentPointCount: Int = 0 {
-        didSet {
-            hasCapture = (currentPointCount != 0)
-        }
-    }
+    @Published var currentPointCount: Int = 0
 
     public init() {
         pointCloudRenderer = PointCloudRendererService(metalDevice: MTLCreateSystemDefaultDevice()!)
         pointCloudRenderer.$currentPointCount
-            .throttle(for: .milliseconds(250), scheduler: RunLoop.main, latest: true)
+            .throttle(for: .milliseconds(100), scheduler: RunLoop.current, latest: true)
             .assign(to: &$currentPointCount)
     }
 
@@ -45,9 +41,7 @@ final class PointCloudCaptureViewModel: PointCloudCaptureRenderingViewDelegate, 
     /// Initialize a new ARSession and start capturing
     func startSessionAndCapture() {
         assert(renderDestination != nil, "You have to set a renderDestination before starting a capture")
-        if hasCapture {
-            flushCapture()
-        }
+        flushCapture()
         isCapturing = true
         sessionIsRunning = true
         pointCloudRenderer.startSession()
@@ -73,6 +67,7 @@ final class PointCloudCaptureViewModel: PointCloudCaptureRenderingViewDelegate, 
         pointCloudRenderer.resumeCapture()
     }
     private func flushCapture() {
+        guard sessionIsRunning else { return }
         pauseCapture()
         pauseSession()
         pointCloudRenderer.flushCapture()
