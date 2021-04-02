@@ -20,8 +20,7 @@ struct CaptureViewer: View {
         let cameraNode = self.cameraNode
 
         cameraNode.look(at: scene.rootNode.position)
-        cameraNode.position.z += 10
-//        cameraNode.rotation = SCNVector4Make(1, 0, 0, .pi/2)
+        cameraNode.position.z += 5
         scene.rootNode.addChildNode(cameraNode)
         scene.rootNode.addChildNode(ambientLightNode)
         scene.background.contents = UIColor.black
@@ -38,8 +37,10 @@ struct CaptureViewer: View {
 
     var ambientLightNode: SCNNode {
         let ambientLightNode = SCNNode()
-        ambientLightNode.light = SCNLight()
-        ambientLightNode.light?.type = .ambient
+        let light = SCNLight()
+
+        light.type = .ambient
+        ambientLightNode.light = light
         return ambientLightNode
     }
 

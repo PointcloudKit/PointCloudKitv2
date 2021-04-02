@@ -13,35 +13,48 @@ final class CaptureViewerViewModel {
     func generateScene(from capture: PointCloudCapture) -> SCNScene {
         let scene = SCNScene()
 
-        let positionVertex = PointCloudCapture.Vertex.position
-        let colorVertex = PointCloudCapture.Vertex.color
+        let positionVertex = PointCloudCapture.Component.position
+        let colorVertex = PointCloudCapture.Component.color
+        let confidence = PointCloudCapture.Component.confidence
+
+        let rawBuffer = capture.buffer.rawBuffer
+        let dataStride = capture.stride
+        let vertexCount = capture.count
 
         // Our data sources from Metal
-        let positionSource = SCNGeometrySource(buffer: capture.buffer.rawBuffer,
+        let positionSource = SCNGeometrySource(buffer: rawBuffer,
                                                vertexFormat: positionVertex.format,
                                                semantic: positionVertex.semantic,
-                                               vertexCount: capture.count,
+                                               vertexCount: vertexCount,
                                                dataOffset: positionVertex.dataOffset,
-                                               dataStride: capture.stride)
+                                               dataStride: dataStride)
 
-        let colorSource = SCNGeometrySource(buffer: capture.buffer.rawBuffer,
+        let colorSource = SCNGeometrySource(buffer: rawBuffer,
                                             vertexFormat: colorVertex.format,
                                             semantic: colorVertex.semantic,
-                                            vertexCount: capture.count,
+                                            vertexCount: vertexCount,
                                             dataOffset: colorVertex.dataOffset,
-                                            dataStride: capture.stride)
+                                            dataStride: dataStride)
 
-        // What we want to generate
+        // Not used for now. Not sure how to use at this point. In metal can be useful
+//        let confidenceSource = SCNGeometrySource(buffer: rawBuffer,
+//                                                 vertexFormat: confidence.format,
+//                                                 semantic: confidence.semantic,
+//                                                 vertexCount: vertexCount,
+//                                                 dataOffset: confidence.dataOffset,
+//                                                 dataStride: dataStride)
+
+        // Points
         let particles = SCNGeometryElement(data: nil,
                                            primitiveType: .point,
-                                           primitiveCount: capture.count,
+                                           primitiveCount: vertexCount,
                                            bytesPerIndex: MemoryLayout<Int>.size)
-        //        let elements = SCNGeometryElement(data: nil,
-        //                                          primitiveType: .point,
-//                                          primitiveCount: vertices.count,
-//                                          bytesPerIndex: MemoryLayout<Int>.size)
+        particles.pointSize = 1.0
+        particles.minimumPointScreenSpaceRadius = 2.5
+        particles.maximumPointScreenSpaceRadius = 2.5
 
-        let pointCloudGeometry = SCNGeometry(sources: [positionSource, colorSource], elements: [particles])
+        let pointCloudGeometry = SCNGeometry(sources: [positionSource, colorSource/*, confidenceSource*/],
+                                             elements: [particles])
         let pointCloudRootNode = SCNNode(geometry: pointCloudGeometry)
         scene.rootNode.addChildNode(pointCloudRootNode)
         return scene
