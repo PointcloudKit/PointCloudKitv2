@@ -19,7 +19,6 @@ struct CaptureViewer: View {
         let scene = viewModel.generateScene(from: model.capture)
         let cameraNode = self.cameraNode
 
-//        cameraNode.position = scene.rootNode.
         cameraNode.look(at: scene.rootNode.position)
         cameraNode.position.z += 10
 //        cameraNode.rotation = SCNVector4Make(1, 0, 0, .pi/2)

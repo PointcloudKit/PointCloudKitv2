@@ -13,7 +13,7 @@ final class PointCloudCaptureViewModel: PointCloudCaptureRenderingViewDelegate, 
 
     @ObservedObject private var pointCloudRenderer: PointCloudRendererService
 
-    private let fileIOService = FileIOService()
+    private let fileIOService = FileIO()
 
     /// Current number of point held in buffer
     @Published var currentPointCount: Int = 0

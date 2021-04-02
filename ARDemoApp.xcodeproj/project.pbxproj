@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8EEF76AA2616D24F00A6BDC1 /* FileIO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EEF76A92616D24F00A6BDC1 /* FileIO.swift */; };
 		EE5F3A87260AD18700945107 /* ARDemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5F3A86260AD18700945107 /* ARDemoApp.swift */; };
 		EE5F3A89260AD18700945107 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5F3A88260AD18700945107 /* HomeView.swift */; };
 		EE5F3A8B260AD18800945107 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EE5F3A8A260AD18800945107 /* Assets.xcassets */; };
@@ -15,7 +16,6 @@
 		EE5F3AA4260AD18800945107 /* ARDemoAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5F3AA3260AD18800945107 /* ARDemoAppUITests.swift */; };
 		EE6A3DA226144FAD00D0203B /* CaptureToggleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6A3DA126144FAD00D0203B /* CaptureToggleStyle.swift */; };
 		EE6A3DA826145E0B00D0203B /* View+HiddenConditionally.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6A3DA726145E0B00D0203B /* View+HiddenConditionally.swift */; };
-		EE6A3DAE26155B4D00D0203B /* FileIOService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6A3DAD26155B4D00D0203B /* FileIOService.swift */; };
 		EE6A3DB326155F2700D0203B /* PointCloudCaptureViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6A3DB226155F2700D0203B /* PointCloudCaptureViewModel.swift */; };
 		EE6A3DBC2615617E00D0203B /* PointCloudRendererService in Frameworks */ = {isa = PBXBuildFile; productRef = EE6A3DBB2615617E00D0203B /* PointCloudRendererService */; };
 		EEC0D439260D9B140093141F /* PointCloudCaptureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEC0D438260D9B140093141F /* PointCloudCaptureView.swift */; };
@@ -42,6 +42,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8EEF76A92616D24F00A6BDC1 /* FileIO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileIO.swift; sourceTree = "<group>"; };
 		EE5F3A83260AD18700945107 /* ARDemoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARDemoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE5F3A86260AD18700945107 /* ARDemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARDemoApp.swift; sourceTree = "<group>"; };
 		EE5F3A88260AD18700945107 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -56,7 +57,6 @@
 		EE5F3AA5260AD18800945107 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EE6A3DA126144FAD00D0203B /* CaptureToggleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureToggleStyle.swift; sourceTree = "<group>"; };
 		EE6A3DA726145E0B00D0203B /* View+HiddenConditionally.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+HiddenConditionally.swift"; sourceTree = "<group>"; };
-		EE6A3DAD26155B4D00D0203B /* FileIOService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FileIOService.swift; path = ../../../../../Documents/FileIOService.swift; sourceTree = "<group>"; };
 		EE6A3DB226155F2700D0203B /* PointCloudCaptureViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PointCloudCaptureViewModel.swift; sourceTree = "<group>"; };
 		EEC0D438260D9B140093141F /* PointCloudCaptureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointCloudCaptureView.swift; sourceTree = "<group>"; };
 		EED2971726156E5900426CB0 /* CaptureViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureViewer.swift; sourceTree = "<group>"; };
@@ -90,6 +90,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8EEF76A32616D1DD00A6BDC1 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				8EEF76A92616D24F00A6BDC1 /* FileIO.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
 		EE5F3A7A260AD18700945107 = {
 			isa = PBXGroup;
 			children = (
@@ -113,7 +121,7 @@
 		EE5F3A85260AD18700945107 /* ARDemoApp */ = {
 			isa = PBXGroup;
 			children = (
-				EE6A3DAC26155B3B00D0203B /* Services */,
+				8EEF76A32616D1DD00A6BDC1 /* Services */,
 				EE6A3DA626145DF800D0203B /* Extensions */,
 				EED1CC69260C3C5E006E9B33 /* App */,
 				EE5F3A8A260AD18800945107 /* Assets.xcassets */,
@@ -155,14 +163,6 @@
 				EE6A3DA726145E0B00D0203B /* View+HiddenConditionally.swift */,
 			);
 			path = Extensions;
-			sourceTree = "<group>";
-		};
-		EE6A3DAC26155B3B00D0203B /* Services */ = {
-			isa = PBXGroup;
-			children = (
-				EE6A3DAD26155B4D00D0203B /* FileIOService.swift */,
-			);
-			path = Services;
 			sourceTree = "<group>";
 		};
 		EEC0D437260D9B020093141F /* PointCloudCapture */ = {
@@ -356,9 +356,9 @@
 				EE5F3A89260AD18700945107 /* HomeView.swift in Sources */,
 				EE6A3DA826145E0B00D0203B /* View+HiddenConditionally.swift in Sources */,
 				EEC0D439260D9B140093141F /* PointCloudCaptureView.swift in Sources */,
-				EE6A3DAE26155B4D00D0203B /* FileIOService.swift in Sources */,
 				EED2971826156E5900426CB0 /* CaptureViewer.swift in Sources */,
 				EE6A3DB326155F2700D0203B /* PointCloudCaptureViewModel.swift in Sources */,
+				8EEF76AA2616D24F00A6BDC1 /* FileIO.swift in Sources */,
 				EE6A3DA226144FAD00D0203B /* CaptureToggleStyle.swift in Sources */,
 				EE5F3A87260AD18700945107 /* ARDemoApp.swift in Sources */,
 				EED2973D2615BEA100426CB0 /* CaptureViewerModel.swift in Sources */,
