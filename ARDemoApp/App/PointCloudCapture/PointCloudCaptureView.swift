@@ -8,12 +8,14 @@
 import SwiftUI
 import PointCloudRendererService
 
+import CaptureViewer
+
 struct PointCloudCaptureView: View {
 
-    @State var hasCapture: Bool = true
-    @State var isCapturing: Bool = true
-    @State var isShowingParameters: Bool = false
-    @State var isShowingAssetViewer: Bool = false
+    @State private var captureToggled: Bool = true
+
+    @State private var isShowingParameters: Bool = false
+    @State private var isPresentingCaptureViewer: Bool = false
 
     // PointCloudCaptureRenderingView' View Model
     @ObservedObject private var viewModel = PointCloudCaptureViewModel()
@@ -24,7 +26,7 @@ struct PointCloudCaptureView: View {
             icon: {
                 Image(systemName: "aqi.medium")
                     .font(.body)
-                    .foregroundColor(!isCapturing ? .gray : .red)
+                    .foregroundColor(!captureToggled ? .gray : .red)
             }
         )
     }
@@ -37,8 +39,8 @@ struct PointCloudCaptureView: View {
     var controlsSection: some View {
         HStack {
 
-            NavigationLink(destination: CaptureViewer(model: viewModel.assetViewerModel),
-                           isActive: $isShowingAssetViewer) {  }
+            NavigationLink(destination: CaptureViewer(model: viewModel.captureViewerModel),
+                           isActive: $isPresentingCaptureViewer) {  }
 
             Button(action: {
                 isShowingParameters.toggle()
@@ -50,14 +52,12 @@ struct PointCloudCaptureView: View {
 
             Spacer()
 
-            Toggle(isOn: $isCapturing, label: { Text("") })
+            Toggle(isOn: $captureToggled, label: { Text("") })
                 .toggleStyle(CaptureToggleStyle())
-                .onChange(of: isCapturing, perform: { value in
+                .onChange(of: captureToggled, perform: { value in
                     switch value {
                     case true:
-                        viewModel.flushCapture()
-                        viewModel.startCapture()
-                        hasCapture = true
+                        viewModel.startSessionAndCapture()
                     case false:
                         viewModel.pauseCapture()
                     }
@@ -66,13 +66,14 @@ struct PointCloudCaptureView: View {
             Spacer()
 
             Button(action: {
-                isShowingAssetViewer = true
+                isPresentingCaptureViewer = true
+                viewModel.pauseCapture()
             }, label: {
                 Image(systemName: "scale.3d")
                     .font(.system(size: 42, weight: .regular))
                     .foregroundColor(.gray)
             })
-            .hiddenConditionally(isHidden: !(!isCapturing && hasCapture))
+            .hiddenConditionally(isHidden: captureToggled)
 
         }
         .padding(.horizontal, 20)
@@ -84,9 +85,9 @@ struct PointCloudCaptureView: View {
             ZStack {
                 Color.black
                 VStack {
-                    // MARK: - Capture View
+                    // Capture View
                     captureView
-                    // MARK: - Controls Section
+                    // Controls Section
                     controlsSection
                 }
             }
@@ -96,11 +97,10 @@ struct PointCloudCaptureView: View {
         }
         .onAppear {
             // First apperance if
-            viewModel.startCapture()
+            viewModel.startSessionAndCapture()
         }
         .onDisappear {
-            viewModel.pauseCapture()
-            isCapturing = false
+            viewModel.pauseSession()
         }
     }
 }

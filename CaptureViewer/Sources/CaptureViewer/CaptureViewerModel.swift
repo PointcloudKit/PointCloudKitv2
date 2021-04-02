@@ -8,10 +8,10 @@
 import SwiftUI
 import PointCloudRendererService
 
-class CaptureViewerModel: ObservableObject {
-    @Published var capture: PointCloudCapture
+public class CaptureViewerModel: ObservableObject {
+    let capture: PointCloudCapture
 
-    init(capture: PointCloudCapture) {
+    public init(capture: PointCloudCapture) {
         self.capture = capture
     }
 }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8E8F5BA42616F45B005203E0 /* CaptureViewer in Frameworks */ = {isa = PBXBuildFile; productRef = 8E8F5BA32616F45B005203E0 /* CaptureViewer */; };
 		8EEF76AA2616D24F00A6BDC1 /* FileIO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EEF76A92616D24F00A6BDC1 /* FileIO.swift */; };
 		EE5F3A87260AD18700945107 /* ARDemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5F3A86260AD18700945107 /* ARDemoApp.swift */; };
 		EE5F3A89260AD18700945107 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5F3A88260AD18700945107 /* HomeView.swift */; };
@@ -19,9 +20,6 @@
 		EE6A3DB326155F2700D0203B /* PointCloudCaptureViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6A3DB226155F2700D0203B /* PointCloudCaptureViewModel.swift */; };
 		EE6A3DBC2615617E00D0203B /* PointCloudRendererService in Frameworks */ = {isa = PBXBuildFile; productRef = EE6A3DBB2615617E00D0203B /* PointCloudRendererService */; };
 		EEC0D439260D9B140093141F /* PointCloudCaptureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEC0D438260D9B140093141F /* PointCloudCaptureView.swift */; };
-		EED2971826156E5900426CB0 /* CaptureViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EED2971726156E5900426CB0 /* CaptureViewer.swift */; };
-		EED297382615BE6500426CB0 /* CaptureViewerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EED297372615BE6500426CB0 /* CaptureViewerViewModel.swift */; };
-		EED2973D2615BEA100426CB0 /* CaptureViewerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EED2973C2615BEA100426CB0 /* CaptureViewerModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,6 +40,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8E8F5B8F2616F230005203E0 /* CaptureViewer */ = {isa = PBXFileReference; lastKnownFileType = folder; path = CaptureViewer; sourceTree = "<group>"; };
 		8EEF76A92616D24F00A6BDC1 /* FileIO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileIO.swift; sourceTree = "<group>"; };
 		EE5F3A83260AD18700945107 /* ARDemoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARDemoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE5F3A86260AD18700945107 /* ARDemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARDemoApp.swift; sourceTree = "<group>"; };
@@ -59,9 +58,6 @@
 		EE6A3DA726145E0B00D0203B /* View+HiddenConditionally.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+HiddenConditionally.swift"; sourceTree = "<group>"; };
 		EE6A3DB226155F2700D0203B /* PointCloudCaptureViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PointCloudCaptureViewModel.swift; sourceTree = "<group>"; };
 		EEC0D438260D9B140093141F /* PointCloudCaptureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointCloudCaptureView.swift; sourceTree = "<group>"; };
-		EED2971726156E5900426CB0 /* CaptureViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureViewer.swift; sourceTree = "<group>"; };
-		EED297372615BE6500426CB0 /* CaptureViewerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureViewerViewModel.swift; sourceTree = "<group>"; };
-		EED2973C2615BEA100426CB0 /* CaptureViewerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureViewerModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +66,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EE6A3DBC2615617E00D0203B /* PointCloudRendererService in Frameworks */,
+				8E8F5BA42616F45B005203E0 /* CaptureViewer in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -90,6 +87,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8E8F5BA22616F45B005203E0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8E8F5B8F2616F230005203E0 /* CaptureViewer */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		8EEF76A32616D1DD00A6BDC1 /* Services */ = {
 			isa = PBXGroup;
 			children = (
@@ -105,6 +110,7 @@
 				EE5F3A97260AD18800945107 /* ARDemoAppTests */,
 				EE5F3AA2260AD18800945107 /* ARDemoAppUITests */,
 				EE5F3A84260AD18700945107 /* Products */,
+				8E8F5BA22616F45B005203E0 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -181,19 +187,8 @@
 				EE5F3A86260AD18700945107 /* ARDemoApp.swift */,
 				EE5F3A88260AD18700945107 /* HomeView.swift */,
 				EEC0D437260D9B020093141F /* PointCloudCapture */,
-				EED2971C26156E5D00426CB0 /* CaptureViewer */,
 			);
 			path = App;
-			sourceTree = "<group>";
-		};
-		EED2971C26156E5D00426CB0 /* CaptureViewer */ = {
-			isa = PBXGroup;
-			children = (
-				EED2971726156E5900426CB0 /* CaptureViewer.swift */,
-				EED2973C2615BEA100426CB0 /* CaptureViewerModel.swift */,
-				EED297372615BE6500426CB0 /* CaptureViewerViewModel.swift */,
-			);
-			path = CaptureViewer;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -215,6 +210,7 @@
 			name = ARDemoApp;
 			packageProductDependencies = (
 				EE6A3DBB2615617E00D0203B /* PointCloudRendererService */,
+				8E8F5BA32616F45B005203E0 /* CaptureViewer */,
 			);
 			productName = ARDemoApp;
 			productReference = EE5F3A83260AD18700945107 /* ARDemoApp.app */;
@@ -356,13 +352,10 @@
 				EE5F3A89260AD18700945107 /* HomeView.swift in Sources */,
 				EE6A3DA826145E0B00D0203B /* View+HiddenConditionally.swift in Sources */,
 				EEC0D439260D9B140093141F /* PointCloudCaptureView.swift in Sources */,
-				EED2971826156E5900426CB0 /* CaptureViewer.swift in Sources */,
 				EE6A3DB326155F2700D0203B /* PointCloudCaptureViewModel.swift in Sources */,
 				8EEF76AA2616D24F00A6BDC1 /* FileIO.swift in Sources */,
 				EE6A3DA226144FAD00D0203B /* CaptureToggleStyle.swift in Sources */,
 				EE5F3A87260AD18700945107 /* ARDemoApp.swift in Sources */,
-				EED2973D2615BEA100426CB0 /* CaptureViewerModel.swift in Sources */,
-				EED297382615BE6500426CB0 /* CaptureViewerViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -697,6 +690,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		8E8F5BA32616F45B005203E0 /* CaptureViewer */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CaptureViewer;
+		};
 		EE6A3DBB2615617E00D0203B /* PointCloudRendererService */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = EE6A3DBA2615617E00D0203B /* XCRemoteSwiftPackageReference "PointCloudRendererService" */;

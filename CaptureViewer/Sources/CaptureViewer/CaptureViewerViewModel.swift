@@ -8,14 +8,14 @@
 import SceneKit
 import PointCloudRendererService
 
-final class CaptureViewerViewModel {
+final public class CaptureViewerViewModel {
 
     func generateScene(from capture: PointCloudCapture) -> SCNScene {
         let scene = SCNScene()
 
         let positionVertex = PointCloudCapture.Component.position
         let colorVertex = PointCloudCapture.Component.color
-        let confidence = PointCloudCapture.Component.confidence
+//        let confidence = PointCloudCapture.Component.confidence
 
         let rawBuffer = capture.buffer.rawBuffer
         let dataStride = capture.stride

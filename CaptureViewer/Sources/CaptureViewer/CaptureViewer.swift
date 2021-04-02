@@ -9,9 +9,9 @@ import SwiftUI
 import SceneKit
 import PointCloudRendererService
 
-struct CaptureViewer: View {
+public struct CaptureViewer: View {
 
-    @StateObject var model: CaptureViewerModel
+    @StateObject public var model: CaptureViewerModel
 
     let viewModel = CaptureViewerViewModel()
 
@@ -44,7 +44,12 @@ struct CaptureViewer: View {
         return ambientLightNode
     }
 
-    var body: some View {
+    // Seems hacky, I wish it expose the auto generated init automatically
+    public init(model: CaptureViewerModel) {
+        _model = StateObject(wrappedValue: model)
+    }
+
+    public var body: some View {
         ZStack {
             SceneView(scene: scene,
                       pointOfView: scene.rootNode.childNode(withName: "CameraNode", recursively: false),
@@ -64,7 +69,7 @@ struct CaptureViewer: View {
                                 .font(.body)
                                 .foregroundColor(.red)
                         }
-)
+                    )
                     .padding()
                     Spacer()
                 })
