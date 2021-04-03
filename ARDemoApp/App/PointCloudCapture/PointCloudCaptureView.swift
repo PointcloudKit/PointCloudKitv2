@@ -21,24 +21,43 @@ struct PointCloudCaptureView: View {
     @ObservedObject private var viewModel = PointCloudCaptureViewModel()
 
     var metrics: some View {
-        Label(
-            title: { Text("\(viewModel.currentPointCount)") },
-            icon: {
-                Image(systemName: "aqi.medium")
-                    .font(.body)
-                    .foregroundColor(!captureToggled ? .gray : .red)
-            }
-        )
+        HStack {
+            Spacer()
+            Label(
+                title: { Text("\(viewModel.currentPointCount)") },
+                icon: {
+                    Image(systemName: "aqi.medium")
+                        .font(.body)
+                        .foregroundColor(!captureToggled ? .gray : .red)
+                }
+            )
+        }
     }
 
     var captureView: some View {
-        PointCloudCaptureRenderingView(renderingDelegate: viewModel)
-            .background(Color.black)
+        ZStack {
+            PointCloudCaptureRenderingView(renderingDelegate: viewModel)
+
+            VStack {
+
+                Spacer()
+                
+                metrics
+                    .padding(.bottom, 10)
+                    .padding(.horizontal, 20)
+                    .background(Color.black.opacity(0.8))
+
+                // Controls Section
+                controlsSection
+                    .padding(.bottom, 20)
+                    .padding(.horizontal, 20)
+                    .background(Color.black.opacity(0.8))
+            }
+        }
     }
 
     var controlsSection: some View {
         HStack {
-
             NavigationLink(destination: CaptureViewer(model: viewModel.captureViewerModel),
                            isActive: $isPresentingCaptureViewer) {  }
 
@@ -47,8 +66,9 @@ struct PointCloudCaptureView: View {
             }, label: {
                 Image(systemName: "slider.horizontal.3")
                     .font(.system(size: 42, weight: .regular))
-                    .foregroundColor(.gray)
+                    .foregroundColor(.white)
             })
+            .disabledConditionally(disabled: viewModel.isShowingCoachingOverlay)
 
             Spacer()
 
@@ -57,11 +77,13 @@ struct PointCloudCaptureView: View {
                 .onChange(of: captureToggled, perform: { value in
                     switch value {
                     case true:
-                        viewModel.startSessionAndCapture()
+                        viewModel.startSession()
+                        viewModel.resumeCapture()
                     case false:
                         viewModel.pauseCapture()
                     }
                 })
+                .disabledConditionally(disabled: viewModel.isShowingCoachingOverlay)
 
             Spacer()
 
@@ -71,33 +93,26 @@ struct PointCloudCaptureView: View {
             }, label: {
                 Image(systemName: "scale.3d")
                     .font(.system(size: 42, weight: .regular))
-                    .foregroundColor(.gray)
+                    .foregroundColor(.white)
             })
-            .hiddenConditionally(isHidden: captureToggled)
+            .hiddenConditionally(isHidden: captureToggled && !viewModel.isShowingCoachingOverlay)
 
         }
-        .padding(.horizontal, 20)
-        .padding(.top, 10)
     }
 
     var body: some View {
         NavigationView {
             ZStack {
                 Color.black
-                VStack {
-                    // Capture View
-                    captureView
-                    // Controls Section
-                    controlsSection
-                }
+                captureView
             }
             .statusBar(hidden: true)
             .navigationTitle("Capture")
-            .navigationBarItems(trailing: metrics)
+            .edgesIgnoringSafeArea(.bottom)
         }
         .onAppear {
-            // First apperance if
-            viewModel.startSessionAndCapture()
+            print("Starting Session and capture")
+            viewModel.startSession()
         }
         .onDisappear {
             viewModel.pauseSession()

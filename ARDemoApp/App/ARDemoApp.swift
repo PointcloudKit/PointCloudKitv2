@@ -36,6 +36,7 @@ struct ARDemoApp: App {
     var body: some Scene {
         WindowGroup {
             HomeView()
+                .accentColor(.red)
         }
     }
 }

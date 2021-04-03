@@ -8,6 +8,7 @@
 import SwiftUI
 import MetalKit
 import PointCloudRendererService
+import ARKit
 
 import CaptureViewer
 
@@ -15,9 +16,10 @@ final class PointCloudCaptureViewModel: PointCloudCaptureRenderingViewDelegate, 
 
     @ObservedObject private var pointCloudRenderer: PointCloudRendererService
 
-    @State private var sessionIsRunning: Bool = true
-    @State private var isCapturing: Bool = true
+    @State private var sessionIsRunning: Bool = false
+    @State private var isCapturing: Bool = false
     @State private var hasCapture: Bool = false
+    @State private(set) var isShowingCoachingOverlay: Bool = false
 
     private let fileIOService = FileIO()
 
@@ -38,12 +40,12 @@ final class PointCloudCaptureViewModel: PointCloudCaptureRenderingViewDelegate, 
         CaptureViewerModel(capture: pointCloudRenderer.capture)
     }
 
-    /// Initialize a new ARSession and start capturing
-    func startSessionAndCapture() {
+    /// Initialize a new ARSession and start capturing (and flush current capture)
+    func startSession() {
         assert(renderDestination != nil, "You have to set a renderDestination before starting a capture")
-        flushCapture()
-        isCapturing = true
+
         sessionIsRunning = true
+        isCapturing = false
         pointCloudRenderer.startSession()
     }
 
@@ -65,12 +67,6 @@ final class PointCloudCaptureViewModel: PointCloudCaptureRenderingViewDelegate, 
     func resumeCapture() {
         isCapturing = true
         pointCloudRenderer.resumeCapture()
-    }
-    private func flushCapture() {
-        guard sessionIsRunning else { return }
-        pauseCapture()
-        pauseSession()
-        pointCloudRenderer.flushCapture()
     }
 
     // MARK: - FileIOService Interface
@@ -105,11 +101,31 @@ extension PointCloudCaptureViewModel {
         pointCloudRenderer.device
     }
 
+    var session: ARSession {
+        pointCloudRenderer.session
+    }
+
     func draw() {
         pointCloudRenderer.draw()
     }
 
     func resizeDrawRect(to size: CGSize) {
         pointCloudRenderer.resizeDrawRect(to: size)
+    }
+
+    func coachingOverlayViewWillActivate(_ coachingOverlayView: ARCoachingOverlayView) {
+        isShowingCoachingOverlay = true
+        pauseCapture()
+        print("willActivate")
+    }
+
+    func coachingOverlayViewDidDeactivate(_ coachingOverlayView: ARCoachingOverlayView) {
+        isShowingCoachingOverlay = false
+        resumeCapture()
+        print("didDeactivate")
+    }
+
+    func coachingOverlayViewDidRequestSessionReset(_ coachingOverlayView: ARCoachingOverlayView) {
+        startSession()
     }
 }
