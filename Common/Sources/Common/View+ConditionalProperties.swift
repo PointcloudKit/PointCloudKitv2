@@ -8,11 +8,11 @@
 import SwiftUI
 
 extension View {
-    func hiddenConditionally(isHidden: Bool) -> some View {
+    public func hiddenConditionally(isHidden: Bool) -> some View {
         isHidden ? AnyView(hidden().disabled(true)) : AnyView(disabled(false))
     }
 
-    func disabledConditionally(disabled: Bool) -> some View {
+    public func disabledConditionally(disabled: Bool) -> some View {
         AnyView(self.disabled(disabled))
     }
 }
