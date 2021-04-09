@@ -20,7 +20,6 @@ public struct CaptureViewer: View {
 
     @State private var scnExportFile = SCNFile()
     @State private var showingSCNExporter = false
-    @State private var showingPLYExporter = false
 
     var scene: SCNScene {
         let scene = viewModel.generateScene(from: model.capture)
