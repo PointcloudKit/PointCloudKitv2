@@ -41,9 +41,9 @@ struct PointCloudCaptureView: View {
             VStack {
 
                 Spacer()
-                
+
                 metrics
-                    .padding(.bottom, 10)
+                    .padding(.vertical, 10)
                     .padding(.horizontal, 20)
                     .background(Color.black.opacity(0.8))
 
@@ -107,11 +107,15 @@ struct PointCloudCaptureView: View {
                 captureView
             }
             .statusBar(hidden: true)
-            .navigationTitle("Capture")
+            .navigationBarTitleDisplayMode(.large)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text("Capture")
+                }
+            }
             .edgesIgnoringSafeArea(.bottom)
         }
         .onAppear {
-            print("Starting Session and capture")
             viewModel.startSession()
         }
         .onDisappear {

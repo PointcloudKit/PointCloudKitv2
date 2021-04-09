@@ -116,13 +116,11 @@ extension PointCloudCaptureViewModel {
     func coachingOverlayViewWillActivate(_ coachingOverlayView: ARCoachingOverlayView) {
         isShowingCoachingOverlay = true
         pauseCapture()
-        print("willActivate")
     }
 
     func coachingOverlayViewDidDeactivate(_ coachingOverlayView: ARCoachingOverlayView) {
         isShowingCoachingOverlay = false
         resumeCapture()
-        print("didDeactivate")
     }
 
     func coachingOverlayViewDidRequestSessionReset(_ coachingOverlayView: ARCoachingOverlayView) {

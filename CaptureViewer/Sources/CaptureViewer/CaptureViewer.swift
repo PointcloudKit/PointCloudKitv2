@@ -8,12 +8,19 @@
 import SwiftUI
 import SceneKit
 import PointCloudRendererService
+import Common
 
 public struct CaptureViewer: View {
+
+    private let cameraNodeIdentifier = "com.pointCloudKit.nodes.camera"
 
     @StateObject public var model: CaptureViewerModel
 
     let viewModel = CaptureViewerViewModel()
+
+    @State private var scnExportFile = SCNFile()
+    @State private var showingSCNExporter = false
+    @State private var showingPLYExporter = false
 
     var scene: SCNScene {
         let scene = viewModel.generateScene(from: model.capture)
@@ -31,7 +38,7 @@ public struct CaptureViewer: View {
     var cameraNode: SCNNode {
         let cameraNode = SCNNode()
         cameraNode.camera = SCNCamera()
-        cameraNode.name = "CameraNode"
+        cameraNode.name = cameraNodeIdentifier
         return cameraNode
     }
 
@@ -52,7 +59,7 @@ public struct CaptureViewer: View {
     public var body: some View {
         ZStack {
             SceneView(scene: scene,
-                      pointOfView: scene.rootNode.childNode(withName: "CameraNode", recursively: false),
+                      pointOfView: scene.rootNode.childNode(withName: cameraNodeIdentifier, recursively: false),
                       options: [
                         .allowsCameraControl,
                         .autoenablesDefaultLighting,
@@ -60,7 +67,13 @@ public struct CaptureViewer: View {
                       ])
 
             VStack {
+
                 Spacer()
+
+                ProgressView("Exporting…", value: scnExportFile.writeToDiskProgress, total: 1)
+                    .hiddenConditionally(isHidden: !scnExportFile.isWrittingToDisk)
+                    .fileExporter(isPresented: $showingSCNExporter, document: scnExportFile, contentType: .sceneKitScene, onCompletion: { _ in })
+
                 HStack(alignment: .top, spacing: 0, content: {
                     Label(
                         title: { Text("\(model.capture.count)") },
@@ -71,11 +84,17 @@ public struct CaptureViewer: View {
                         }
                     )
                     .padding()
+
                     Spacer()
                 })
             }
-
         }
         .navigationBarTitle("Viewer", displayMode: .inline)
+        .toolbar(content: {
+            Button("Export") {
+                scnExportFile = SCNFile(scene: scene)
+                showingSCNExporter = true
+            }
+        })
     }
 }
