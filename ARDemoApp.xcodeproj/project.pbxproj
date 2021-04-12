@@ -19,6 +19,7 @@
 		EE6A3DA226144FAD00D0203B /* CaptureToggleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6A3DA126144FAD00D0203B /* CaptureToggleStyle.swift */; };
 		EE6A3DB326155F2700D0203B /* PointCloudCaptureViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6A3DB226155F2700D0203B /* PointCloudCaptureViewModel.swift */; };
 		EE6A3DBC2615617E00D0203B /* PointCloudRendererService in Frameworks */ = {isa = PBXBuildFile; productRef = EE6A3DBB2615617E00D0203B /* PointCloudRendererService */; };
+		EE83B7482623D65B0068DC75 /* MetricsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE83B7472623D65B0068DC75 /* MetricsView.swift */; };
 		EEC0D439260D9B140093141F /* PointCloudCaptureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEC0D438260D9B140093141F /* PointCloudCaptureView.swift */; };
 /* End PBXBuildFile section */
 
@@ -57,6 +58,7 @@
 		EE5F3AA5260AD18800945107 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EE6A3DA126144FAD00D0203B /* CaptureToggleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureToggleStyle.swift; sourceTree = "<group>"; };
 		EE6A3DB226155F2700D0203B /* PointCloudCaptureViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PointCloudCaptureViewModel.swift; sourceTree = "<group>"; };
+		EE83B7472623D65B0068DC75 /* MetricsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricsView.swift; sourceTree = "<group>"; };
 		EEC0D438260D9B140093141F /* PointCloudCaptureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointCloudCaptureView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -164,9 +166,18 @@
 			path = ARDemoAppUITests;
 			sourceTree = "<group>";
 		};
+		EE83B74F2623DA820068DC75 /* Subviews */ = {
+			isa = PBXGroup;
+			children = (
+				EE83B7472623D65B0068DC75 /* MetricsView.swift */,
+			);
+			path = Subviews;
+			sourceTree = "<group>";
+		};
 		EEC0D437260D9B020093141F /* PointCloudCapture */ = {
 			isa = PBXGroup;
 			children = (
+				EE83B74F2623DA820068DC75 /* Subviews */,
 				EEC0D438260D9B140093141F /* PointCloudCaptureView.swift */,
 				EE6A3DB226155F2700D0203B /* PointCloudCaptureViewModel.swift */,
 				EE6A3DA126144FAD00D0203B /* CaptureToggleStyle.swift */,
@@ -344,6 +355,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EE5F3A89260AD18700945107 /* HomeView.swift in Sources */,
+				EE83B7482623D65B0068DC75 /* MetricsView.swift in Sources */,
 				EEC0D439260D9B140093141F /* PointCloudCaptureView.swift in Sources */,
 				EE6A3DB326155F2700D0203B /* PointCloudCaptureViewModel.swift in Sources */,
 				8EEF76AA2616D24F00A6BDC1 /* FileIO.swift in Sources */,

@@ -13,60 +13,65 @@ import CaptureViewer
 struct PointCloudCaptureView: View {
 
     @State private var captureToggled: Bool = true
-
-    @State private var isShowingParameters: Bool = false
-    @State private var isPresentingCaptureViewer: Bool = false
+    // Used for navigation to the Viewer
+    @State private var presentCaptureViewer: Bool = false
+    // Main Parameters view
+    @State private var showParameters: Bool = false
+    @State private var showParameterControls: Bool = false
 
     // PointCloudCaptureRenderingView' View Model
     @ObservedObject private var viewModel = PointCloudCaptureViewModel()
 
-    var metrics: some View {
+    // MARK: - Parameters
+    var parameters: some View {
         HStack {
+            // MARK: - Confidence Control
+            Button(action: {
+
+            }, label: {
+                Label(
+                    title: { Text("Confidence").foregroundColor(.white) },
+                    icon: {
+                        Image(systemName: "circlebadge.2")
+                            .font(.body)
+                            .foregroundColor(.red)
+                    }
+                )
+            })
+
             Spacer()
-            Label(
-                title: { Text("\(viewModel.currentPointCount)") },
-                icon: {
-                    Image(systemName: "aqi.medium")
-                        .font(.body)
-                        .foregroundColor(!captureToggled ? .gray : .red)
-                }
-            )
+
+            // MARK: - CaptureRate Control
+            Button(action: {
+
+            }, label: {
+                Label(
+                    title: { Text("Capture Rate").foregroundColor(.white) },
+                    icon: {
+                        Image(systemName: "speedometer")
+                            .font(.body)
+                            .foregroundColor(.red)
+                    }
+                )
+            })
         }
     }
 
-    var captureView: some View {
-        ZStack {
-            PointCloudCaptureRenderingView(renderingDelegate: viewModel)
-
-            VStack {
-
-                Spacer()
-
-                metrics
-                    .padding(.vertical, 10)
-                    .padding(.horizontal, 20)
-                    .background(Color.black.opacity(0.8))
-
-                // Controls Section
-                controlsSection
-                    .padding(.bottom, 20)
-                    .padding(.horizontal, 20)
-                    .background(Color.black.opacity(0.8))
-            }
-        }
-    }
-
+    // MARK: - Controls of the view
     var controlsSection: some View {
         HStack {
             NavigationLink(destination: CaptureViewer(model: viewModel.captureViewerModel),
-                           isActive: $isPresentingCaptureViewer) {  }
+                           isActive: $presentCaptureViewer) {  }
 
             Button(action: {
-                isShowingParameters.toggle()
+                withAnimation {
+                    showParameters.toggle()
+                }
             }, label: {
                 Image(systemName: "slider.horizontal.3")
                     .font(.system(size: 42, weight: .regular))
-                    .foregroundColor(.white)
+                    .scaleEffect(showParameters ? 0.9 : 1)
+                    .foregroundColor(showParameters ? .red : .white)
             })
             .disabledConditionally(disabled: viewModel.isShowingCoachingOverlay)
 
@@ -88,7 +93,7 @@ struct PointCloudCaptureView: View {
             Spacer()
 
             Button(action: {
-                isPresentingCaptureViewer = true
+                presentCaptureViewer = true
                 viewModel.pauseCapture()
             }, label: {
                 Image(systemName: "scale.3d")
@@ -97,6 +102,41 @@ struct PointCloudCaptureView: View {
             })
             .hiddenConditionally(isHidden: captureToggled && !viewModel.isShowingCoachingOverlay)
 
+        }
+    }
+
+    // MARK: - The core of this view
+    var captureView: some View {
+        ZStack {
+            // Rendering View
+            PointCloudCaptureRenderingView(renderingDelegate: viewModel)
+
+            VStack {
+                // Metrics
+                MetricsView(currentPointCount: $viewModel.currentPointCount, captureToggled: $captureToggled)
+
+                Spacer()
+
+                // Parameters
+                VStack {
+
+                    // Toggleable parameters list from the Controls section left bottom button
+                    if showParameters {
+                        ScrollView(.horizontal, showsIndicators: true) {
+                            parameters
+                        }
+                        .padding(.vertical, 20)
+                        .padding(.horizontal, 20)
+                        .transition(.moveAndFade)
+                    }
+
+                    // Controls Section at the bottom of the screen
+                    controlsSection
+                        .padding(.bottom, 20)
+                        .padding(.horizontal, 20)
+                }
+                .background(Color.black.opacity(0.8))
+            }
         }
     }
 
@@ -121,5 +161,12 @@ struct PointCloudCaptureView: View {
         .onDisappear {
             viewModel.pauseSession()
         }
+    }
+}
+
+extension AnyTransition {
+    static fileprivate var moveAndFade: AnyTransition {
+        AnyTransition.move(edge: .bottom)
+            .combined(with: .opacity)
     }
 }
