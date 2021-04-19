@@ -7,16 +7,87 @@
 
 import SceneKit
 import PointCloudRendererService
+import PointCloudProcessorService
 
-final public class CaptureViewerViewModel {
+final public class CaptureViewerViewModel: ObservableObject {
+    private let positionVertex = PointCloudCapture.Component.position
+    private let colorVertex = PointCloudCapture.Component.color
+    //        let confidence = PointCloudCapture.Component.confidence
 
-    func generateScene(from capture: PointCloudCapture) -> SCNScene {
+    private let model: CaptureViewerModel
+    private let pointCloudProcessor = PointCloudProcessorService()
+
+    @Published var pointCloudProcessing = false
+
+    // Will this update?Check later when processing can be done
+    @Published var vertexCount: Int = 0
+
+    public init(model: CaptureViewerModel) {
+        self.model = model
+    }
+
+    lazy public var scene: SCNScene = {
+        let scene = generateScene(from: model.capture)
+        let cameraNode = self.cameraNode
+
+        cameraNode.look(at: scene.rootNode.position)
+        cameraNode.position.z += 5
+        scene.rootNode.addChildNode(cameraNode)
+        scene.rootNode.addChildNode(ambientLightNode)
+        scene.background.contents = UIColor.black
+        return scene
+    }()
+
+    lazy var cameraNode: SCNNode = {
+        let cameraNode = SCNNode()
+        cameraNode.camera = SCNCamera()
+        cameraNode.name = NodeIdentifier.camera.rawValue
+        return cameraNode
+    }()
+
+    lazy var ambientLightNode: SCNNode = {
+        let ambientLightNode = SCNNode()
+        let light = SCNLight()
+
+        light.type = .ambient
+        ambientLightNode.light = light
+        return ambientLightNode
+    }()
+
+    private func generateScene(from capture: PointCloudCapture) -> SCNScene {
         let scene = SCNScene()
 
-        let positionVertex = PointCloudCapture.Component.position
-        let colorVertex = PointCloudCapture.Component.color
-//        let confidence = PointCloudCapture.Component.confidence
+        let pointCloudRootNode = pointCloudNode(from: capture)
+        scene.rootNode.addChildNode(pointCloudRootNode)
+        return scene
+    }
 
+    private func updateScene(with capture: PointCloudCapture) {
+        // Remove previous points
+        scene.rootNode
+            .childNode(withName: NodeIdentifier.pointCloudRoot.rawValue, recursively: false)?
+            .removeFromParentNode()
+
+        // Create point cloud nodes and add to the scene
+        scene.rootNode.addChildNode(pointCloudNode(from: capture))
+    }
+
+    func optimize(completion: (() -> Void)?) {
+        let filteredParticles = model.capture.buffer.getMemoryRepresentationCopy(defaultValue: ParticleUniforms())
+            .map({ particle -> ParticleUniforms in
+                if particle.confidence < 0.20 {
+                    return ParticleUniforms(color: Float3(0, 0, 1))
+                }
+                // How to actually change the size of this array if we always render the initial buffer
+                return particle
+            })
+        model.capture.buffer.assign(with: filteredParticles)
+        completion?()
+    }
+}
+
+extension CaptureViewerViewModel {
+    private func pointCloudNode(from capture: PointCloudCapture) -> SCNNode {
         let rawBuffer = capture.buffer.rawBuffer
         let dataStride = capture.stride
         let vertexCount = capture.count
@@ -56,7 +127,10 @@ final public class CaptureViewerViewModel {
         let pointCloudGeometry = SCNGeometry(sources: [positionSource, colorSource/*, confidenceSource*/],
                                              elements: [particles])
         let pointCloudRootNode = SCNNode(geometry: pointCloudGeometry)
-        scene.rootNode.addChildNode(pointCloudRootNode)
-        return scene
+        pointCloudRootNode.name = NodeIdentifier.pointCloudRoot.rawValue
+
+        self.vertexCount = vertexCount
+
+        return pointCloudRootNode
     }
 }

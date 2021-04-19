@@ -12,54 +12,20 @@ import Common
 
 public struct CaptureViewer: View {
 
-    private let cameraNodeIdentifier = "com.pointCloudKit.nodes.camera"
+    @EnvironmentObject var viewModel: CaptureViewerViewModel
 
-    @StateObject public var model: CaptureViewerModel
-
-    let viewModel = CaptureViewerViewModel()
-
+    @State private var optimizingPointCloud = false
     @State private var scnExportFile = SCNFile()
     @State private var showingSCNExporter = false
 
-    var scene: SCNScene {
-        let scene = viewModel.generateScene(from: model.capture)
-        let cameraNode = self.cameraNode
-
-        cameraNode.look(at: scene.rootNode.position)
-        cameraNode.position.z += 5
-        scene.rootNode.addChildNode(cameraNode)
-        scene.rootNode.addChildNode(ambientLightNode)
-        scene.background.contents = UIColor.black
-
-        return scene
-    }
-
-    var cameraNode: SCNNode {
-        let cameraNode = SCNNode()
-        cameraNode.camera = SCNCamera()
-        cameraNode.name = cameraNodeIdentifier
-        return cameraNode
-    }
-
-    var ambientLightNode: SCNNode {
-        let ambientLightNode = SCNNode()
-        let light = SCNLight()
-
-        light.type = .ambient
-        ambientLightNode.light = light
-        return ambientLightNode
-    }
-
-    // Seems hacky, I wish it expose the auto generated init automatically
-    public init(model: CaptureViewerModel) {
-        _model = StateObject(wrappedValue: model)
-    }
+    public init() { }
 
     public var body: some View {
         ZStack {
-            SceneView(scene: scene,
-                      pointOfView: scene.rootNode.childNode(withName: cameraNodeIdentifier, recursively: false),
+            SceneView(scene: viewModel.scene,
+                      pointOfView: viewModel.cameraNode,
                       options: [
+                        .rendersContinuously,
                         .allowsCameraControl,
                         .autoenablesDefaultLighting,
                         .temporalAntialiasingEnabled
@@ -68,14 +34,25 @@ public struct CaptureViewer: View {
             VStack {
 
                 Spacer()
+                    // Point Cloud processing control block -- todo
+                    Button("Optimize") {
+                        viewModel.optimize(completion: { viewModel.pointCloudProcessing = false })
+                    }
+                    .disabledConditionally(disabled: viewModel.pointCloudProcessing)
 
-                ProgressView("Exporting…", value: scnExportFile.writeToDiskProgress, total: 1)
-                    .hiddenConditionally(isHidden: !scnExportFile.isWrittingToDisk)
-                    .fileExporter(isPresented: $showingSCNExporter, document: scnExportFile, contentType: .sceneKitScene, onCompletion: { _ in })
+                ProgressView("Processing...")
+                    .hiddenConditionally(isHidden: !viewModel.pointCloudProcessing)
+
+                ProgressView("Exporting...", value: scnExportFile.writeToDiskProgress, total: 1)
+                    .hiddenConditionally(isHidden: !scnExportFile.writtingToDisk)
+                    .fileExporter(isPresented: $showingSCNExporter,
+                                  document: scnExportFile,
+                                  contentType: .sceneKitScene,
+                                  onCompletion: { _ in })
 
                 HStack(alignment: .top, spacing: 0, content: {
                     Label(
-                        title: { Text("\(model.capture.count)") },
+                        title: { Text("\(viewModel.vertexCount)") },
                         icon: {
                             Image(systemName: "aqi.medium")
                                 .font(.body)
@@ -91,7 +68,7 @@ public struct CaptureViewer: View {
         .navigationBarTitle("Viewer", displayMode: .inline)
         .toolbar(content: {
             Button("Export") {
-                scnExportFile = SCNFile(scene: scene)
+                scnExportFile = SCNFile(scene: viewModel.scene)
                 showingSCNExporter = true
             }
         })

@@ -14,7 +14,7 @@ struct SCNFile: FileDocument {
     // tell the system we support only plain text
     static var readableContentTypes = [UTType.sceneKitScene]
 
-    @State var isWrittingToDisk = false
+    @State var writtingToDisk = false
     @State var writeToDiskProgress = 0.0
 
     // by default our document is empty
@@ -38,12 +38,12 @@ struct SCNFile: FileDocument {
         let temporaryFileURL = temporaryDirectory.appendingPathComponent(filename)
 
         writeToDiskProgress = 0
-        isWrittingToDisk = true
+        writtingToDisk = true
 
         write(scene: scene, to: temporaryFileURL) { (progress) in
             writeToDiskProgress = progress
             if progress == 1 {
-                isWrittingToDisk = false
+                writtingToDisk = false
             }
         }
         return try FileWrapper(url: temporaryFileURL)

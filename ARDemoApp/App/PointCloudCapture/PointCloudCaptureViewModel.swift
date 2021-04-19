@@ -35,9 +35,10 @@ final class PointCloudCaptureViewModel: PointCloudCaptureRenderingViewDelegate, 
 
     // MARK: - Rendering Service Interface
 
-    /// Generate the Model necessary to CaptureViewer View
-    var captureViewerModel: CaptureViewerModel {
-        CaptureViewerModel(capture: pointCloudRenderer.capture)
+    /// Generate the ViewModel for CaptureViewer View
+    func captureViewerViewModel() -> CaptureViewerViewModel {
+        let model = CaptureViewerModel(capture: pointCloudRenderer.capture)
+        return CaptureViewerViewModel(model: model)
     }
 
     /// Initialize a new ARSession and start capturing (and flush current capture)

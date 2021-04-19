@@ -60,8 +60,11 @@ struct PointCloudCaptureView: View {
     // MARK: - Controls of the view
     var controlsSection: some View {
         HStack {
-            NavigationLink(destination: CaptureViewer(model: viewModel.captureViewerModel),
-                           isActive: $presentCaptureViewer) {  }
+            if presentCaptureViewer {
+                NavigationLink(destination: CaptureViewer()
+                                .environmentObject(viewModel.captureViewerViewModel()),
+                               isActive: $presentCaptureViewer) {  }
+            }
 
             Button(action: {
                 withAnimation {

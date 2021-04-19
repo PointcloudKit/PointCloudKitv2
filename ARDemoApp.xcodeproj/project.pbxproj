@@ -21,6 +21,7 @@
 		EE6A3DBC2615617E00D0203B /* PointCloudRendererService in Frameworks */ = {isa = PBXBuildFile; productRef = EE6A3DBB2615617E00D0203B /* PointCloudRendererService */; };
 		EE83B7482623D65B0068DC75 /* MetricsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE83B7472623D65B0068DC75 /* MetricsView.swift */; };
 		EEC0D439260D9B140093141F /* PointCloudCaptureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEC0D438260D9B140093141F /* PointCloudCaptureView.swift */; };
+		EEF512452625612E00F35886 /* PointCloudProcessorService in Frameworks */ = {isa = PBXBuildFile; productRef = EEF512442625612E00F35886 /* PointCloudProcessorService */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +61,7 @@
 		EE6A3DB226155F2700D0203B /* PointCloudCaptureViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PointCloudCaptureViewModel.swift; sourceTree = "<group>"; };
 		EE83B7472623D65B0068DC75 /* MetricsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricsView.swift; sourceTree = "<group>"; };
 		EEC0D438260D9B140093141F /* PointCloudCaptureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointCloudCaptureView.swift; sourceTree = "<group>"; };
+		EEF512402625611500F35886 /* PointCloudProcessorService */ = {isa = PBXFileReference; lastKnownFileType = folder; path = PointCloudProcessorService; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EEF512452625612E00F35886 /* PointCloudProcessorService in Frameworks */,
 				EE6A3DBC2615617E00D0203B /* PointCloudRendererService in Frameworks */,
 				8E8F5BA42616F45B005203E0 /* CaptureViewer in Frameworks */,
 				EE4EC387261EF10A00B2D858 /* Common in Frameworks */,
@@ -93,6 +96,7 @@
 		8E8F5BA22616F45B005203E0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				EEF512402625611500F35886 /* PointCloudProcessorService */,
 				EE4EC37F261EF0DE00B2D858 /* Common */,
 				8E8F5B8F2616F230005203E0 /* CaptureViewer */,
 			);
@@ -216,6 +220,7 @@
 				EE6A3DBB2615617E00D0203B /* PointCloudRendererService */,
 				8E8F5BA32616F45B005203E0 /* CaptureViewer */,
 				EE4EC386261EF10A00B2D858 /* Common */,
+				EEF512442625612E00F35886 /* PointCloudProcessorService */,
 			);
 			productName = ARDemoApp;
 			productReference = EE5F3A83260AD18700945107 /* ARDemoApp.app */;
@@ -707,6 +712,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = EE6A3DBA2615617E00D0203B /* XCRemoteSwiftPackageReference "PointCloudRendererService" */;
 			productName = PointCloudRendererService;
+		};
+		EEF512442625612E00F35886 /* PointCloudProcessorService */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PointCloudProcessorService;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
