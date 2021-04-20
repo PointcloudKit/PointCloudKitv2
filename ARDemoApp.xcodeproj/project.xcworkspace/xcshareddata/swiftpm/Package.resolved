@@ -1,0 +1,97 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "BLAS-LAPACK-AppStore-Workaround",
+        "repositoryURL": "https://github.com/kewlbear/BLAS-LAPACK-AppStore-Workaround.git",
+        "state": {
+          "branch": "main",
+          "revision": "dc78ff05b3c8c1c39d83aab9bdbaef59dc6c87f5",
+          "version": null
+        }
+      },
+      {
+        "package": "LAPACKE-iOS",
+        "repositoryURL": "https://github.com/kewlbear/LAPACKE-iOS.git",
+        "state": {
+          "branch": "main",
+          "revision": "6fbd386ff1cbde8ee6cbf83d2d398d21f8e4474d",
+          "version": null
+        }
+      },
+      {
+        "package": "LoggerKit",
+        "repositoryURL": "https://github.com/pvieito/LoggerKit.git",
+        "state": {
+          "branch": "master",
+          "revision": "9a10b40b3bdb6634571122f4a32d61fa34391e74",
+          "version": null
+        }
+      },
+      {
+        "package": "NumPy-iOS",
+        "repositoryURL": "https://github.com/kewlbear/NumPy-iOS.git",
+        "state": {
+          "branch": "main",
+          "revision": "45e45d464e5151bbfdbf54642d53e7c30f8b2f6a",
+          "version": null
+        }
+      },
+      {
+        "package": "Open3D-iOS",
+        "repositoryURL": "https://github.com/kewlbear/Open3D-iOS.git",
+        "state": {
+          "branch": "main",
+          "revision": "9634ac646e99d90fa1782c1ef6c2020d6080be7e",
+          "version": null
+        }
+      },
+      {
+        "package": "PointCloudRendererService",
+        "repositoryURL": "git@github.com:PointcloudKit/PointCloudRendererService.git",
+        "state": {
+          "branch": "main",
+          "revision": "26bd32b8bf2fcfa5037693239f7b2f54be50ae5f",
+          "version": null
+        }
+      },
+      {
+        "package": "Python-iOS",
+        "repositoryURL": "https://github.com/kewlbear/Python-iOS.git",
+        "state": {
+          "branch": "kivy-ios",
+          "revision": "f5333228b625560a90c17d9e2d3a9b2aac6967a9",
+          "version": null
+        }
+      },
+      {
+        "package": "PythonKit",
+        "repositoryURL": "https://github.com/kewlbear/PythonKit.git",
+        "state": {
+          "branch": "master",
+          "revision": "6caffb495e6315a00413f52cb034575965d40989",
+          "version": null
+        }
+      },
+      {
+        "package": "Rainbow",
+        "repositoryURL": "https://github.com/onevcat/Rainbow",
+        "state": {
+          "branch": null,
+          "revision": "626c3d4b6b55354b4af3aa309f998fae9b31a3d9",
+          "version": "3.2.0"
+        }
+      },
+      {
+        "package": "swift-argument-parser",
+        "repositoryURL": "https://github.com/apple/swift-argument-parser",
+        "state": {
+          "branch": "main",
+          "revision": "cdb0e715845bb0e83a5e5d5b5bca47856cf7808c",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}

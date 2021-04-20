@@ -54,6 +54,14 @@ final public class CaptureViewerViewModel: ObservableObject {
         return ambientLightNode
     }()
 
+    func scnFile() -> SCNFile {
+        SCNFile(scene: scene)
+    }
+
+    func plyFile() -> PLYFile {
+        PLYFile(particles: model.capture.buffer.getMemoryRepresentationCopy(for: vertexCount))
+    }
+
     private func generateScene(from capture: PointCloudCapture) -> SCNScene {
         let scene = SCNScene()
 
@@ -73,9 +81,9 @@ final public class CaptureViewerViewModel: ObservableObject {
     }
 
     func optimize(completion: (() -> Void)?) {
-        let filteredParticles = model.capture.buffer.getMemoryRepresentationCopy(defaultValue: ParticleUniforms())
+        let filteredParticles = model.capture.buffer.getMemoryRepresentationCopy(for: vertexCount)
             .map({ particle -> ParticleUniforms in
-                if particle.confidence < 0.20 {
+                if particle.confidence < 1 {
                     return ParticleUniforms(color: Float3(0, 0, 1))
                 }
                 // How to actually change the size of this array if we always render the initial buffer

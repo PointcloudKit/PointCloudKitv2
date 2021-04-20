@@ -12,13 +12,13 @@ import UniformTypeIdentifiers.UTType
 
 struct SCNFile: FileDocument {
     // tell the system we support only plain text
-    static var readableContentTypes = [UTType.sceneKitScene]
+    static let readableContentTypes = [UTType.sceneKitScene]
 
-    @State var writtingToDisk = false
-    @State var writeToDiskProgress = 0.0
+    @State private(set) var writtingToDisk = false
+    @State private(set) var writeToDiskProgress = 0.0
 
     // by default our document is empty
-    var scene: SCNScene
+    private var scene: SCNScene
 
     // a simple initializer that creates new, empty documents
     init(scene: SCNScene = SCNScene()) {

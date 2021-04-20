@@ -151,11 +151,12 @@ struct PointCloudCaptureView: View {
             }
             .statusBar(hidden: true)
             .navigationBarTitleDisplayMode(.large)
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text("Capture")
-                }
-            }
+            .navigationTitle("Capture")
+//            .toolbar {
+//                ToolbarItem(placement: .principal) {
+//                    Text("Capture")
+//                }
+//            }
             .edgesIgnoringSafeArea(.bottom)
         }
         .onAppear {

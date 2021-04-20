@@ -15,10 +15,31 @@ public struct CaptureViewer: View {
     @EnvironmentObject var viewModel: CaptureViewerViewModel
 
     @State private var optimizingPointCloud = false
-    @State private var scnExportFile = SCNFile()
+    @State private var scnFile = SCNFile()
+    @State private var plyFile = PLYFile()
+    @State private var showingExportActionSheet = false
     @State private var showingSCNExporter = false
+    @State private var showingPLYExporter = false
 
     public init() { }
+
+    var exportActionSheet: ActionSheet {
+        ActionSheet(title: Text("Export Type"), message: Text("Supported export formats"), buttons: [
+            .default(Text("SCN (Apple's SceneKit)"), action: {
+                scnFile = viewModel.scnFile()
+                showingSCNExporter = true
+            }),
+            .default(Text("PLY (Polygon File Format)"), action: {
+                DispatchQueue.global(qos: .userInitiated).async {
+                    plyFile = viewModel.plyFile()
+                    DispatchQueue.main.async {
+                        showingPLYExporter = true
+                    }
+                }
+            }),
+            .cancel()
+        ])
+    }
 
     public var body: some View {
         ZStack {
@@ -34,20 +55,30 @@ public struct CaptureViewer: View {
             VStack {
 
                 Spacer()
-                    // Point Cloud processing control block -- todo
-                    Button("Optimize") {
-                        viewModel.optimize(completion: { viewModel.pointCloudProcessing = false })
-                    }
-                    .disabledConditionally(disabled: viewModel.pointCloudProcessing)
+                // Point Cloud processing control block -- todo
+//                Button("Optimize") {
+//                    plyFile = viewModel.plyFile()
+//                    // then read with python and do processing and concert back etc
+////                    plyFile.fileWrapper(configuration: )
+////                    viewModel.optimize(completion: { viewModel.pointCloudProcessing = false })
+//                }
+//                .disabledConditionally(disabled: viewModel.pointCloudProcessing)
 
                 ProgressView("Processing...")
                     .hiddenConditionally(isHidden: !viewModel.pointCloudProcessing)
 
-                ProgressView("Exporting...", value: scnExportFile.writeToDiskProgress, total: 1)
-                    .hiddenConditionally(isHidden: !scnExportFile.writtingToDisk)
+                ProgressView("Exporting SCN...", value: scnFile.writeToDiskProgress, total: 1)
+                    .hiddenConditionally(isHidden: !scnFile.writtingToDisk)
                     .fileExporter(isPresented: $showingSCNExporter,
-                                  document: scnExportFile,
+                                  document: scnFile,
                                   contentType: .sceneKitScene,
+                                  onCompletion: { _ in })
+
+                ProgressView("Exporting PLY...", value: plyFile.writeToDiskProgress, total: 1)
+                    .hiddenConditionally(isHidden: !plyFile.writtingToDisk)
+                    .fileExporter(isPresented: $showingPLYExporter,
+                                  document: plyFile,
+                                  contentType: .polygon,
                                   onCompletion: { _ in })
 
                 HStack(alignment: .top, spacing: 0, content: {
@@ -65,11 +96,13 @@ public struct CaptureViewer: View {
                 })
             }
         }
+        .actionSheet(isPresented: $showingExportActionSheet, content: {
+            exportActionSheet
+        })
         .navigationBarTitle("Viewer", displayMode: .inline)
         .toolbar(content: {
             Button("Export") {
-                scnExportFile = SCNFile(scene: viewModel.scene)
-                showingSCNExporter = true
+                showingExportActionSheet = true
             }
         })
     }
