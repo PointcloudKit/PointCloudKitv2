@@ -7,11 +7,12 @@
 
 import MetalKit
 import SceneKit.SCNGeometry
+import Common
 
 public struct PointCloudCapture {
     public var buffer: MetalBuffer<ParticleUniforms>
     public var count: Int
-    
+
     public var stride: Int {
         buffer.stride
     }

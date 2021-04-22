@@ -17,9 +17,8 @@ let package = Package(
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
-        .package(url: "https://github.com/PointcloudKit/PointCloudRendererService",
-                 .branch("main")),
         .package(name: "Common", path: "./Common/"),
+        .package(name: "PointCloudRendererService", path: "./PointCloudRendererService/"),
         .package(name: "PointCloudProcessorService", path: "./PointCloudProcessorService/")
     ],
     targets: [
@@ -27,7 +26,7 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "CaptureViewer",
-            dependencies: ["PointCloudRendererService", "Common", "PointCloudProcessorService"]),
+            dependencies: ["Common", "PointCloudRendererService", "PointCloudProcessorService"]),
         .testTarget(
             name: "CaptureViewerTests",
             dependencies: ["CaptureViewer"])

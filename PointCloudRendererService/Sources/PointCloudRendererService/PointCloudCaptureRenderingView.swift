@@ -12,10 +12,9 @@ import ARKit
 public protocol PointCloudCaptureRenderingViewDelegate: class {
     var metalDevice: MTLDevice { get }
     var renderDestination: RenderDestinationProvider? { get set }
+    var session: ARSession { get }
     func draw()
     func resizeDrawRect(to size: CGSize)
-    
-    var session: ARSession { get }
     func coachingOverlayViewWillActivate(_ coachingOverlayView: ARCoachingOverlayView)
     func coachingOverlayViewDidDeactivate(_ coachingOverlayView: ARCoachingOverlayView)
     func coachingOverlayViewDidRequestSessionReset(_ coachingOverlayView: ARCoachingOverlayView)

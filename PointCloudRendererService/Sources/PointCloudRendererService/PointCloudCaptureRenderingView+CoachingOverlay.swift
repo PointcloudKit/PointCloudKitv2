@@ -15,7 +15,7 @@ extension PointCloudCaptureRenderingView {
         #endif
         coachingOverlay.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         coachingOverlay.goal = .tracking
-        
+
         return coachingOverlay
     }
 }

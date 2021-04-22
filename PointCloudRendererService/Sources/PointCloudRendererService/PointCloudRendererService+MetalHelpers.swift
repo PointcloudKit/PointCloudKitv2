@@ -8,6 +8,7 @@
 import Metal
 import MetalKit
 import ARKit
+import Common
 
 extension PointCloudRendererService {
     func makeUnprojectionPipelineState() -> MTLRenderPipelineState? {

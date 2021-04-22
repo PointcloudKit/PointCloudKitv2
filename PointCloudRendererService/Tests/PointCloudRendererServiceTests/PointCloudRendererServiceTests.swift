@@ -12,6 +12,6 @@ final class PointCloudRendererServiceTests: XCTestCase {
     }
 
     static var allTests = [
-        ("testExample", testExample),
+        ("testExample", testExample)
     ]
 }

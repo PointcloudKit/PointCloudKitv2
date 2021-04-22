@@ -11,8 +11,4 @@ extension View {
     public func hiddenConditionally(isHidden: Bool) -> some View {
         isHidden ? AnyView(hidden().disabled(true)) : AnyView(disabled(false))
     }
-
-    public func disabledConditionally(disabled: Bool) -> some View {
-        AnyView(self.disabled(disabled))
-    }
 }

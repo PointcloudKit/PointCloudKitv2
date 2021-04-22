@@ -7,11 +7,19 @@
 
 import SwiftUI
 import ARKit
+import Open3DSupport
+import NumPySupport
+import PythonSupport
 
 @main
 struct ARDemoApp: App {
 
     init() {
+        // Initialize Python environment
+        PythonSupport.initialize()
+        Open3DSupport.sitePackagesURL.insertPythonPath()
+        NumPySupport.sitePackagesURL.insertPythonPath()
+
         #if !targetEnvironment(simulator)
         guard ARWorldTrackingConfiguration.isSupported else {
             fatalError("""

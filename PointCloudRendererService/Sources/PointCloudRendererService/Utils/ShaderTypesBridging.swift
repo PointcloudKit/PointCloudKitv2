@@ -6,6 +6,7 @@
 //
 
 import ARKit
+import Common
 
 // Manual type bridging with the ones defined in ShadersType.h - Cannot have bridging headers in Swift Package
 
@@ -43,13 +44,4 @@ public struct PointCloudUniforms {
     public var confidenceThreshold: Int32 = 0
 }
 
-public struct ParticleUniforms {
-    public var position: Float3 = .init()
-    public var color: Float3 = .init()
-    public var confidence: Float = 0.0
-
-    public init() {}
-    public init(color: Float3) {
-        self.color = color
-    }
-}
+// ParticleUniform defined in Common

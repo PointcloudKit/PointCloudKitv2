@@ -4,6 +4,7 @@ import Metal
 import MetalKit
 import ARKit
 import Combine
+import Common
 
 public final class PointCloudRendererService: ObservableObject {
 
@@ -93,7 +94,7 @@ public final class PointCloudRendererService: ObservableObject {
     // MARK: - Public Interfaces
     @Published var isAccumulating: Bool = false
 
-    public var confidenceThreshold = 2 {
+    public var confidenceThreshold = 0 {
         didSet {
             // apply the change for the shader
             pointCloudUniforms.confidenceThreshold = Int32(confidenceThreshold)
@@ -179,7 +180,6 @@ public final class PointCloudRendererService: ObservableObject {
 
     // MARK: - Capture (Accumulation)
 
-
     /// Stop accumulation (adding points to the current capture), but keep the AR session running
     public func pauseCapture() {
         isAccumulating = false
@@ -196,4 +196,3 @@ public final class PointCloudRendererService: ObservableObject {
         currentPointIndex = 0
     }
 }
-

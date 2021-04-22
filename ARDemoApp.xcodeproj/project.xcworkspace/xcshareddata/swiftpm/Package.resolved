@@ -42,16 +42,7 @@
         "repositoryURL": "https://github.com/kewlbear/Open3D-iOS.git",
         "state": {
           "branch": "main",
-          "revision": "9634ac646e99d90fa1782c1ef6c2020d6080be7e",
-          "version": null
-        }
-      },
-      {
-        "package": "PointCloudRendererService",
-        "repositoryURL": "git@github.com:PointcloudKit/PointCloudRendererService.git",
-        "state": {
-          "branch": "main",
-          "revision": "26bd32b8bf2fcfa5037693239f7b2f54be50ae5f",
+          "revision": "29ce48ea166afe8458fd50c79d88cea2f2930e82",
           "version": null
         }
       },
@@ -87,7 +78,7 @@
         "repositoryURL": "https://github.com/apple/swift-argument-parser",
         "state": {
           "branch": "main",
-          "revision": "cdb0e715845bb0e83a5e5d5b5bca47856cf7808c",
+          "revision": "47bd06ebeff8146ecd0020809e186218b46f465f",
           "version": null
         }
       }

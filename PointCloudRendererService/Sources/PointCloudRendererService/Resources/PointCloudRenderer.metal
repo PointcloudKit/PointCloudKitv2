@@ -60,7 +60,8 @@ vertex void unprojectVertex(uint vertexID [[vertex_id]],
     
     // Sample Y and CbCr textures to get the YCbCr color at the given texture coordinate
     const auto ycbcr = float4(capturedImageTextureY.sample(colorSampler, texCoord).r, capturedImageTextureCbCr.sample(colorSampler, texCoord.xy).rg, 1);
-    const auto sampledColor = (yCbCrToRGB * ycbcr).rgb;
+    // MARK: - ADDED BS min max cause I was getting colors below 0 ad above 1 then hard to convert to RGB -- not sure what I'm doing
+    const auto sampledColor = min(max(0.0, (yCbCrToRGB * ycbcr).rgb), 1.0);
     // Sample the confidence map to get the confidence value
     const auto confidence = confidenceTexture.sample(colorSampler, texCoord).r;
     

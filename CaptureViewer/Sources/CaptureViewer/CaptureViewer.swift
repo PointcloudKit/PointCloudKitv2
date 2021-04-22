@@ -7,7 +7,6 @@
 
 import SwiftUI
 import SceneKit
-import PointCloudRendererService
 import Common
 
 public struct CaptureViewer: View {
@@ -20,6 +19,9 @@ public struct CaptureViewer: View {
     @State private var showingExportActionSheet = false
     @State private var showingSCNExporter = false
     @State private var showingPLYExporter = false
+    // Main Parameters view
+    @State private var showParameters: Bool = false
+    @State private var showParameterControls: Bool = false
 
     public init() { }
 
@@ -41,6 +43,167 @@ public struct CaptureViewer: View {
         ])
     }
 
+    // MARK: - Paramters
+
+    var transformingParameters: some View {
+        HStack {
+            Label(
+                title: { Text(">").foregroundColor(.white) },
+                icon: {
+                    Image(systemName: "wand.and.stars")
+                        .font(.body)
+                        .foregroundColor(.white)
+                }
+            )
+
+            ScrollView(.horizontal, showsIndicators: false, content: {
+                HStack {
+                    // MARK: Surface Reconstruction
+                    Button(action: {
+                        print("todo")
+                        //                viewModel.voxelDownsampling()
+                    }, label: {
+                        Label(
+                            title: { Text("Surface Reconstruction").foregroundColor(.white) },
+                            icon: {
+                                Image(systemName: "skew")
+                                    .font(.body)
+                                    .foregroundColor(!viewModel.pointCloudProcessing ? .red : .gray)
+                            }
+                        )
+                    })
+                    .disabled(viewModel.pointCloudProcessing)
+                }
+
+                Spacer()
+            })
+        }
+    }
+
+    var cleaningParameters: some View {
+        HStack {
+            Label(
+                title: { Text(">").foregroundColor(.white) },
+                icon: {
+                    Image(systemName: "scissors")
+                        .font(.body)
+                        .foregroundColor(.white)
+                }
+            )
+
+            ScrollView(.horizontal, showsIndicators: false, content: {
+                HStack {
+                    // MARK: Voxel DownSampling
+                    Button(action: {
+                        viewModel.voxelDownsampling()
+                    }, label: {
+                        Label(
+                            title: { Text("Voxel Filtering").foregroundColor(.white) },
+                            icon: {
+                                Image(systemName: "cube")
+                                    .font(.body)
+                                    .foregroundColor(!viewModel.pointCloudProcessing ? .red : .gray)
+                            }
+                        )
+                    })
+                    .disabled(viewModel.pointCloudProcessing)
+
+                    // MARK: Statistical Outlier Removal
+                    Button(action: {
+                        viewModel.statisticalOutlierRemoval()
+                    }, label: {
+                        Label(
+                            title: { Text("Statistical O.R.").foregroundColor(.white) },
+                            icon: {
+                                Image(systemName: "aqi.high")
+                                    .font(.body)
+                                    .foregroundColor(!viewModel.pointCloudProcessing ? .red : .gray)
+                            }
+                        )
+                    })
+                    .disabled(viewModel.pointCloudProcessing)
+
+                    // MARK: Radius Outlier Removal
+                    Button(action: {
+                        viewModel.radiusOutlierRemoval()
+                    }, label: {
+                        Label(
+                            title: { Text("Radius O.R.").foregroundColor(.white) },
+                            icon: {
+                                Image(systemName: "aqi.medium")
+                                    .font(.body)
+                                    .foregroundColor(!viewModel.pointCloudProcessing ? .red : .gray)
+                            }
+                        )
+                    })
+                    .disabled(viewModel.pointCloudProcessing)
+                }
+            })
+        }
+    }
+
+    var genericParameters: some View {
+        HStack {
+            Label(
+                title: { Text(">").foregroundColor(.white) },
+                icon: {
+                    Image(systemName: "gearshape.2.fill")
+                        .font(.body)
+                        .foregroundColor(.white)
+                }
+            )
+
+            ScrollView(.horizontal, showsIndicators: false, content: {
+            HStack {
+                // MARK: Undo
+                Button(action: {
+                    viewModel.undo()
+                }, label: {
+                    Label(
+                        title: { Text("Undo").foregroundColor(viewModel.undoAvailable ? .white : .gray) },
+                        icon: {
+                            Image(systemName: "arrow.uturn.backward.square")
+                                .font(.body)
+                                .foregroundColor(!viewModel.undoAvailable || !viewModel.pointCloudProcessing ? .red : .gray)
+                        }
+                    )
+                })
+                .disabled(!viewModel.undoAvailable || viewModel.pointCloudProcessing)
+            }
+            })
+        }
+    }
+
+    // MARK: - Controls of the view
+    var controlsSection: some View {
+        HStack {
+
+            Button(action: {
+                withAnimation {
+                    showParameters.toggle()
+                }
+            }, label: {
+                Image(systemName: "slider.horizontal.3")
+                    .font(.system(size: 42, weight: .regular))
+                    .scaleEffect(showParameters ? 0.9 : 1)
+                    .foregroundColor(showParameters ? .red : .white)
+            })
+
+            Spacer()
+
+            Button(action: {
+                withAnimation {
+                    showingExportActionSheet = true
+                }
+            }, label: {
+                Image(systemName: "square.and.arrow.up")
+                    .font(.system(size: 42, weight: .regular))
+                    .foregroundColor(showParameters || viewModel.pointCloudProcessing ? .gray : .white)
+            })
+            .disabled(showParameters || viewModel.pointCloudProcessing)
+        }
+    }
+
     public var body: some View {
         ZStack {
             SceneView(scene: viewModel.scene,
@@ -54,17 +217,15 @@ public struct CaptureViewer: View {
 
             VStack {
 
+                // Metrics
+                MetricsView(currentPointCount: $viewModel.vertexCount)
+
                 Spacer()
-                // Point Cloud processing control block -- todo
-//                Button("Optimize") {
-//                    plyFile = viewModel.plyFile()
-//                    // then read with python and do processing and concert back etc
-////                    plyFile.fileWrapper(configuration: )
-////                    viewModel.optimize(completion: { viewModel.pointCloudProcessing = false })
-//                }
-//                .disabledConditionally(disabled: viewModel.pointCloudProcessing)
 
                 ProgressView("Processing...")
+                    .padding(20)
+                    .background(Color.black.opacity(0.8))
+                    .cornerRadius(10)
                     .hiddenConditionally(isHidden: !viewModel.pointCloudProcessing)
 
                 ProgressView("Exporting SCN...", value: scnFile.writeToDiskProgress, total: 1)
@@ -81,29 +242,34 @@ public struct CaptureViewer: View {
                                   contentType: .polygon,
                                   onCompletion: { _ in })
 
-                HStack(alignment: .top, spacing: 0, content: {
-                    Label(
-                        title: { Text("\(viewModel.vertexCount)") },
-                        icon: {
-                            Image(systemName: "aqi.medium")
-                                .font(.body)
-                                .foregroundColor(.red)
-                        }
-                    )
-                    .padding()
+                // Parameters
+                VStack {
 
-                    Spacer()
-                })
+                    // Toggleable parameters list from the Controls section left bottom button
+                    if showParameters {
+                        transformingParameters
+                            .padding(.horizontal, 20)
+                            .transition(.moveAndFade)
+                        cleaningParameters
+                            .padding(.horizontal, 20)
+                            .transition(.moveAndFade)
+                        genericParameters
+                            .padding(.horizontal, 20)
+                            .transition(.moveAndFade)
+                    }
+
+                    // Controls Section at the bottom of the screen
+                    controlsSection
+                        .padding(.top, 10)
+                        .padding(.horizontal, 20)
+                }
+                .background(Color.black.opacity(0.8))
+
             }
         }
         .actionSheet(isPresented: $showingExportActionSheet, content: {
             exportActionSheet
         })
         .navigationBarTitle("Viewer", displayMode: .inline)
-        .toolbar(content: {
-            Button("Export") {
-                showingExportActionSheet = true
-            }
-        })
     }
 }

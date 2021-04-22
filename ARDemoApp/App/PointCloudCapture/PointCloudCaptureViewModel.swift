@@ -9,6 +9,7 @@ import SwiftUI
 import MetalKit
 import PointCloudRendererService
 import ARKit
+import AVKit
 
 import CaptureViewer
 
@@ -79,6 +80,27 @@ final class PointCloudCaptureViewModel: PointCloudCaptureRenderingViewDelegate, 
         print("writing asset to \(exportUrl)")
         try asset.export(to: exportUrl)
         return exportUrl
+    }
+
+    @discardableResult
+    func toggleFlashlight() -> Bool {
+        guard let device = AVCaptureDevice.default(for: .video),
+              device.hasTorch
+        else { return false }
+
+        do {
+            try device.lockForConfiguration()
+            switch device.torchMode {
+            case .off:
+                device.torchMode = .on
+            default:
+                device.torchMode = .off
+            }
+            device.unlockForConfiguration()
+        } catch {
+            return false
+        }
+        return device.torchMode == .on
     }
 
 }

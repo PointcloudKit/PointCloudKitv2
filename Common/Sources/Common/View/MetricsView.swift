@@ -7,12 +7,16 @@
 
 import SwiftUI
 
-struct MetricsView: View {
+public struct MetricsView: View {
+    @Binding public var currentPointCount: Int
+    @Binding public var activity: Bool
 
-    @Binding var currentPointCount: Int
-    @Binding var captureToggled: Bool
+    public init(currentPointCount: Binding<Int>, activity: Binding<Bool> = .constant(true)) {
+        self._currentPointCount = currentPointCount
+        self._activity = activity
+    }
 
-    var body: some View {
+    public var body: some View {
         HStack {
             Spacer()
 
@@ -23,7 +27,7 @@ struct MetricsView: View {
                         icon: {
                             Image(systemName: "aqi.medium")
                                 .font(.body)
-                                .foregroundColor(!captureToggled ? .gray : .red)
+                                .foregroundColor(!activity ? .gray : .red)
                         }
                     )
                 }

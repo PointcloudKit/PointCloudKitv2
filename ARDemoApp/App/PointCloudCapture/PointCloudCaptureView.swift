@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Common
 import PointCloudRendererService
 
 import CaptureViewer
@@ -18,6 +19,7 @@ struct PointCloudCaptureView: View {
     // Main Parameters view
     @State private var showParameters: Bool = false
     @State private var showParameterControls: Bool = false
+    @State private var flashlightActive: Bool = false
 
     // PointCloudCaptureRenderingView' View Model
     @ObservedObject private var viewModel = PointCloudCaptureViewModel()
@@ -25,6 +27,20 @@ struct PointCloudCaptureView: View {
     // MARK: - Parameters
     var parameters: some View {
         HStack {
+            // MARK: - Flashlight Control
+            Button(action: {
+                flashlightActive = viewModel.toggleFlashlight()
+            }, label: {
+                Label(
+                    title: { Text("Flashlight").foregroundColor(.white) },
+                    icon: {
+                        Image(systemName: flashlightActive ? "flashlight.on.fill" : "flashlight.off.fill")
+                            .font(.body)
+                            .foregroundColor(.red)
+                    }
+                )
+            })
+
             // MARK: - Confidence Control
             Button(action: {
 
@@ -74,9 +90,9 @@ struct PointCloudCaptureView: View {
                 Image(systemName: "slider.horizontal.3")
                     .font(.system(size: 42, weight: .regular))
                     .scaleEffect(showParameters ? 0.9 : 1)
-                    .foregroundColor(showParameters ? .red : .white)
+                    .foregroundColor(viewModel.isShowingCoachingOverlay ? .gray : (showParameters ? .red : .white))
             })
-            .disabledConditionally(disabled: viewModel.isShowingCoachingOverlay)
+            .disabled(viewModel.isShowingCoachingOverlay)
 
             Spacer()
 
@@ -91,7 +107,7 @@ struct PointCloudCaptureView: View {
                         viewModel.pauseCapture()
                     }
                 })
-                .disabledConditionally(disabled: viewModel.isShowingCoachingOverlay)
+                .disabled(viewModel.isShowingCoachingOverlay)
 
             Spacer()
 
@@ -101,14 +117,14 @@ struct PointCloudCaptureView: View {
             }, label: {
                 Image(systemName: "scale.3d")
                     .font(.system(size: 42, weight: .regular))
-                    .foregroundColor(.white)
+                    .foregroundColor(captureToggled ? .gray : .white)
             })
-            .hiddenConditionally(isHidden: captureToggled && !viewModel.isShowingCoachingOverlay)
+            .disabled(captureToggled)
 
         }
     }
 
-    // MARK: - The core of this view
+    // MARK: -
     var captureView: some View {
         ZStack {
             // Rendering View
@@ -116,7 +132,7 @@ struct PointCloudCaptureView: View {
 
             VStack {
                 // Metrics
-                MetricsView(currentPointCount: $viewModel.currentPointCount, captureToggled: $captureToggled)
+                MetricsView(currentPointCount: $viewModel.currentPointCount, activity: $captureToggled)
 
                 Spacer()
 
@@ -152,11 +168,6 @@ struct PointCloudCaptureView: View {
             .statusBar(hidden: true)
             .navigationBarTitleDisplayMode(.large)
             .navigationTitle("Capture")
-//            .toolbar {
-//                ToolbarItem(placement: .principal) {
-//                    Text("Capture")
-//                }
-//            }
             .edgesIgnoringSafeArea(.bottom)
         }
         .onAppear {
@@ -165,12 +176,5 @@ struct PointCloudCaptureView: View {
         .onDisappear {
             viewModel.pauseSession()
         }
-    }
-}
-
-extension AnyTransition {
-    static fileprivate var moveAndFade: AnyTransition {
-        AnyTransition.move(edge: .bottom)
-            .combined(with: .opacity)
     }
 }

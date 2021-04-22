@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import PointCloudRendererService
 import UniformTypeIdentifiers
 
 /// Represents the .PLY format - http://paulbourke.net/dataformats/ply/
@@ -141,7 +140,7 @@ private protocol AsciiRepresentable {
 
 extension ParticleUniforms: AsciiRepresentable {
     #warning("Improve these conversion - just hacking now")
-    fileprivate var ascii: String { "\(position.x) \(position.y) \(position.z) \(Int(color.x * 255)) \(Int(color.y * 255)) \(Int(color.z * 255)) \(Int(confidence))" }
+    fileprivate var ascii: String { "\(position.x) \(position.y) \(position.z) \(UInt(color.x * 255)) \(UInt(color.y * 255)) \(UInt(color.z * 255)) \(UInt(confidence))" }
 }
 
 extension PolygonFileFormat.HeaderLine: AsciiRepresentable {
@@ -150,7 +149,7 @@ extension PolygonFileFormat.HeaderLine: AsciiRepresentable {
 
 extension Sequence where Iterator.Element == AsciiRepresentable {
     fileprivate func joinedAsciiRepresentation(separator: String = "\n") -> String {
-        map { "\($0.ascii)" }
+        map { $0.ascii }
             .joined(separator: separator)
     }
 }

@@ -17,6 +17,8 @@ let package = Package(
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
+        .package(name: "Common", path: "./Common/"),
+        .package(name: "PointCloudRendererService", path: "./PointCloudRendererService/"),
         .package(url: "https://github.com/kewlbear/Open3D-iOS.git", .branch("main")),
         .package(url: "https://github.com/kewlbear/PythonKit.git", .branch("master"))
     ],
@@ -25,7 +27,7 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "PointCloudProcessorService",
-            dependencies: ["Open3D-iOS"]),
+            dependencies: ["Common", "PointCloudRendererService", "Open3D-iOS", "PythonKit"]),
         .testTarget(
             name: "PointCloudProcessorServiceTests",
             dependencies: ["PointCloudProcessorService"])

@@ -3,13 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8E8F5BA42616F45B005203E0 /* CaptureViewer in Frameworks */ = {isa = PBXBuildFile; productRef = 8E8F5BA32616F45B005203E0 /* CaptureViewer */; };
 		8EEF76AA2616D24F00A6BDC1 /* FileIO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EEF76A92616D24F00A6BDC1 /* FileIO.swift */; };
-		EE4EC387261EF10A00B2D858 /* Common in Frameworks */ = {isa = PBXBuildFile; productRef = EE4EC386261EF10A00B2D858 /* Common */; };
 		EE5F3A87260AD18700945107 /* ARDemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5F3A86260AD18700945107 /* ARDemoApp.swift */; };
 		EE5F3A89260AD18700945107 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5F3A88260AD18700945107 /* HomeView.swift */; };
 		EE5F3A8B260AD18800945107 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EE5F3A8A260AD18800945107 /* Assets.xcassets */; };
@@ -18,9 +16,10 @@
 		EE5F3AA4260AD18800945107 /* ARDemoAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5F3AA3260AD18800945107 /* ARDemoAppUITests.swift */; };
 		EE6A3DA226144FAD00D0203B /* CaptureToggleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6A3DA126144FAD00D0203B /* CaptureToggleStyle.swift */; };
 		EE6A3DB326155F2700D0203B /* PointCloudCaptureViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6A3DB226155F2700D0203B /* PointCloudCaptureViewModel.swift */; };
-		EE83B7482623D65B0068DC75 /* MetricsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE83B7472623D65B0068DC75 /* MetricsView.swift */; };
-		EEB00594262ED25800B7C9D2 /* PointCloudRendererService in Frameworks */ = {isa = PBXBuildFile; productRef = EEB00593262ED25800B7C9D2 /* PointCloudRendererService */; };
 		EEC0D439260D9B140093141F /* PointCloudCaptureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEC0D438260D9B140093141F /* PointCloudCaptureView.swift */; };
+        EE4EC387261EF10A00B2D858 /* Common in Frameworks */ = {isa = PBXBuildFile; productRef = EE4EC386261EF10A00B2D858 /* Common */; };
+        EEB00594262ED25800B7C9D2 /* PointCloudRendererService in Frameworks */ = {isa = PBXBuildFile; productRef = EEB00593262ED25800B7C9D2 /* PointCloudRendererService */; };
+        8E8F5BA42616F45B005203E0 /* CaptureViewer in Frameworks */ = {isa = PBXBuildFile; productRef = 8E8F5BA32616F45B005203E0 /* CaptureViewer */; };
 		EEF512452625612E00F35886 /* PointCloudProcessorService in Frameworks */ = {isa = PBXBuildFile; productRef = EEF512442625612E00F35886 /* PointCloudProcessorService */; };
 /* End PBXBuildFile section */
 
@@ -59,7 +58,6 @@
 		EE5F3AA5260AD18800945107 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EE6A3DA126144FAD00D0203B /* CaptureToggleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureToggleStyle.swift; sourceTree = "<group>"; };
 		EE6A3DB226155F2700D0203B /* PointCloudCaptureViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PointCloudCaptureViewModel.swift; sourceTree = "<group>"; };
-		EE83B7472623D65B0068DC75 /* MetricsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricsView.swift; sourceTree = "<group>"; };
 		EE849103262ED0DC00F231B1 /* PointCloudRendererService */ = {isa = PBXFileReference; lastKnownFileType = folder; path = PointCloudRendererService; sourceTree = "<group>"; };
 		EEC0D438260D9B140093141F /* PointCloudCaptureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointCloudCaptureView.swift; sourceTree = "<group>"; };
 		EEF512402625611500F35886 /* PointCloudProcessorService */ = {isa = PBXFileReference; lastKnownFileType = folder; path = PointCloudProcessorService; sourceTree = "<group>"; };
@@ -70,10 +68,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+                EE4EC387261EF10A00B2D858 /* Common in Frameworks */,
+                EEB00594262ED25800B7C9D2 /* PointCloudRendererService in Frameworks */,
+                8E8F5BA42616F45B005203E0 /* CaptureViewer in Frameworks */,
 				EEF512452625612E00F35886 /* PointCloudProcessorService in Frameworks */,
-				8E8F5BA42616F45B005203E0 /* CaptureViewer in Frameworks */,
-				EEB00594262ED25800B7C9D2 /* PointCloudRendererService in Frameworks */,
-				EE4EC387261EF10A00B2D858 /* Common in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -172,18 +170,9 @@
 			path = ARDemoAppUITests;
 			sourceTree = "<group>";
 		};
-		EE83B74F2623DA820068DC75 /* Subviews */ = {
-			isa = PBXGroup;
-			children = (
-				EE83B7472623D65B0068DC75 /* MetricsView.swift */,
-			);
-			path = Subviews;
-			sourceTree = "<group>";
-		};
 		EEC0D437260D9B020093141F /* PointCloudCapture */ = {
 			isa = PBXGroup;
 			children = (
-				EE83B74F2623DA820068DC75 /* Subviews */,
 				EEC0D438260D9B140093141F /* PointCloudCaptureView.swift */,
 				EE6A3DB226155F2700D0203B /* PointCloudCaptureViewModel.swift */,
 				EE6A3DA126144FAD00D0203B /* CaptureToggleStyle.swift */,
@@ -219,10 +208,10 @@
 			);
 			name = ARDemoApp;
 			packageProductDependencies = (
+                EE4EC386261EF10A00B2D858 /* Common */,
+                EEB00593262ED25800B7C9D2 /* PointCloudRendererService */,
 				8E8F5BA32616F45B005203E0 /* CaptureViewer */,
-				EE4EC386261EF10A00B2D858 /* Common */,
 				EEF512442625612E00F35886 /* PointCloudProcessorService */,
-				EEB00593262ED25800B7C9D2 /* PointCloudRendererService */,
 			);
 			productName = ARDemoApp;
 			productReference = EE5F3A83260AD18700945107 /* ARDemoApp.app */;
@@ -361,7 +350,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				EE5F3A89260AD18700945107 /* HomeView.swift in Sources */,
-				EE83B7482623D65B0068DC75 /* MetricsView.swift in Sources */,
 				EEC0D439260D9B140093141F /* PointCloudCaptureView.swift in Sources */,
 				EE6A3DB326155F2700D0203B /* PointCloudCaptureViewModel.swift in Sources */,
 				8EEF76AA2616D24F00A6BDC1 /* FileIO.swift in Sources */,
