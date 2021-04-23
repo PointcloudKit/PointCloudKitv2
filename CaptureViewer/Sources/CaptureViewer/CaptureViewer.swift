@@ -61,7 +61,7 @@ public struct CaptureViewer: View {
                     // MARK: Surface Reconstruction
                     Button(action: {
                         print("test")
-//                        viewModel.surfaceReconstruction()
+                        //                        viewModel.surfaceReconstruction()
                     }, label: {
                         Label(
                             title: { Text("Surface Reconstruction").foregroundColor(.white) },
@@ -152,22 +152,22 @@ public struct CaptureViewer: View {
             )
 
             ScrollView(.horizontal, showsIndicators: false, content: {
-            HStack {
-                // MARK: Undo
-                Button(action: {
-                    viewModel.undo()
-                }, label: {
-                    Label(
-                        title: { Text("Undo").foregroundColor(viewModel.undoAvailable ? .white : .gray) },
-                        icon: {
-                            Image(systemName: "arrow.uturn.backward.square")
-                                .font(.body)
-                                .foregroundColor(!viewModel.undoAvailable || !viewModel.pointCloudProcessing ? .red : .gray)
-                        }
-                    )
-                })
-                .disabled(!viewModel.undoAvailable || viewModel.pointCloudProcessing)
-            }
+                HStack {
+                    // MARK: Undo
+                    Button(action: {
+                        viewModel.undo()
+                    }, label: {
+                        Label(
+                            title: { Text("Undo").foregroundColor(viewModel.undoAvailable ? .white : .gray) },
+                            icon: {
+                                Image(systemName: "arrow.uturn.backward.square")
+                                    .font(.body)
+                                    .foregroundColor(!viewModel.undoAvailable || !viewModel.pointCloudProcessing ? .red : .gray)
+                            }
+                        )
+                    })
+                    .disabled(!viewModel.undoAvailable || viewModel.pointCloudProcessing)
+                }
             })
         }
     }
