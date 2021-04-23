@@ -220,6 +220,12 @@ public struct CaptureViewer: View {
 
                 Spacer()
 
+                ProgressView("Rendering...")
+                    .padding(20)
+                    .background(Color.black.opacity(0.8))
+                    .cornerRadius(10)
+                    .hiddenConditionally(isHidden: !viewModel.pointCloudRendering)
+
                 ProgressView("Processing...")
                     .padding(20)
                     .background(Color.black.opacity(0.8))

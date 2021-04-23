@@ -13,12 +13,10 @@ import Combine
 
 final public class CaptureViewerViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
-    private let positionVertex = PointCloudCapture.Component.position
-    private let colorVertex = PointCloudCapture.Component.color
-    //        let confidence = PointCloudCapture.Component.confidence
     private let model: CaptureViewerModel
     private let pointCloudProcessor = PointCloudProcessorService()
 
+    @Published var pointCloudRendering = false
     @Published var pointCloudProcessing = false
     @Published var undoAvailable = false
     @Published var vertexCount: Int = 0
@@ -104,69 +102,40 @@ final public class CaptureViewerViewModel: ObservableObject {
 
 // MARK: - Internals
 extension CaptureViewerViewModel {
-    private func pointCloudNode(from capture: PointCloudCapture) -> SCNNode {
-        let rawBuffer = capture.buffer.rawBuffer
-        let dataStride = capture.stride
-        let vertexCount = capture.count
-
-        // Our data sources from Metal
-        let positionSource = SCNGeometrySource(buffer: rawBuffer,
-                                               vertexFormat: positionVertex.format,
-                                               semantic: positionVertex.semantic,
-                                               vertexCount: vertexCount,
-                                               dataOffset: positionVertex.dataOffset,
-                                               dataStride: dataStride)
-
-        let colorSource = SCNGeometrySource(buffer: rawBuffer,
-                                            vertexFormat: colorVertex.format,
-                                            semantic: colorVertex.semantic,
-                                            vertexCount: vertexCount,
-                                            dataOffset: colorVertex.dataOffset,
-                                            dataStride: dataStride)
-
-        // Not used for now. Not sure how to use at this point. In metal can be useful
-//        let confidenceSource = SCNGeometrySource(buffer: rawBuffer,
-//                                                 vertexFormat: confidence.format,
-//                                                 semantic: confidence.semantic,
-//                                                 vertexCount: vertexCount,
-//                                                 dataOffset: confidence.dataOffset,
-//                                                 dataStride: dataStride)
-
-        // Points
-        let particles = SCNGeometryElement(data: nil,
-                                           primitiveType: .point,
-                                           primitiveCount: vertexCount,
-                                           bytesPerIndex: MemoryLayout<Int>.size)
-        particles.pointSize = 1.0
-        particles.minimumPointScreenSpaceRadius = 2.5
-        particles.maximumPointScreenSpaceRadius = 2.5
-
-        let pointCloudGeometry = SCNGeometry(sources: [positionSource, colorSource/*, confidenceSource*/],
-                                             elements: [particles])
-        let pointCloudRootNode = SCNNode(geometry: pointCloudGeometry)
-        pointCloudRootNode.name = NodeIdentifier.pointCloudRoot.rawValue
-
-        self.vertexCount = vertexCount
-
-        return pointCloudRootNode
-    }
-
     private func generateScene(from capture: PointCloudCapture) -> SCNScene {
+        pointCloudRendering = true
         let scene = SCNScene()
-
-        let pointCloudRootNode = pointCloudNode(from: capture)
-        scene.rootNode.addChildNode(pointCloudRootNode)
+        // Create point cloud nodes and add to the scene
+        capture.generatePointCloudNode()
+            .subscribe(on: DispatchQueue.global(qos: .userInitiated))
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] (pointCloudRootNode, vertexCount) in
+                self?.pointCloudRendering = false
+                self?.vertexCount = vertexCount
+                scene.rootNode.addChildNode(pointCloudRootNode)
+            }
+            .store(in: &cancellables)
         return scene
     }
 
     private func updateScene(with capture: PointCloudCapture) {
-        // Remove previous points
-        scene.rootNode
-            .childNode(withName: NodeIdentifier.pointCloudRoot.rawValue, recursively: false)?
-            .removeFromParentNode()
-
-        // Create point cloud nodes and add to the scene
-        scene.rootNode.addChildNode(pointCloudNode(from: capture))
+        pointCloudRendering = true
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            guard let self = self else { return }
+            // Remove previous points
+            self.scene.rootNode
+                .childNode(withName: NodeIdentifier.pointCloudRoot.rawValue, recursively: false)?
+                .removeFromParentNode()
+            // Create point cloud nodes and add to the scene
+            capture.generatePointCloudNode()
+                .receive(on: RunLoop.main)
+                .sink { (pointCloudRootNode, vertexCount) in
+                    self.pointCloudRendering = false
+                    self.vertexCount = vertexCount
+                    self.scene.rootNode.addChildNode(pointCloudRootNode)
+                }
+                .store(in: &self.cancellables)
+        }
     }
 
     private func pointCloudProcessing(with processors: [PointCloudProcessor]) {
