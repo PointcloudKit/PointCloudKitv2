@@ -60,8 +60,8 @@ public struct CaptureViewer: View {
                 HStack {
                     // MARK: Surface Reconstruction
                     Button(action: {
-                        print("todo")
-                        //                viewModel.voxelDownsampling()
+                        print("test")
+//                        viewModel.surfaceReconstruction()
                     }, label: {
                         Label(
                             title: { Text("Surface Reconstruction").foregroundColor(.white) },
@@ -74,8 +74,6 @@ public struct CaptureViewer: View {
                     })
                     .disabled(viewModel.pointCloudProcessing)
                 }
-
-                Spacer()
             })
         }
     }
