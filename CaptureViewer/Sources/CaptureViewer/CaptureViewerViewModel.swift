@@ -69,18 +69,16 @@ final public class CaptureViewerViewModel: ObservableObject {
     }
 
     // MARK: - Point Cloud Processing operations - Parameters are from the `ProcessorParameters` in Model
-    func voxelDownsampling() {
-        pointCloudProcessing(with: [.voxelDownSampling(voxelSize: model.processorParameters.voxelDownSampling.voxelSize)])
+    func voxelDownsampling(parameters: ProcessorParameters.VoxelDownSampling) {
+        pointCloudProcessing(with: [.voxelDownSampling(voxelSize: parameters.voxelSize)])
     }
 
-    func statisticalOutlierRemoval() {
-        let parameters = model.processorParameters.outlierRemoval.statistical
-        return pointCloudProcessing(with: [.statisticalOutlierRemoval(neighbors: parameters.neighbors,
-                                                                      stdRatio: parameters.stdRatio)])
+    func statisticalOutlierRemoval(parameters: ProcessorParameters.OutlierRemoval.Statistical) {
+        pointCloudProcessing(with: [.statisticalOutlierRemoval(neighbors: parameters.neighbors,
+                                                               stdRatio: parameters.stdRatio)])
     }
 
-    func radiusOutlierRemoval() {
-        let parameters = model.processorParameters.outlierRemoval.radius
+    func radiusOutlierRemoval(parameters: ProcessorParameters.OutlierRemoval.Radius) {
         pointCloudProcessing(with: [.radiusOutlierRemoval(pointsCount: parameters.pointsCount,
                                                           radius: parameters.radius)])
     }

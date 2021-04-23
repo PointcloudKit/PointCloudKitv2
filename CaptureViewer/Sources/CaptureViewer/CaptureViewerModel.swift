@@ -16,14 +16,8 @@ enum NodeIdentifier: String {
 
 final public class CaptureViewerModel: ObservableObject {
     private(set) var capture: PointCloudCapture
-    public var processorParameters: ProcessorParameters
 
     public init(capture: PointCloudCapture) {
         self.capture = capture
-        processorParameters = ProcessorParameters.fromUserDefaultOrNew
-    }
-
-    deinit {
-        processorParameters.writeToUserDefault()
     }
 }
