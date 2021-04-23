@@ -70,17 +70,21 @@ final public class CaptureViewerViewModel: ObservableObject {
         PLYFile(particles: model.capture.buffer.getMemoryRepresentationCopy(for: vertexCount))
     }
 
-    // MARK: - Point Cloud Processing operations
-    func voxelDownsampling(voxelSize: Double = 0.02) {
-        pointCloudProcessing(with: [.voxelDownSampling(voxelSize: voxelSize)])
+    // MARK: - Point Cloud Processing operations - Parameters are from the `ProcessorParameters` in Model
+    func voxelDownsampling() {
+        pointCloudProcessing(with: [.voxelDownSampling(voxelSize: model.processorParameters.voxelDownSampling.voxelSize)])
     }
 
-    func statisticalOutlierRemoval(neighbors: Int = 20, stdRatio: Double = 2.0) {
-        pointCloudProcessing(with: [.statisticalOutlierRemoval(neighbors: neighbors, stdRatio: stdRatio)])
+    func statisticalOutlierRemoval() {
+        let parameters = model.processorParameters.outlierRemoval.statistical
+        return pointCloudProcessing(with: [.statisticalOutlierRemoval(neighbors: parameters.neighbors,
+                                                                      stdRatio: parameters.stdRatio)])
     }
 
-    func radiusOutlierRemoval(pointsCount: Int = 16, radius: Double = 0.05) {
-        pointCloudProcessing(with: [.radiusOutlierRemoval(pointsCount: pointsCount, radius: radius)])
+    func radiusOutlierRemoval() {
+        let parameters = model.processorParameters.outlierRemoval.radius
+        pointCloudProcessing(with: [.radiusOutlierRemoval(pointsCount: parameters.pointsCount,
+                                                          radius: parameters.radius)])
     }
 
     func undo() {

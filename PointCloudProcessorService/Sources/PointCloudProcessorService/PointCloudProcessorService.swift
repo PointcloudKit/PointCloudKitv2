@@ -42,46 +42,6 @@ final public class PointCloudProcessorService: ObservableObject {
 
     // MARK: - Open3D helpers
 
-//    // Take a PLYFile as input for now (Partilcles + easy way to write them to disk as PLY)
-//    public func voxelDownsampling(_ input: PLYFile) -> Future<[ParticleUniforms], PointCloudProcessorServiceError> {
-//        Future { [weak self] promise in
-//            guard let self = self else {
-//                return promise(.failure(.unknown))
-//            }
-//
-//            // Save for undo
-//            self.previousPointCloud = input.particles
-//
-//            DispatchQueue.global(qos: .userInitiated).async {
-//                // Generate TMP file
-//                guard let plyFileURL = try? input.writeTemporaryFile() else {
-//                    return promise(.failure(.temporaryFile))
-//                }
-//
-//                // Pyton THREAD management stuff copied from Kewlbear programs
-//                let gstate = PyGILState_Ensure()
-//                defer {
-//                    DispatchQueue.main.async {
-//                        guard let tstate = self.tstate else {
-//                            return promise(.failure(.pythonThreadState))
-//                        }
-//                        PyEval_RestoreThread(tstate)
-//                        self.tstate = nil
-//                    }
-//                    PyGILState_Release(gstate)
-//                }
-//
-//                // Start O3D processing
-//                let pointCloud = self.o3d.io.read_point_cloud(plyFileURL.path)
-//
-//                let treatedParticles = convert(o3dPointCloud: pointCloud)
-//                promise(.success(treatedParticles))
-//            }
-//
-//            self.tstate = PyEval_SaveThread()
-//        }
-//    }
-
     public func process(_ input: PLYFile, with processors: [PointCloudProcessor]) -> Future<[ParticleUniforms], PointCloudProcessorServiceError> {
         Future { [weak self] promise in
             guard let self = self else {
@@ -124,9 +84,6 @@ final public class PointCloudProcessorService: ObservableObject {
                         pointCloud = self.o3dRadiusOutlierRemoval(pointCloud, pointsCount: pointsCount, radius: radius)
                     }
                 }
-
-//                // Write changes to file
-//                self.o3d.io.write_point_cloud(plyFileURL.path, pointCloud)
 
                 // Convert Open3D PointCloud back to our Particles Uniform
                 let treatedParticles = self.convertO3DBackToParticleUniforms(pointCloud)
