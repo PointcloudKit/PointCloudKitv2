@@ -10,7 +10,7 @@ import SceneKit
 import Common
 
 public struct CaptureViewer: View {
-    @EnvironmentObject var viewModel: CaptureViewerViewModel
+    @EnvironmentObject var model: CaptureViewerModel
 
     @State private var optimizingPointCloud = false
     @State private var scnFile = SCNFile()
@@ -29,12 +29,12 @@ public struct CaptureViewer: View {
     var exportActionSheet: ActionSheet {
         ActionSheet(title: Text("Export Type"), message: Text("Supported export formats"), buttons: [
             .default(Text("SCN (Apple's SceneKit)"), action: {
-                scnFile = viewModel.scnFile()
+                scnFile = model.scnFile()
                 showingSCNExporter = true
             }),
             .default(Text("PLY (Polygon File Format)"), action: {
                 DispatchQueue.global(qos: .userInitiated).async {
-                    plyFile = viewModel.plyFile()
+                    plyFile = model.plyFile()
                     DispatchQueue.main.async {
                         showingPLYExporter = true
                     }
@@ -46,7 +46,7 @@ public struct CaptureViewer: View {
 
     // MARK: - Paramters
 
-    private var pointCloudProcessorsEnabled: Bool { !viewModel.pointCloudProcessing && !showProcessorParametersEditor }
+    private var pointCloudProcessorsEnabled: Bool { !model.pointCloudProcessing && !showProcessorParametersEditor }
 
     var processorParametersEditor: some View {
         ProcessorParametersEditor()
@@ -104,7 +104,7 @@ public struct CaptureViewer: View {
                 HStack {
                     // MARK: Voxel DownSampling
                     Button(action: {
-                        viewModel.voxelDownsampling(parameters: processorParameters.voxelDownSampling)
+                        model.voxelDownsampling(parameters: processorParameters.voxelDownSampling)
                     }, label: {
                         Label(
                             title: { Text("Voxel DownSampling").foregroundColor(.white) },
@@ -119,7 +119,7 @@ public struct CaptureViewer: View {
 
                     // MARK: Statistical Outlier Removal
                     Button(action: {
-                        viewModel.statisticalOutlierRemoval(parameters: processorParameters.outlierRemoval.statistical)
+                        model.statisticalOutlierRemoval(parameters: processorParameters.outlierRemoval.statistical)
                     }, label: {
                         Label(
                             title: { Text("Statistical O.R.").foregroundColor(.white) },
@@ -134,7 +134,7 @@ public struct CaptureViewer: View {
 
                     // MARK: Radius Outlier Removal
                     Button(action: {
-                        viewModel.radiusOutlierRemoval(parameters: processorParameters.outlierRemoval.radius)
+                        model.radiusOutlierRemoval(parameters: processorParameters.outlierRemoval.radius)
                     }, label: {
                         Label(
                             title: { Text("Radius O.R.").foregroundColor(.white) },
@@ -167,18 +167,18 @@ public struct CaptureViewer: View {
 
                     // MARK: Undo
                     Button(action: {
-                        viewModel.undo()
+                        model.undo()
                     }, label: {
                         Label(
-                            title: { Text("Undo").foregroundColor(viewModel.undoAvailable && pointCloudProcessorsEnabled ? .white : .gray) },
+                            title: { Text("Undo").foregroundColor(model.undoAvailable && pointCloudProcessorsEnabled ? .white : .gray) },
                             icon: {
                                 Image(systemName: "arrow.uturn.backward.square")
                                     .font(.body)
-                                    .foregroundColor(viewModel.undoAvailable && pointCloudProcessorsEnabled  ? .red : .gray)
+                                    .foregroundColor(model.undoAvailable && pointCloudProcessorsEnabled  ? .red : .gray)
                             }
                         )
                     })
-                    .disabled(!viewModel.undoAvailable || !pointCloudProcessorsEnabled)
+                    .disabled(!model.undoAvailable || !pointCloudProcessorsEnabled)
 
 //                    // MARK: Redo
 //                    Button(action: {
@@ -211,21 +211,19 @@ public struct CaptureViewer: View {
                         )
                     })
 
-                    // MARK: Reset Processing Parameters
-                    Button(action: {
-                        processorParameters = ProcessorParameters()
-                        processorParameters.writeToUserDefault()
-                    }, label: {
-                        Label(
-                            title: { Text("Reset").foregroundColor(viewModel.undoAvailable && pointCloudProcessorsEnabled ? .white : .gray) },
-                            icon: {
-                                Image(systemName: "arrow.uturn.backward.square")
-                                    .font(.body)
-                                    .foregroundColor(.red)
-                            }
-                        )
-                    })
-                    .hiddenConditionally(!showProcessorParametersEditor)
+//                    // MARK: Reset Processing Parameters
+//                    Button(action: {
+//                    }, label: {
+//                        Label(
+//                            title: { Text("Reset").foregroundColor(viewModel.undoAvailable && pointCloudProcessorsEnabled ? .white : .gray) },
+//                            icon: {
+//                                Image(systemName: "arrow.uturn.backward.square")
+//                                    .font(.body)
+//                                    .foregroundColor(.red)
+//                            }
+//                        )
+//                    })
+//                    .hiddenConditionally(showProcessorParametersEditor)
                 }
             })
         }
@@ -255,16 +253,16 @@ public struct CaptureViewer: View {
             }, label: {
                 Image(systemName: "square.and.arrow.up")
                     .font(.system(size: 42, weight: .regular))
-                    .foregroundColor(showParameters || viewModel.pointCloudProcessing ? .gray : .white)
+                    .foregroundColor(showParameters || model.pointCloudProcessing ? .gray : .white)
             })
-            .disabled(showParameters || viewModel.pointCloudProcessing)
+            .disabled(showParameters || model.pointCloudProcessing)
         }
     }
 
     public var body: some View {
         ZStack {
-            SceneView(scene: viewModel.scene,
-                      pointOfView: viewModel.cameraNode,
+            SceneView(scene: model.scene,
+                      pointOfView: model.cameraNode,
                       options: [
                         .rendersContinuously,
                         .allowsCameraControl,
@@ -275,7 +273,7 @@ public struct CaptureViewer: View {
             VStack {
 
                 // Metrics
-                MetricsView(currentPointCount: $viewModel.vertexCount)
+                MetricsView(currentPointCount: $model.vertexCount)
 
                 Spacer()
 
@@ -283,13 +281,13 @@ public struct CaptureViewer: View {
                     .padding(20)
                     .background(Color.black.opacity(0.8))
                     .cornerRadius(10)
-                    .hiddenConditionally(!viewModel.pointCloudRendering)
+                    .hiddenConditionally(!model.pointCloudRendering)
 
                 ProgressView("Processing...")
                     .padding(20)
                     .background(Color.black.opacity(0.8))
                     .cornerRadius(10)
-                    .hiddenConditionally(!viewModel.pointCloudProcessing)
+                    .hiddenConditionally(!model.pointCloudProcessing)
 
                 ProgressView("Exporting SCN...", value: scnFile.writeToDiskProgress, total: 1)
                     .hiddenConditionally(!scnFile.writtingToDisk)
