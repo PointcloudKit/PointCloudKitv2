@@ -171,7 +171,7 @@ struct ProcessorParametersEditor: View {
             generalSection
         }
         .padding(.horizontal, 20)
-        .padding(.bottom, 40)
+        .padding(.bottom, 20)
     }
 }
 
