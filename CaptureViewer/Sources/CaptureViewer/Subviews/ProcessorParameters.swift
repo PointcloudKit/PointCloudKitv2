@@ -18,6 +18,11 @@ public class ProcessorParameters: Codable, ObservableObject {
         voxelDownSampling = try container.decode(VoxelDownSampling.self, forKey: .voxelDownSampling)
         outlierRemoval = try container.decode(OutlierRemoval.self, forKey: .outlierRemoval)
     }
+
+    public func restoreBaseValues() {
+        self.voxelDownSampling = VoxelDownSampling()
+        self.outlierRemoval = OutlierRemoval()
+    }
 }
 
 extension ProcessorParameters {

@@ -10,6 +10,8 @@ import SceneKit
 import Common
 
 public struct CaptureViewer: View {
+    @StateObject private var processorParameters = ProcessorParameters.fromUserDefaultOrNew
+
     @EnvironmentObject var model: CaptureViewerModel
 
     @State private var optimizingPointCloud = false
@@ -22,7 +24,6 @@ public struct CaptureViewer: View {
     @State private var showParameters: Bool = false
     @State private var showParameterControls: Bool = false
     @State private var showProcessorParametersEditor: Bool = false
-    @State private var processorParameters = ProcessorParameters.fromUserDefaultOrNew
 
     public init() {}
 
@@ -48,18 +49,10 @@ public struct CaptureViewer: View {
 
     private var pointCloudProcessorsEnabled: Bool { !model.pointCloudProcessing && !showProcessorParametersEditor }
 
-    var processorParametersEditor: some View {
-        ProcessorParametersEditor()
-            .environmentObject(processorParameters)
-            .padding(.horizontal, 20)
-            .padding(.vertical, 10)
-            .transition(.slide)
-    }
-
     var transformingParameters: some View {
         HStack {
             Label(
-                title: { Text(">").foregroundColor(.white) },
+                title: { },
                 icon: {
                     Image(systemName: "wand.and.stars")
                         .font(.body)
@@ -92,7 +85,7 @@ public struct CaptureViewer: View {
     var cleaningParameters: some View {
         HStack {
             Label(
-                title: { Text(">").foregroundColor(.white) },
+                title: { },
                 icon: {
                     Image(systemName: "scissors")
                         .font(.body)
@@ -154,7 +147,7 @@ public struct CaptureViewer: View {
     var genericParameters: some View {
         HStack {
             Label(
-                title: { Text(">").foregroundColor(.white) },
+                title: { },
                 icon: {
                     Image(systemName: "gearshape.2.fill")
                         .font(.body)
@@ -180,21 +173,6 @@ public struct CaptureViewer: View {
                     })
                     .disabled(!model.undoAvailable || !pointCloudProcessorsEnabled)
 
-//                    // MARK: Redo
-//                    Button(action: {
-//                        viewModel.redo()
-//                    }, label: {
-//                        Label(
-//                            title: { Text("Redo").foregroundColor(viewModel.redoAvailable ? .white : .gray) },
-//                            icon: {
-//                                Image(systemName: "arrow.uturn.forward.square")
-//                                    .font(.body)
-//                                    .foregroundColor(!viewModel.undoAvailable || !viewModel.pointCloudProcessing ? .red : .gray)
-//                            }
-//                        )
-//                    })
-//                    .disabled(!viewModel.undoAvailable || viewModel.pointCloudProcessing)
-
                     // MARK: Processing Parameters
                     Button(action: {
                         withAnimation {
@@ -211,19 +189,6 @@ public struct CaptureViewer: View {
                         )
                     })
 
-//                    // MARK: Reset Processing Parameters
-//                    Button(action: {
-//                    }, label: {
-//                        Label(
-//                            title: { Text("Reset").foregroundColor(viewModel.undoAvailable && pointCloudProcessorsEnabled ? .white : .gray) },
-//                            icon: {
-//                                Image(systemName: "arrow.uturn.backward.square")
-//                                    .font(.body)
-//                                    .foregroundColor(.red)
-//                            }
-//                        )
-//                    })
-//                    .hiddenConditionally(showProcessorParametersEditor)
                 }
             })
         }
@@ -273,7 +238,9 @@ public struct CaptureViewer: View {
             VStack {
 
                 // Metrics
+                if !showProcessorParametersEditor {
                 MetricsView(currentPointCount: $model.vertexCount)
+                }
 
                 Spacer()
 
@@ -309,29 +276,33 @@ public struct CaptureViewer: View {
                     // Toggleable parameters list from the Controls section left bottom button
                     if showParameters {
                         if showProcessorParametersEditor {
-                            processorParametersEditor
-                                .onDisappear {
-                                    processorParameters.writeToUserDefault()
-                                }
+                            ProcessorParametersEditor()
+                                .environmentObject(processorParameters)
+                                .environmentObject(ProcessorParametersEditorModel(shown: $showProcessorParametersEditor))
+                                .padding(.horizontal, 20)
+                                .padding(.vertical, 10)
+                                .transition(.moveAndFade)
                         }
-                        transformingParameters
-                            .padding(.horizontal, 20)
-                            .transition(.moveAndFade)
-                        cleaningParameters
-                            .padding(.horizontal, 20)
-                            .transition(.moveAndFade)
-                        genericParameters
-                            .padding(.horizontal, 20)
-                            .transition(.moveAndFade)
-                            .onDisappear {
-                                showProcessorParametersEditor = false
-                            }
+
+                        if !showProcessorParametersEditor {
+                            transformingParameters
+                                .padding(.horizontal, 20)
+                                .transition(.moveAndFade)
+                            cleaningParameters
+                                .padding(.horizontal, 20)
+                                .transition(.moveAndFade)
+                            genericParameters
+                                .padding(.horizontal, 20)
+                                .transition(.moveAndFade)
+                        }
                     }
 
-                    // Controls Section at the bottom of the screen
-                    controlsSection
-                        .padding(.top, 10)
-                        .padding(.horizontal, 20)
+                    if !showProcessorParametersEditor {
+                        // Controls Section at the bottom of the screen
+                        controlsSection
+                            .padding(.top, 10)
+                            .padding(.horizontal, 20)
+                    }
                 }
                 .background(Color.black.opacity(0.8))
 
