@@ -25,6 +25,7 @@ final public class CaptureViewerModel: ObservableObject {
 
     @Published var rendering = false
     @Published var processing = false
+    @Published var normalsAvailable = false
     @Published var undoAvailable = false
     @Published var exportPlyAvailable = false
     @Published var exportProgress = 1.0
@@ -80,9 +81,11 @@ final public class CaptureViewerModel: ObservableObject {
         $object
             .receive(on: DispatchQueue.main)
             .handleEvents(receiveOutput: { [weak self] object in
-                self?.vertexCount = object?.vertices.count ?? 0
-                self?.normalCount = object?.vertexNormals.count ?? 0
-                self?.triangleCount = object?.triangles.count ?? 0
+                guard let self = self, let object = object else { return }
+                self.vertexCount = object.vertices.count
+                self.normalCount = object.vertexNormals.count
+                self.triangleCount = object.triangles.count
+                self.normalsAvailable = object.vertexNormals.count != 0
             })
             .map { object in object != nil }
             .assign(to: &$exportPlyAvailable)

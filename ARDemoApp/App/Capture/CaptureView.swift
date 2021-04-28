@@ -1,5 +1,5 @@
 //
-//  PointCloudCaptureView.swift
+//  CaptureView.swift
 //  ARDemoApp
 //
 //  Created by Alexandre Camilleri on 26/03/2021.
@@ -11,7 +11,7 @@ import PointCloudRendererService
 
 import CaptureViewer
 
-struct PointCloudCaptureView: View {
+struct CaptureView: View {
 
     @State private var captureToggled: Bool = true
     // Used for navigation to the Viewer
@@ -22,14 +22,14 @@ struct PointCloudCaptureView: View {
     @State private var flashlightActive: Bool = false
 
     // PointCloudCaptureRenderingView' View Model
-    @ObservedObject private var viewModel = PointCloudCaptureViewModel()
+    @ObservedObject private var model = CaptureModel()
 
     // MARK: - Parameters
     var parameters: some View {
         HStack {
             // MARK: - Flashlight Control
             Button(action: {
-                flashlightActive = viewModel.toggleFlashlight()
+                flashlightActive = model.toggleFlashlight()
             }, label: {
                 Label(
                     title: { Text("Flashlight").foregroundColor(.white) },
@@ -78,7 +78,7 @@ struct PointCloudCaptureView: View {
         HStack {
             if presentCaptureViewer {
                 NavigationLink(destination: CaptureViewer()
-                                .environmentObject(viewModel.captureViewerViewModel()),
+                                .environmentObject(model.captureViewerViewModel()),
                                isActive: $presentCaptureViewer) {  }
             }
 
@@ -90,9 +90,9 @@ struct PointCloudCaptureView: View {
                 Image(systemName: "slider.horizontal.3")
                     .font(.system(size: 42, weight: .regular))
                     .scaleEffect(showParameters ? 0.9 : 1)
-                    .foregroundColor(viewModel.isShowingCoachingOverlay ? .gray : (showParameters ? .red : .white))
+                    .foregroundColor(model.isShowingCoachingOverlay ? .gray : (showParameters ? .red : .white))
             })
-            .disabled(viewModel.isShowingCoachingOverlay)
+            .disabled(model.isShowingCoachingOverlay)
 
             Spacer()
 
@@ -101,25 +101,25 @@ struct PointCloudCaptureView: View {
                 .onChange(of: captureToggled, perform: { value in
                     switch value {
                     case true:
-                        viewModel.startSession()
-                        viewModel.resumeCapture()
+                        model.startSession()
+                        model.resumeCapture()
                     case false:
-                        viewModel.pauseCapture()
+                        model.pauseCapture()
                     }
                 })
-                .disabled(viewModel.isShowingCoachingOverlay)
+                .disabled(model.isShowingCoachingOverlay)
 
             Spacer()
 
             Button(action: {
                 presentCaptureViewer = true
-                viewModel.pauseCapture()
+                model.pauseCapture()
             }, label: {
                 Image(systemName: "scale.3d")
                     .font(.system(size: 42, weight: .regular))
                     .foregroundColor(captureToggled ? .gray : .white)
             })
-            .disabled(captureToggled)
+            .disabled(captureToggled || model.currentPointCount == 0)
 
         }
     }
@@ -128,11 +128,11 @@ struct PointCloudCaptureView: View {
     var captureView: some View {
         ZStack {
             // Rendering View
-            PointCloudCaptureRenderingView(renderingDelegate: viewModel)
+            PointCloudCaptureRenderingView(renderingDelegate: model)
 
             VStack {
                 // Metrics
-                MetricsView(currentPointCount: $viewModel.currentPointCount, activity: $captureToggled)
+                MetricsView(currentPointCount: $model.currentPointCount, activity: $captureToggled)
 
                 Spacer()
 
@@ -171,10 +171,10 @@ struct PointCloudCaptureView: View {
             .edgesIgnoringSafeArea(.bottom)
         }
         .onAppear {
-            viewModel.startSession()
+            model.startSession()
         }
         .onDisappear {
-            viewModel.pauseSession()
+            model.pauseSession()
         }
     }
 }

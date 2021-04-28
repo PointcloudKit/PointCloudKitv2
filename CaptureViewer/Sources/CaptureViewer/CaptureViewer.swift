@@ -15,7 +15,6 @@ public struct CaptureViewer: View {
 
     @EnvironmentObject var model: CaptureViewerModel
 
-    @State private var optimizingPointCloud = false
     @State private var showingExportActionSheet = false
     @State private var showingSCNExporter = false
     @State private var showingPLYExporter = false
@@ -47,7 +46,8 @@ public struct CaptureViewer: View {
 
     // MARK: - Paramters
 
-    private var pointCloudProcessorsEnabled: Bool { !model.processing && !showProcessorParametersEditor }
+    private var processorsEnabled: Bool { !model.processing && !showProcessorParametersEditor }
+    private var reconstructionEnabled: Bool { processorsEnabled && model.normalsAvailable }
 
     var transformingParameters: some View {
         HStack {
@@ -71,11 +71,11 @@ public struct CaptureViewer: View {
                             icon: {
                                 Image(systemName: "line.diagonal.arrow")
                                     .font(.body)
-                                    .foregroundColor(pointCloudProcessorsEnabled ? .red : .gray)
+                                    .foregroundColor(processorsEnabled ? .red : .gray)
                             }
                         )
                     })
-                    .disabled(!pointCloudProcessorsEnabled)
+                    .disabled(!processorsEnabled)
                 }
             })
 
@@ -90,11 +90,11 @@ public struct CaptureViewer: View {
                             icon: {
                                 Image(systemName: "skew")
                                     .font(.body)
-                                    .foregroundColor(pointCloudProcessorsEnabled ? .red : .gray)
+                                    .foregroundColor(reconstructionEnabled ? .red : .gray)
                             }
                         )
                     })
-                    .disabled(!pointCloudProcessorsEnabled)
+                    .disabled(!reconstructionEnabled)
                 }
             })
         }
@@ -122,11 +122,11 @@ public struct CaptureViewer: View {
                             icon: {
                                 Image(systemName: "cube")
                                     .font(.body)
-                                    .foregroundColor(pointCloudProcessorsEnabled ? .red : .gray)
+                                    .foregroundColor(processorsEnabled ? .red : .gray)
                             }
                         )
                     })
-                    .disabled(!pointCloudProcessorsEnabled)
+                    .disabled(!processorsEnabled)
 
                     // MARK: Statistical Outlier Removal
                     Button(action: {
@@ -137,11 +137,11 @@ public struct CaptureViewer: View {
                             icon: {
                                 Image(systemName: "aqi.high")
                                     .font(.body)
-                                    .foregroundColor(pointCloudProcessorsEnabled ? .red : .gray)
+                                    .foregroundColor(processorsEnabled ? .red : .gray)
                             }
                         )
                     })
-                    .disabled(!pointCloudProcessorsEnabled)
+                    .disabled(!processorsEnabled)
 
                     // MARK: Radius Outlier Removal
                     Button(action: {
@@ -152,11 +152,11 @@ public struct CaptureViewer: View {
                             icon: {
                                 Image(systemName: "aqi.medium")
                                     .font(.body)
-                                    .foregroundColor(pointCloudProcessorsEnabled ? .red : .gray)
+                                    .foregroundColor(processorsEnabled ? .red : .gray)
                             }
                         )
                     })
-                    .disabled(!pointCloudProcessorsEnabled)
+                    .disabled(!processorsEnabled)
                 }
             })
         }
@@ -181,15 +181,15 @@ public struct CaptureViewer: View {
                         model.undo()
                     }, label: {
                         Label(
-                            title: { Text("Undo").foregroundColor(model.undoAvailable && pointCloudProcessorsEnabled ? .white : .gray) },
+                            title: { Text("Undo").foregroundColor(model.undoAvailable && processorsEnabled ? .white : .gray) },
                             icon: {
                                 Image(systemName: "arrow.uturn.backward.square")
                                     .font(.body)
-                                    .foregroundColor(model.undoAvailable && pointCloudProcessorsEnabled  ? .red : .gray)
+                                    .foregroundColor(model.undoAvailable && processorsEnabled  ? .red : .gray)
                             }
                         )
                     })
-                    .disabled(!model.undoAvailable || !pointCloudProcessorsEnabled)
+                    .disabled(!model.undoAvailable || !processorsEnabled)
 
                     // MARK: Processing Parameters
                     Button(action: {

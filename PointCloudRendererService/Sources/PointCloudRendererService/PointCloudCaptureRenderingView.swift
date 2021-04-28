@@ -20,7 +20,7 @@ public protocol PointCloudCaptureRenderingViewDelegate: AnyObject {
     func coachingOverlayViewDidRequestSessionReset(_ coachingOverlayView: ARCoachingOverlayView)
 }
 
-/// Helper for making PointCloudCaptureView available in SwiftUI.
+/// Helper for making CaptureView available in SwiftUI.
 public final class PointCloudCaptureRenderingView: NSObject, UIViewRepresentable {
 
     unowned var renderingDelegate: PointCloudCaptureRenderingViewDelegate

@@ -1,5 +1,5 @@
 //
-//  PointCloudCaptureRenderingView+ViewModel.swift
+//  CaptureModel.swift
 //  ARDemoApp
 //
 //  Created by Alexandre Camilleri on 26/03/2021.
@@ -13,7 +13,7 @@ import AVKit
 
 import CaptureViewer
 
-final class PointCloudCaptureViewModel: PointCloudCaptureRenderingViewDelegate, ObservableObject {
+final class CaptureModel: PointCloudCaptureRenderingViewDelegate, ObservableObject {
 
     @ObservedObject private var pointCloudRenderer: PointCloudRendererService
 
@@ -105,7 +105,7 @@ final class PointCloudCaptureViewModel: PointCloudCaptureRenderingViewDelegate, 
 }
 
 // MARK: - PointCloudCaptureRenderingViewDelegate Conformance
-extension PointCloudCaptureViewModel {
+extension CaptureModel {
 
     /// The output where the rendering is done. Need to be set
     /// A bit convoluted... view's viewmodel own the Rendering service,
