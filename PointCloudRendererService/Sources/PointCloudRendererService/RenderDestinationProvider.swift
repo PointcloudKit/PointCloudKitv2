@@ -9,7 +9,7 @@ import Metal
 import MetalKit
 import ARKit
 
-public protocol RenderDestinationProvider: class {
+public protocol RenderDestinationProvider: AnyObject {
     var currentRenderPassDescriptor: MTLRenderPassDescriptor? { get }
     var currentDrawable: CAMetalDrawable? { get }
     var colorPixelFormat: MTLPixelFormat { get set }

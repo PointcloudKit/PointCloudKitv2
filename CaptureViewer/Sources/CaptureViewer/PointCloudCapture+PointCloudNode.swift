@@ -18,6 +18,7 @@ extension PointCloudCapture {
 
     public func generatePointCloudNode() -> Future<(SCNNode, vertexCount: Int), Never> {
         Future { promise in
+            /* * */ let start = DispatchTime.now()
             let rawBuffer = buffer.rawBuffer
             let dataStride = stride
             let vertexCount = count
@@ -60,6 +61,9 @@ extension PointCloudCapture {
             pointCloudRootNode.name = NodeIdentifier.pointCloudRoot.rawValue
 
             promise(.success((pointCloudRootNode, vertexCount: vertexCount)))
+            /* * */ let end = DispatchTime.now()
+            /* * */ let nanoTime = end.uptimeNanoseconds - start.uptimeNanoseconds
+            /* * */ print(" <*> Time to run \(#function): \(Double(nanoTime) / 1_000_000) ms")
         }
     }
 

@@ -10,12 +10,12 @@ import SwiftUI
 import SceneKit.SCNScene
 import UniformTypeIdentifiers.UTType
 
-public struct SCNFile: FileDocument {
+public final class SCNFile: FileDocument, ObservableObject {
     // tell the system we support only plain text
     public static let readableContentTypes = [UTType.sceneKitScene]
 
-    @State public private(set) var writtingToDisk = false
-    @State public private(set) var writeToDiskProgress = 0.0
+    @Published public private(set) var writtingToDisk = false
+    @Published public private(set) var writeToDiskProgress = 0.0
 
     // by default our document is empty
     private var scene: SCNScene
@@ -40,10 +40,10 @@ public struct SCNFile: FileDocument {
         writeToDiskProgress = 0
         writtingToDisk = true
 
-        write(scene: scene, to: temporaryFileURL) { (progress) in
-            writeToDiskProgress = progress
+        write(scene: scene, to: temporaryFileURL) { [weak self] (progress) in
+            self?.writeToDiskProgress = progress
             if progress == 1 {
-                writtingToDisk = false
+                self?.writtingToDisk = false
             }
         }
         return try FileWrapper(url: temporaryFileURL)

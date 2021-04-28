@@ -55,6 +55,10 @@ public struct PointCloudCapture {
             }
         }
     }
+
+    public func reloadBufferContent(with particles: [ParticleUniforms]) {
+        buffer.assign(with: particles)
+    }
 }
 
 extension PointCloudRendererService {

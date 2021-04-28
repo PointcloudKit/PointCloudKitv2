@@ -8,6 +8,7 @@
 import SwiftUI
 import SceneKit
 import Common
+import ProcessorService
 
 // MARK: - Processing Parameters
 

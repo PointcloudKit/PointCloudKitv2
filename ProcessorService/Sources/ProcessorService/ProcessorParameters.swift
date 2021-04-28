@@ -10,6 +10,8 @@ import Foundation
 public class ProcessorParameters: Codable, ObservableObject {
     @Published public var voxelDownSampling = VoxelDownSampling()
     @Published public var outlierRemoval = OutlierRemoval()
+    @Published public var normalsEstimation = NormalsEstimation()
+    @Published public var surfaceReconstruction = SurfaceReconstruction()
 
     public init() {}
 
@@ -17,6 +19,8 @@ public class ProcessorParameters: Codable, ObservableObject {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         voxelDownSampling = try container.decode(VoxelDownSampling.self, forKey: .voxelDownSampling)
         outlierRemoval = try container.decode(OutlierRemoval.self, forKey: .outlierRemoval)
+        normalsEstimation = try container.decode(NormalsEstimation.self, forKey: .normalsEstimation)
+        surfaceReconstruction = try container.decode(SurfaceReconstruction.self, forKey: .surfaceReconstruction)
     }
 
     public func restoreBaseValues() {
@@ -33,6 +37,13 @@ extension ProcessorParameters {
         public var statistical = Statistical()
         public var radius = Radius()
     }
+    public struct NormalsEstimation: Codable {
+        public var radius: Double = 0.1
+        public var maxNearestNeighbors: Int = 30
+    }
+    public struct SurfaceReconstruction: Codable {
+        public var poisson = Poisson()
+    }
 }
 
 extension ProcessorParameters.OutlierRemoval {
@@ -46,6 +57,12 @@ extension ProcessorParameters.OutlierRemoval {
     }
 }
 
+extension ProcessorParameters.SurfaceReconstruction {
+    public struct Poisson: Codable {
+        public var depth: Int = 9
+    }
+}
+
 // MARK: - Custom Codable conformance due to @published
 extension ProcessorParameters {
 
@@ -53,10 +70,14 @@ extension ProcessorParameters {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(voxelDownSampling, forKey: .voxelDownSampling)
         try container.encode(outlierRemoval, forKey: .outlierRemoval)
+        try container.encode(normalsEstimation, forKey: .normalsEstimation)
+        try container.encode(surfaceReconstruction, forKey: .surfaceReconstruction)
     }
 
     enum CodingKeys: CodingKey {
         case voxelDownSampling
         case outlierRemoval
+        case normalsEstimation
+        case surfaceReconstruction
     }
 }

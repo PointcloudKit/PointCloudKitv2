@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import PointCloudProcessorService
+import ProcessorService
 
 // MARK: - User Default read write for user parameters
 extension ProcessorParameters {

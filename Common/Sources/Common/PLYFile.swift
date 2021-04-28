@@ -11,21 +11,20 @@ import SceneKit.SCNScene
 import UniformTypeIdentifiers.UTType
 import Combine
 
-public struct PLYFile: FileDocument {
+public final class PLYFile: FileDocument, ObservableObject {
     private let cancellables = Set<AnyCancellable>()
     // tell the system we support only plain text
     public static let readableContentTypes = [UTType.polygon]
     public static let writableContentTypes = [UTType.polygon]
 
-    @State public private(set) var writtingToDisk = false
-    @State public private(set) var writeToDiskProgress = 0.0
+    @Published public private(set) var writeToDiskProgress = 0.0
 
     // by default our document is empty
-    public private(set) var particles: [ParticleUniforms]
+    public private(set) var object: Object3D
 
     // a simple initializer that creates new, empty documents
-    public init(particles: [ParticleUniforms] = []) {
-        self.particles = particles
+    public init(object: Object3D = Object3D()) {
+        self.object = object
     }
 
     // this initializer loads data that has been saved previously
@@ -41,13 +40,8 @@ public struct PLYFile: FileDocument {
         let temporaryFileURL = temporaryDirectory.appendingPathComponent(filename)
 
         writeToDiskProgress = 0
-        writtingToDisk = true
-
-        write(particles, to: temporaryFileURL, progressHandler: { (progress) in
-            writeToDiskProgress = progress
-            if progress == 1 {
-                writtingToDisk = false
-            }
+        write(object, to: temporaryFileURL, progressHandler: { [weak self] (progress) in
+            self?.writeToDiskProgress = progress
         })
         return try FileWrapper(url: temporaryFileURL)
     }
@@ -58,30 +52,26 @@ public struct PLYFile: FileDocument {
         let temporaryFileName = ProcessInfo().globallyUniqueString + ".ply"
         let temporaryFileURL = temporaryDirectoryURL.appendingPathComponent(temporaryFileName)
 
-        write(particles, to: temporaryFileURL) { (progress) in
-            writeToDiskProgress = progress
-            if progress == 1 {
-                writtingToDisk = false
-            }
+        writeToDiskProgress = 0
+        write(object, to: temporaryFileURL) { [weak self] (progress) in
+            self?.writeToDiskProgress = progress
         }
         return temporaryFileURL
     }
 
-    private func generatePlyFileAsciiData(using particles: [ParticleUniforms]) -> Data? {
+    private func generatePlyFileAsciiData(from object: Object3D) -> Data? {
         // MARK: - Vertices
         let comments = ["author: ArDemoApp",
                         "object: colored point cloud scan with confidence"]
-        return PolygonFileFormat.generateAsciiData(using: particles, comments: comments)
+        return PolygonFileFormat.generateAsciiData(using: object, comments: comments)
     }
 
-    private func write(_ particles: [ParticleUniforms], to url: URL, progressHandler: @escaping (Double) -> Void) {
-        writtingToDisk = true
-        guard let data = generatePlyFileAsciiData(using: particles) else { fatalError() }
+    private func write(_ object: Object3D, to url: URL, progressHandler: @escaping (Double) -> Void) {
+        guard let data = generatePlyFileAsciiData(from: object) else { fatalError() }
         progressHandler(0.5)
         do {
             try data.write(to: url, options: [])
         } catch { fatalError(error.localizedDescription) }
         progressHandler(1.0)
-        writtingToDisk = false
     }
 }

@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  ParticleUniforms.swift
 //  
 //
 //  Created by Alexandre Camilleri on 22/04/2021.
@@ -31,9 +31,11 @@ public struct ParticleUniforms {
     public var confidence: Float = 0.0
 
     public init() {}
+
     public init(color: Float3) {
         self.color = color
     }
+
     public init(position: Float3, color: Float3, confidence: Float = 0.0) {
         self.position = position
         self.color = color

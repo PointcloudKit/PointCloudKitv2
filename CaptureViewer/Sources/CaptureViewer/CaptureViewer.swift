@@ -1,5 +1,5 @@
 //
-//  AssetViewer.swift
+//  CaptureViewer.swift
 //  ARDemoApp
 //
 //  Created by Alexandre Camilleri on 01/04/2021.
@@ -8,6 +8,7 @@
 import SwiftUI
 import SceneKit
 import Common
+import ProcessorService
 
 public struct CaptureViewer: View {
     @StateObject private var processorParameters = ProcessorParameters.fromUserDefaultOrNew
@@ -15,8 +16,6 @@ public struct CaptureViewer: View {
     @EnvironmentObject var model: CaptureViewerModel
 
     @State private var optimizingPointCloud = false
-    @State private var scnFile = SCNFile()
-    @State private var plyFile = PLYFile()
     @State private var showingExportActionSheet = false
     @State private var showingSCNExporter = false
     @State private var showingPLYExporter = false
@@ -27,27 +26,28 @@ public struct CaptureViewer: View {
 
     public init() {}
 
+    var exportScnButton: ActionSheet.Button {
+        ActionSheet.Button.default(Text("SCN (Apple's SceneKit)")) { showingSCNExporter = true }
+    }
+
+    var exportPlyButton: ActionSheet.Button {
+        ActionSheet.Button.default(Text("PLY (Polygon File Format)")) { showingPLYExporter = true }
+    }
+
     var exportActionSheet: ActionSheet {
-        ActionSheet(title: Text("Export Type"), message: Text("Supported export formats"), buttons: [
-            .default(Text("SCN (Apple's SceneKit)"), action: {
-                scnFile = model.scnFile()
-                showingSCNExporter = true
-            }),
-            .default(Text("PLY (Polygon File Format)"), action: {
-                DispatchQueue.global(qos: .userInitiated).async {
-                    plyFile = model.plyFile()
-                    DispatchQueue.main.async {
-                        showingPLYExporter = true
-                    }
-                }
-            }),
-            .cancel()
-        ])
+        var exportButtons = [exportScnButton]
+
+        if model.exportPlyAvailable {
+            exportButtons.append(exportPlyButton)
+        }
+        exportButtons.append(.cancel())
+
+        return ActionSheet(title: Text("Export Type"), message: Text("Supported export formats"), buttons: exportButtons)
     }
 
     // MARK: - Paramters
 
-    private var pointCloudProcessorsEnabled: Bool { !model.pointCloudProcessing && !showProcessorParametersEditor }
+    private var pointCloudProcessorsEnabled: Bool { !model.processing && !showProcessorParametersEditor }
 
     var transformingParameters: some View {
         HStack {
@@ -64,8 +64,26 @@ public struct CaptureViewer: View {
                 HStack {
                     // MARK: Surface Reconstruction
                     Button(action: {
-                        print("test")
-                        //                        viewModel.surfaceReconstruction()
+                        model.normalsEstimation(parameters: processorParameters.normalsEstimation)
+                    }, label: {
+                        Label(
+                            title: { Text("Normal Estimation").foregroundColor(.white) },
+                            icon: {
+                                Image(systemName: "line.diagonal.arrow")
+                                    .font(.body)
+                                    .foregroundColor(pointCloudProcessorsEnabled ? .red : .gray)
+                            }
+                        )
+                    })
+                    .disabled(!pointCloudProcessorsEnabled)
+                }
+            })
+
+            ScrollView(.horizontal, showsIndicators: false, content: {
+                HStack {
+                    // MARK: Surface Reconstruction
+                    Button(action: {
+                        model.poissonSurfaceReconstruction(parameters: processorParameters.surfaceReconstruction.poisson)
                     }, label: {
                         Label(
                             title: { Text("Surface Reconstruction").foregroundColor(.white) },
@@ -218,9 +236,9 @@ public struct CaptureViewer: View {
             }, label: {
                 Image(systemName: "square.and.arrow.up")
                     .font(.system(size: 42, weight: .regular))
-                    .foregroundColor(showParameters || model.pointCloudProcessing ? .gray : .white)
+                    .foregroundColor(showParameters || model.processing ? .gray : .white)
             })
-            .disabled(showParameters || model.pointCloudProcessing)
+            .disabled(showParameters || model.processing)
         }
     }
 
@@ -239,7 +257,7 @@ public struct CaptureViewer: View {
 
                 // Metrics
                 if !showProcessorParametersEditor {
-                MetricsView(currentPointCount: $model.vertexCount)
+                    MetricsView(currentPointCount: $model.vertexCount, currentNormalCount: $model.triangleCount, currentFaceCount: $model.triangleCount)
                 }
 
                 Spacer()
@@ -248,27 +266,30 @@ public struct CaptureViewer: View {
                     .padding(20)
                     .background(Color.black.opacity(0.8))
                     .cornerRadius(10)
-                    .hiddenConditionally(!model.pointCloudRendering)
+                    .hiddenConditionally(!model.rendering)
 
                 ProgressView("Processing...")
                     .padding(20)
                     .background(Color.black.opacity(0.8))
                     .cornerRadius(10)
-                    .hiddenConditionally(!model.pointCloudProcessing)
+                    .hiddenConditionally(!model.processing)
 
-                ProgressView("Exporting SCN...", value: scnFile.writeToDiskProgress, total: 1)
-                    .hiddenConditionally(!scnFile.writtingToDisk)
-                    .fileExporter(isPresented: $showingSCNExporter,
-                                  document: scnFile,
-                                  contentType: .sceneKitScene,
-                                  onCompletion: { _ in })
-
-                ProgressView("Exporting PLY...", value: plyFile.writeToDiskProgress, total: 1)
-                    .hiddenConditionally(!plyFile.writtingToDisk)
-                    .fileExporter(isPresented: $showingPLYExporter,
-                                  document: plyFile,
-                                  contentType: .polygon,
-                                  onCompletion: { _ in })
+                if showingSCNExporter {
+                    ProgressView("Exporting SCN...", value: model.exportProgress, total: 1)
+                        .hiddenConditionally(!model.exporting)
+                        .fileExporter(isPresented: $showingSCNExporter,
+                                      document: model.scnFile(),
+                                      contentType: .sceneKitScene,
+                                      onCompletion: { _ in })
+                }
+                if showingPLYExporter {
+                    ProgressView("Exporting PLY...", value: model.exportProgress, total: 1)
+                        .hiddenConditionally(!model.exporting)
+                        .fileExporter(isPresented: $showingPLYExporter,
+                                      document: model.plyFile(),
+                                      contentType: .polygon,
+                                      onCompletion: { _ in })
+                }
 
                 // Parameters
                 VStack {
@@ -287,6 +308,7 @@ public struct CaptureViewer: View {
                         if !showProcessorParametersEditor {
                             transformingParameters
                                 .padding(.horizontal, 20)
+                                .padding(.top, 10)
                                 .transition(.moveAndFade)
                             cleaningParameters
                                 .padding(.horizontal, 20)

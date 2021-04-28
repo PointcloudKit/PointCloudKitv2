@@ -9,7 +9,7 @@ import SwiftUI
 import MetalKit
 import ARKit
 
-public protocol PointCloudCaptureRenderingViewDelegate: class {
+public protocol PointCloudCaptureRenderingViewDelegate: AnyObject {
     var metalDevice: MTLDevice { get }
     var renderDestination: RenderDestinationProvider? { get set }
     var session: ARSession { get }

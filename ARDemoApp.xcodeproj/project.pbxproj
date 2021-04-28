@@ -3,11 +3,14 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8E8F5BA42616F45B005203E0 /* CaptureViewer in Frameworks */ = {isa = PBXBuildFile; productRef = 8E8F5BA32616F45B005203E0 /* CaptureViewer */; };
 		8EEF76AA2616D24F00A6BDC1 /* FileIO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EEF76A92616D24F00A6BDC1 /* FileIO.swift */; };
+		EE45170F26380BC5001C2A04 /* ProcessorService in Frameworks */ = {isa = PBXBuildFile; productRef = EE45170E26380BC5001C2A04 /* ProcessorService */; };
+		EE4EC387261EF10A00B2D858 /* Common in Frameworks */ = {isa = PBXBuildFile; productRef = EE4EC386261EF10A00B2D858 /* Common */; };
 		EE5F3A87260AD18700945107 /* ARDemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5F3A86260AD18700945107 /* ARDemoApp.swift */; };
 		EE5F3A89260AD18700945107 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5F3A88260AD18700945107 /* HomeView.swift */; };
 		EE5F3A8B260AD18800945107 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EE5F3A8A260AD18800945107 /* Assets.xcassets */; };
@@ -16,11 +19,8 @@
 		EE5F3AA4260AD18800945107 /* ARDemoAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5F3AA3260AD18800945107 /* ARDemoAppUITests.swift */; };
 		EE6A3DA226144FAD00D0203B /* CaptureToggleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6A3DA126144FAD00D0203B /* CaptureToggleStyle.swift */; };
 		EE6A3DB326155F2700D0203B /* PointCloudCaptureViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6A3DB226155F2700D0203B /* PointCloudCaptureViewModel.swift */; };
+		EEB00594262ED25800B7C9D2 /* PointCloudRendererService in Frameworks */ = {isa = PBXBuildFile; productRef = EEB00593262ED25800B7C9D2 /* PointCloudRendererService */; };
 		EEC0D439260D9B140093141F /* PointCloudCaptureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEC0D438260D9B140093141F /* PointCloudCaptureView.swift */; };
-        EE4EC387261EF10A00B2D858 /* Common in Frameworks */ = {isa = PBXBuildFile; productRef = EE4EC386261EF10A00B2D858 /* Common */; };
-        EEB00594262ED25800B7C9D2 /* PointCloudRendererService in Frameworks */ = {isa = PBXBuildFile; productRef = EEB00593262ED25800B7C9D2 /* PointCloudRendererService */; };
-        8E8F5BA42616F45B005203E0 /* CaptureViewer in Frameworks */ = {isa = PBXBuildFile; productRef = 8E8F5BA32616F45B005203E0 /* CaptureViewer */; };
-		EEF512452625612E00F35886 /* PointCloudProcessorService in Frameworks */ = {isa = PBXBuildFile; productRef = EEF512442625612E00F35886 /* PointCloudProcessorService */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +43,7 @@
 /* Begin PBXFileReference section */
 		8E8F5B8F2616F230005203E0 /* CaptureViewer */ = {isa = PBXFileReference; lastKnownFileType = folder; path = CaptureViewer; sourceTree = "<group>"; };
 		8EEF76A92616D24F00A6BDC1 /* FileIO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileIO.swift; sourceTree = "<group>"; };
+		EE45170A26380B63001C2A04 /* ProcessorService */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ProcessorService; sourceTree = "<group>"; };
 		EE4EC37F261EF0DE00B2D858 /* Common */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Common; sourceTree = "<group>"; };
 		EE5F3A83260AD18700945107 /* ARDemoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARDemoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE5F3A86260AD18700945107 /* ARDemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARDemoApp.swift; sourceTree = "<group>"; };
@@ -60,7 +61,6 @@
 		EE6A3DB226155F2700D0203B /* PointCloudCaptureViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PointCloudCaptureViewModel.swift; sourceTree = "<group>"; };
 		EE849103262ED0DC00F231B1 /* PointCloudRendererService */ = {isa = PBXFileReference; lastKnownFileType = folder; path = PointCloudRendererService; sourceTree = "<group>"; };
 		EEC0D438260D9B140093141F /* PointCloudCaptureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointCloudCaptureView.swift; sourceTree = "<group>"; };
-		EEF512402625611500F35886 /* PointCloudProcessorService */ = {isa = PBXFileReference; lastKnownFileType = folder; path = PointCloudProcessorService; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,10 +68,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-                EE4EC387261EF10A00B2D858 /* Common in Frameworks */,
-                EEB00594262ED25800B7C9D2 /* PointCloudRendererService in Frameworks */,
-                8E8F5BA42616F45B005203E0 /* CaptureViewer in Frameworks */,
-				EEF512452625612E00F35886 /* PointCloudProcessorService in Frameworks */,
+				EE4EC387261EF10A00B2D858 /* Common in Frameworks */,
+				EE45170F26380BC5001C2A04 /* ProcessorService in Frameworks */,
+				EEB00594262ED25800B7C9D2 /* PointCloudRendererService in Frameworks */,
+				8E8F5BA42616F45B005203E0 /* CaptureViewer in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -95,8 +95,8 @@
 		8E8F5BA22616F45B005203E0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				EE45170A26380B63001C2A04 /* ProcessorService */,
 				EE849103262ED0DC00F231B1 /* PointCloudRendererService */,
-				EEF512402625611500F35886 /* PointCloudProcessorService */,
 				EE4EC37F261EF0DE00B2D858 /* Common */,
 				8E8F5B8F2616F230005203E0 /* CaptureViewer */,
 			);
@@ -208,10 +208,10 @@
 			);
 			name = ARDemoApp;
 			packageProductDependencies = (
-                EE4EC386261EF10A00B2D858 /* Common */,
-                EEB00593262ED25800B7C9D2 /* PointCloudRendererService */,
+				EE4EC386261EF10A00B2D858 /* Common */,
+				EEB00593262ED25800B7C9D2 /* PointCloudRendererService */,
 				8E8F5BA32616F45B005203E0 /* CaptureViewer */,
-				EEF512442625612E00F35886 /* PointCloudProcessorService */,
+				EE45170E26380BC5001C2A04 /* ProcessorService */,
 			);
 			productName = ARDemoApp;
 			productReference = EE5F3A83260AD18700945107 /* ARDemoApp.app */;
@@ -521,7 +521,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.acammm.pointcloudkit.ARDemoApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.acammm.pointcloudkit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_VERSION = 5.0;
@@ -544,7 +544,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.acammm.pointcloudkit.ARDemoApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.acammm.pointcloudkit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_VERSION = 5.0;
@@ -682,6 +682,10 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = CaptureViewer;
 		};
+		EE45170E26380BC5001C2A04 /* ProcessorService */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ProcessorService;
+		};
 		EE4EC386261EF10A00B2D858 /* Common */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Common;
@@ -689,10 +693,6 @@
 		EEB00593262ED25800B7C9D2 /* PointCloudRendererService */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = PointCloudRendererService;
-		};
-		EEF512442625612E00F35886 /* PointCloudProcessorService */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = PointCloudProcessorService;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

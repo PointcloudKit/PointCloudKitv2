@@ -1,12 +1,12 @@
 import XCTest
-@testable import PointCloudProcessorService
+@testable import ProcessorService
 
-final class PointCloudProcessorServiceTests: XCTestCase {
+final class ProcessorServiceTests: XCTestCase {
     func testExample() {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct
         // results.
-        XCTAssertEqual(PointCloudProcessorService().text, "Hello, World!")
+        XCTAssertEqual(ProcessorService().text, "Hello, World!")
     }
 
     static var allTests = [
