@@ -257,7 +257,9 @@ public struct CaptureViewer: View {
 
                 // Metrics
                 if !showProcessorParametersEditor {
-                    MetricsView(currentPointCount: $model.vertexCount, currentNormalCount: $model.triangleCount, currentFaceCount: $model.triangleCount)
+                    MetricsView(currentPointCount: $model.vertexCount,
+                                currentNormalCount: $model.normalCount,
+                                currentFaceCount: $model.triangleCount)
                 }
 
                 Spacer()

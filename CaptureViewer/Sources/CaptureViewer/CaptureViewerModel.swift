@@ -183,26 +183,6 @@ extension CaptureViewerModel {
             .store(in: &cancellables)
         return scene
     }
-//
-//    private func updateScene(with capture: PointCloudCapture) {
-//        rendering = true
-//        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-//            guard let self = self else { return }
-//            // Remove previous points
-//            self.scene.rootNode
-//                .childNode(withName: NodeIdentifier.pointCloudRoot.rawValue, recursively: false)?
-//                .removeFromParentNode()
-//            // Create point cloud nodes and add to the scene
-//            capture.generatePointCloudNode()
-//                .receive(on: RunLoop.main)
-//                .sink { (pointCloudRootNode, vertexCount) in
-//                    self.rendering = false
-//                    self.vertexCount = vertexCount
-//                    self.scene.rootNode.addChildNode(pointCloudRootNode)
-//                }
-//                .store(in: &self.cancellables)
-//        }
-//    }
 
     private func vertexProcessing(with processors: [VertexProcessor]) {
         processing = true
@@ -220,7 +200,6 @@ extension CaptureViewerModel {
                 }, receiveValue: { object in
                     self.capture.reloadBufferContent(with: object.particles())
                     DispatchQueue.main.async {
-                        // WHY NO UPDATE NORMALS FFS 
                         self.lastObject = self.object
                         self.object = object
                         self.processing = false

@@ -44,8 +44,7 @@ public struct Object3D {
 extension Object3D {
     public func particles() -> [ParticleUniforms] {
         return zip(vertices, vertexColors).map { point, color in
-            ParticleUniforms(position: point,
-                             color: color)
+            ParticleUniforms(position: point, color: color)
         }
     }
 }

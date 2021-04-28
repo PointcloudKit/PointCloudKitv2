@@ -222,8 +222,6 @@ final public class ProcessorService {
     ///  Returns
     ///  Tuple[open3d.cpu.pybind.geometry.TriangleMesh, open3d.cpu.pybind.utility.DoubleVector]
     private func surfaceReconstruction(_ pointCloud: PythonObject, depth: Int) -> O3DTriangleMeshes {
-        let searchParam = o3d.geometry.KDTreeSearchParamHybrid(0.1, 30)
-        pointCloud.estimate_normals(searchParam)
         return o3d.geometry.TriangleMesh.create_from_point_cloud_poisson(pointCloud, depth)[0]
     }
 }
