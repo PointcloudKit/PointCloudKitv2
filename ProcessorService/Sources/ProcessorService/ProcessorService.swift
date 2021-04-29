@@ -202,6 +202,7 @@ final public class ProcessorService {
     private func o3dNormalsEstimation(_ pointCloud: PythonObject, radius: Double, maxNearestNeighbors: Int) {
         let searchParam = o3d.geometry.KDTreeSearchParamHybrid(radius, maxNearestNeighbors)
         pointCloud.estimate_normals(searchParam)
+        pointCloud.orient_normals_consistent_tangent_plane(100)
     }
 
     /// Function that computes a triangle mesh from a oriented PointCloud pcd. This implements the Screened Poisson Reconstruction proposed in Kazhdan and Hoppe, “Screened Poisson Surface Reconstruction”, 2013. This function uses the original implementation by Kazhdan. See https://github.com/mkazhdan/PoissonRecon
@@ -222,6 +223,6 @@ final public class ProcessorService {
     ///  Returns
     ///  Tuple[open3d.cpu.pybind.geometry.TriangleMesh, open3d.cpu.pybind.utility.DoubleVector]
     private func surfaceReconstruction(_ pointCloud: PythonObject, depth: Int) -> O3DTriangleMeshes {
-        return o3d.geometry.TriangleMesh.create_from_point_cloud_poisson(pointCloud, depth)[0]
+        o3d.geometry.TriangleMesh.create_from_point_cloud_poisson(pointCloud, depth)[0]
     }
 }

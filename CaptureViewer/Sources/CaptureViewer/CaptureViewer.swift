@@ -56,7 +56,7 @@ public struct CaptureViewer: View {
                 icon: {
                     Image(systemName: "wand.and.stars")
                         .font(.body)
-                        .foregroundColor(.white)
+                        .foregroundColor(.bone)
                 }
             )
 
@@ -67,30 +67,27 @@ public struct CaptureViewer: View {
                         model.normalsEstimation(parameters: processorParameters.normalsEstimation)
                     }, label: {
                         Label(
-                            title: { Text("Normal Estimation").foregroundColor(.white) },
+                            title: { Text("Normal Estimation").foregroundColor(.bone) },
                             icon: {
                                 Image(systemName: "line.diagonal.arrow")
                                     .font(.body)
-                                    .foregroundColor(processorsEnabled ? .red : .gray)
+                                    .foregroundColor(processorsEnabled ? .amazon : .spaceGray)
+                                    .padding(.trailing, 1)
                             }
                         )
                     })
                     .disabled(!processorsEnabled)
-                }
-            })
 
-            ScrollView(.horizontal, showsIndicators: false, content: {
-                HStack {
                     // MARK: Surface Reconstruction
                     Button(action: {
                         model.poissonSurfaceReconstruction(parameters: processorParameters.surfaceReconstruction.poisson)
                     }, label: {
                         Label(
-                            title: { Text("Surface Reconstruction").foregroundColor(.white) },
+                            title: { Text("Surface Reconstruction").foregroundColor(.bone) },
                             icon: {
                                 Image(systemName: "skew")
                                     .font(.body)
-                                    .foregroundColor(reconstructionEnabled ? .red : .gray)
+                                    .foregroundColor(reconstructionEnabled ? .amazon : .spaceGray)
                             }
                         )
                     })
@@ -107,7 +104,7 @@ public struct CaptureViewer: View {
                 icon: {
                     Image(systemName: "scissors")
                         .font(.body)
-                        .foregroundColor(.white)
+                        .foregroundColor(.bone)
                 }
             )
 
@@ -118,11 +115,11 @@ public struct CaptureViewer: View {
                         model.voxelDownsampling(parameters: processorParameters.voxelDownSampling)
                     }, label: {
                         Label(
-                            title: { Text("Voxel DownSampling").foregroundColor(.white) },
+                            title: { Text("Voxel DownSampling").foregroundColor(.bone) },
                             icon: {
                                 Image(systemName: "cube")
                                     .font(.body)
-                                    .foregroundColor(processorsEnabled ? .red : .gray)
+                                    .foregroundColor(processorsEnabled ? .amazon : .spaceGray)
                             }
                         )
                     })
@@ -133,11 +130,11 @@ public struct CaptureViewer: View {
                         model.statisticalOutlierRemoval(parameters: processorParameters.outlierRemoval.statistical)
                     }, label: {
                         Label(
-                            title: { Text("Statistical O.R.").foregroundColor(.white) },
+                            title: { Text("Statistical O.R.").foregroundColor(.bone) },
                             icon: {
                                 Image(systemName: "aqi.high")
                                     .font(.body)
-                                    .foregroundColor(processorsEnabled ? .red : .gray)
+                                    .foregroundColor(processorsEnabled ? .amazon : .spaceGray)
                             }
                         )
                     })
@@ -148,11 +145,11 @@ public struct CaptureViewer: View {
                         model.radiusOutlierRemoval(parameters: processorParameters.outlierRemoval.radius)
                     }, label: {
                         Label(
-                            title: { Text("Radius O.R.").foregroundColor(.white) },
+                            title: { Text("Radius O.R.").foregroundColor(.bone) },
                             icon: {
                                 Image(systemName: "aqi.medium")
                                     .font(.body)
-                                    .foregroundColor(processorsEnabled ? .red : .gray)
+                                    .foregroundColor(processorsEnabled ? .amazon : .spaceGray)
                             }
                         )
                     })
@@ -169,7 +166,7 @@ public struct CaptureViewer: View {
                 icon: {
                     Image(systemName: "gearshape.2.fill")
                         .font(.body)
-                        .foregroundColor(.white)
+                        .foregroundColor(.bone)
                 }
             )
 
@@ -181,11 +178,11 @@ public struct CaptureViewer: View {
                         model.undo()
                     }, label: {
                         Label(
-                            title: { Text("Undo").foregroundColor(model.undoAvailable && processorsEnabled ? .white : .gray) },
+                            title: { Text("Undo").foregroundColor(model.undoAvailable && processorsEnabled ? .bone : .spaceGray) },
                             icon: {
                                 Image(systemName: "arrow.uturn.backward.square")
                                     .font(.body)
-                                    .foregroundColor(model.undoAvailable && processorsEnabled  ? .red : .gray)
+                                    .foregroundColor(model.undoAvailable && processorsEnabled  ? .amazon : .spaceGray)
                             }
                         )
                     })
@@ -198,11 +195,11 @@ public struct CaptureViewer: View {
                         }
                     }, label: {
                         Label(
-                            title: { Text("Processing Config.").foregroundColor(.white) },
+                            title: { Text("Processing Config.").foregroundColor(.bone) },
                             icon: {
                                 Image(systemName: "slider.horizontal.below.square.fill.and.square")
                                     .font(.body)
-                                    .foregroundColor(.red)
+                                    .foregroundColor(.amazon)
                             }
                         )
                     })
@@ -224,7 +221,7 @@ public struct CaptureViewer: View {
                 Image(systemName: "slider.horizontal.3")
                     .font(.system(size: 42, weight: .regular))
                     .scaleEffect(showParameters ? 0.9 : 1)
-                    .foregroundColor(showParameters ? .red : .white)
+                    .foregroundColor(showParameters ? .amazon : .bone)
             })
 
             Spacer()
@@ -236,7 +233,7 @@ public struct CaptureViewer: View {
             }, label: {
                 Image(systemName: "square.and.arrow.up")
                     .font(.system(size: 42, weight: .regular))
-                    .foregroundColor(showParameters || model.processing ? .gray : .white)
+                    .foregroundColor(showParameters || model.processing ? .spaceGray : .bone)
             })
             .disabled(showParameters || model.processing)
         }
@@ -269,12 +266,14 @@ public struct CaptureViewer: View {
                     .background(Color.black.opacity(0.8))
                     .cornerRadius(10)
                     .hiddenConditionally(!model.rendering)
+                    .foregroundColor(.bone)
 
                 ProgressView("Processing...")
                     .padding(20)
                     .background(Color.black.opacity(0.8))
                     .cornerRadius(10)
                     .hiddenConditionally(!model.processing)
+                    .foregroundColor(.bone)
 
                 if showingSCNExporter {
                     ProgressView("Exporting SCN...", value: model.exportProgress, total: 1)
@@ -283,6 +282,7 @@ public struct CaptureViewer: View {
                                       document: model.scnFile(),
                                       contentType: .sceneKitScene,
                                       onCompletion: { _ in })
+                        .foregroundColor(.bone)
                 }
                 if showingPLYExporter {
                     ProgressView("Exporting PLY...", value: model.exportProgress, total: 1)
@@ -291,6 +291,7 @@ public struct CaptureViewer: View {
                                       document: model.plyFile(),
                                       contentType: .polygon,
                                       onCompletion: { _ in })
+                        .foregroundColor(.bone)
                 }
 
                 // Parameters

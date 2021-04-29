@@ -24,15 +24,41 @@ struct ProcessorParametersEditor: View {
     @EnvironmentObject var model: ProcessorParametersEditorModel
     @EnvironmentObject var parameters: ProcessorParameters
 
+    var surfaceReconstructionSection: some View {
+        VStack {
+            HStack {
+                Label(
+                    title: { Text("Poisson Surface Reconstruction").foregroundColor(.bone) },
+                    icon: {
+                        Image(systemName: "skew")
+                            .font(.title2)
+                            .foregroundColor(.amazon)
+                    }
+                )
+                Spacer()
+            }
+            .padding(.top, 10)
+
+            Stepper(value: $parameters.surfaceReconstruction.poisson.depth,
+                    in: 1...15,
+                    step: 1,
+                    label: {
+                        Text(parameters.surfaceReconstruction.poisson.depthLabel)
+                            .font(Font.caption)
+                    })
+                .padding(.leading, 40)
+        }
+    }
+
     var voxelDownSamplingSection: some View {
         VStack {
             HStack {
                 Label(
-                    title: { Text("Voxel Down Sampling").foregroundColor(.gray) },
+                    title: { Text("Voxel Down Sampling").foregroundColor(.bone) },
                     icon: {
                         Image(systemName: "cube")
                             .font(.title2)
-                            .foregroundColor(.red)
+                            .foregroundColor(.amazon)
                     }
                 )
                 Spacer()
@@ -54,11 +80,11 @@ struct ProcessorParametersEditor: View {
         VStack {
             HStack {
                 Label(
-                    title: { Text("Statistical Outlier Removal").foregroundColor(.gray) },
+                    title: { Text("Statistical Outlier Removal").foregroundColor(.bone) },
                     icon: {
                         Image(systemName: "aqi.high")
                             .font(.title2)
-                            .foregroundColor(.red)
+                            .foregroundColor(.amazon)
                     }
                 )
                 Spacer()
@@ -81,15 +107,15 @@ struct ProcessorParametersEditor: View {
                     })
                 .padding(.leading, 40)
 
-            Divider().foregroundColor(.white)
+            Divider().foregroundColor(.bone)
 
             HStack {
                 Label(
-                    title: { Text("Radius Outlier Removal").foregroundColor(.gray) },
+                    title: { Text("Radius Outlier Removal").foregroundColor(.bone) },
                     icon: {
                         Image(systemName: "aqi.medium")
                             .font(.title2)
-                            .foregroundColor(.red)
+                            .foregroundColor(.amazon)
                     }
                 )
                 Spacer()
@@ -128,11 +154,11 @@ struct ProcessorParametersEditor: View {
                 },
                 label: {
                     Label(
-                        title: { Text("Done").foregroundColor(.white) },
+                        title: { Text("Done").foregroundColor(.bone) },
                         icon: {
                             Image(systemName: "chevron.down.square")
                                 .font(.title3)
-                                .foregroundColor(.red)
+                                .foregroundColor(.amazon)
                         }
                     )
                 }
@@ -146,11 +172,11 @@ struct ProcessorParametersEditor: View {
                 },
                 label: {
                     Label(
-                        title: { Text("Reset default values").foregroundColor(.white) },
+                        title: { Text("Reset default values").foregroundColor(.bone) },
                         icon: {
                             Image(systemName: "arrow.uturn.backward.square")
                                 .font(.title3)
-                                .foregroundColor(.red)
+                                .foregroundColor(.amazon)
                         }
                     )
                 }
@@ -160,14 +186,17 @@ struct ProcessorParametersEditor: View {
 
     var body: some View {
         VStack {
+            surfaceReconstructionSection
+
+            Divider().foregroundColor(.bone)
 
             voxelDownSamplingSection
 
-            Divider().foregroundColor(.white)
+            Divider().foregroundColor(.bone)
 
             outlierRemovalSection
 
-            Divider().foregroundColor(.white)
+            Divider().foregroundColor(.bone)
 
             generalSection
         }
@@ -197,5 +226,11 @@ extension ProcessorParameters.OutlierRemoval.Radius {
     }
     var radiusLabel: String {
         "sphere radius: \(Int(radius * 100))㎜"
+    }
+}
+
+extension ProcessorParameters.SurfaceReconstruction.Poisson {
+    var depthLabel: String {
+        "search tree depth \(depth)"
     }
 }

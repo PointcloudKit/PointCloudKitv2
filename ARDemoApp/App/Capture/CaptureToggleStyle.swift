@@ -14,7 +14,7 @@ struct CaptureToggleStyle: ToggleStyle {
             Image(systemName: configuration.isOn ? "stop.circle" : "restart.circle")
                 .font(.system(size: 64, weight: .light))
                 .onTapGesture { configuration.isOn.toggle() }
-                .foregroundColor(configuration.isOn ? Color.red : Color.white)
+                .foregroundColor(configuration.isOn ? Color.amazon : Color.bone)
         }
     }
 }

@@ -29,29 +29,29 @@ public struct MetricsView: View {
         HStack(alignment: .center) {
             VStack(alignment: .leading, spacing: 10) {
                 Label(
-                    title: { Text("\(currentPointCount)") },
+                    title: { Text("\(currentPointCount)").foregroundColor(.bone) },
                     icon: {
                         Image(systemName: "aqi.medium")
                             .font(.body)
-                            .foregroundColor(!activity ? .gray : .red)
+                            .foregroundColor(!activity ? .spaceGray : .amazon)
                     }
                 )
 
                 Label(
-                    title: { Text("\(currentNormalCount)") },
+                    title: { Text(" \(currentNormalCount)").foregroundColor(.bone) },
                     icon: {
                         Image(systemName: "line.diagonal.arrow")
                             .font(.body)
-                            .foregroundColor(!activity ? .gray : .red)
+                            .foregroundColor(!activity ? .spaceGray : .amazon)
                     }
                 )
 
                 Label(
-                    title: { Text("\(currentFaceCount)") },
+                    title: { Text("\(currentFaceCount)").foregroundColor(.bone) },
                     icon: {
                         Image(systemName: "square.2.stack.3d")
                             .font(.body)
-                            .foregroundColor(!activity ? .gray : .red)
+                            .foregroundColor(!activity ? .spaceGray : .amazon)
                     }
                 )
             }

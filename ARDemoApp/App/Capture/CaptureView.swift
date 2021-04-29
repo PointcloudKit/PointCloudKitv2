@@ -32,11 +32,11 @@ struct CaptureView: View {
                 flashlightActive = model.toggleFlashlight()
             }, label: {
                 Label(
-                    title: { Text("Flashlight").foregroundColor(.white) },
+                    title: { Text("Flashlight").foregroundColor(.bone) },
                     icon: {
                         Image(systemName: flashlightActive ? "flashlight.on.fill" : "flashlight.off.fill")
                             .font(.body)
-                            .foregroundColor(.red)
+                            .foregroundColor(.amazon)
                     }
                 )
             })
@@ -46,11 +46,11 @@ struct CaptureView: View {
 
             }, label: {
                 Label(
-                    title: { Text("Confidence").foregroundColor(.white) },
+                    title: { Text("Confidence").foregroundColor(.bone) },
                     icon: {
                         Image(systemName: "circlebadge.2")
                             .font(.body)
-                            .foregroundColor(.red)
+                            .foregroundColor(.amazon)
                     }
                 )
             })
@@ -62,11 +62,11 @@ struct CaptureView: View {
 
             }, label: {
                 Label(
-                    title: { Text("Capture Rate").foregroundColor(.white) },
+                    title: { Text("Capture Rate").foregroundColor(.bone) },
                     icon: {
                         Image(systemName: "speedometer")
                             .font(.body)
-                            .foregroundColor(.red)
+                            .foregroundColor(.amazon)
                     }
                 )
             })
@@ -90,7 +90,7 @@ struct CaptureView: View {
                 Image(systemName: "slider.horizontal.3")
                     .font(.system(size: 42, weight: .regular))
                     .scaleEffect(showParameters ? 0.9 : 1)
-                    .foregroundColor(model.isShowingCoachingOverlay ? .gray : (showParameters ? .red : .white))
+                    .foregroundColor(model.isShowingCoachingOverlay ? .spaceGray : (showParameters ? .amazon : .bone))
             })
             .disabled(model.isShowingCoachingOverlay)
 
@@ -117,7 +117,7 @@ struct CaptureView: View {
             }, label: {
                 Image(systemName: "scale.3d")
                     .font(.system(size: 42, weight: .regular))
-                    .foregroundColor(captureToggled ? .gray : .white)
+                    .foregroundColor(captureToggled ? .spaceGray : .bone)
             })
             .disabled(captureToggled || model.currentPointCount == 0)
 

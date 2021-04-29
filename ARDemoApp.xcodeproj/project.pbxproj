@@ -45,7 +45,7 @@
 		8EEF76A92616D24F00A6BDC1 /* FileIO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileIO.swift; sourceTree = "<group>"; };
 		EE45170A26380B63001C2A04 /* ProcessorService */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ProcessorService; sourceTree = "<group>"; };
 		EE4EC37F261EF0DE00B2D858 /* Common */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Common; sourceTree = "<group>"; };
-		EE5F3A83260AD18700945107 /* ARDemoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARDemoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		EE5F3A83260AD18700945107 /* PointCloudKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PointCloudKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE5F3A86260AD18700945107 /* ARDemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARDemoApp.swift; sourceTree = "<group>"; };
 		EE5F3A88260AD18700945107 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		EE5F3A8A260AD18800945107 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -61,6 +61,8 @@
 		EE6A3DB226155F2700D0203B /* CaptureModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaptureModel.swift; sourceTree = "<group>"; };
 		EE849103262ED0DC00F231B1 /* PointCloudRendererService */ = {isa = PBXFileReference; lastKnownFileType = folder; path = PointCloudRendererService; sourceTree = "<group>"; };
 		EEC0D438260D9B140093141F /* CaptureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureView.swift; sourceTree = "<group>"; };
+		EEF3608D263A5C3700342B6F /* FastlaneSnapshots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FastlaneSnapshots.swift; sourceTree = "<group>"; };
+		EEF3608F263A5C3700342B6F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +119,7 @@
 				EE5F3A85260AD18700945107 /* ARDemoApp */,
 				EE5F3A97260AD18800945107 /* ARDemoAppTests */,
 				EE5F3AA2260AD18800945107 /* ARDemoAppUITests */,
+				EEF3608C263A5C3700342B6F /* FastlaneSnapshots */,
 				EE5F3A84260AD18700945107 /* Products */,
 				8E8F5BA22616F45B005203E0 /* Frameworks */,
 			);
@@ -125,7 +128,7 @@
 		EE5F3A84260AD18700945107 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				EE5F3A83260AD18700945107 /* ARDemoApp.app */,
+				EE5F3A83260AD18700945107 /* PointCloudKit.app */,
 				EE5F3A94260AD18800945107 /* ARDemoAppTests.xctest */,
 				EE5F3A9F260AD18800945107 /* ARDemoAppUITests.xctest */,
 			);
@@ -190,12 +193,21 @@
 			path = App;
 			sourceTree = "<group>";
 		};
+		EEF3608C263A5C3700342B6F /* FastlaneSnapshots */ = {
+			isa = PBXGroup;
+			children = (
+				EEF3608D263A5C3700342B6F /* FastlaneSnapshots.swift */,
+				EEF3608F263A5C3700342B6F /* Info.plist */,
+			);
+			path = FastlaneSnapshots;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		EE5F3A82260AD18700945107 /* ARDemoApp */ = {
+		EE5F3A82260AD18700945107 /* PointCloudKit */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = EE5F3AA8260AD18800945107 /* Build configuration list for PBXNativeTarget "ARDemoApp" */;
+			buildConfigurationList = EE5F3AA8260AD18800945107 /* Build configuration list for PBXNativeTarget "PointCloudKit" */;
 			buildPhases = (
 				EE5F3A7F260AD18700945107 /* Sources */,
 				EED1CCB6260C937E006E9B33 /* Swiftlint */,
@@ -206,7 +218,7 @@
 			);
 			dependencies = (
 			);
-			name = ARDemoApp;
+			name = PointCloudKit;
 			packageProductDependencies = (
 				EE4EC386261EF10A00B2D858 /* Common */,
 				EEB00593262ED25800B7C9D2 /* PointCloudRendererService */,
@@ -214,7 +226,7 @@
 				EE45170E26380BC5001C2A04 /* ProcessorService */,
 			);
 			productName = ARDemoApp;
-			productReference = EE5F3A83260AD18700945107 /* ARDemoApp.app */;
+			productReference = EE5F3A83260AD18700945107 /* PointCloudKit.app */;
 			productType = "com.apple.product-type.application";
 		};
 		EE5F3A93260AD18800945107 /* ARDemoAppTests */ = {
@@ -259,7 +271,7 @@
 		EE5F3A7B260AD18700945107 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1240;
+				LastSwiftUpdateCheck = 1250;
 				LastUpgradeCheck = 1240;
 				TargetAttributes = {
 					EE5F3A82260AD18700945107 = {
@@ -290,7 +302,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				EE5F3A82260AD18700945107 /* ARDemoApp */,
+				EE5F3A82260AD18700945107 /* PointCloudKit */,
 				EE5F3A93260AD18800945107 /* ARDemoAppTests */,
 				EE5F3A9E260AD18800945107 /* ARDemoAppUITests */,
 			);
@@ -379,12 +391,12 @@
 /* Begin PBXTargetDependency section */
 		EE5F3A96260AD18800945107 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = EE5F3A82260AD18700945107 /* ARDemoApp */;
+			target = EE5F3A82260AD18700945107 /* PointCloudKit */;
 			targetProxy = EE5F3A95260AD18800945107 /* PBXContainerItemProxy */;
 		};
 		EE5F3AA1260AD18800945107 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = EE5F3A82260AD18700945107 /* ARDemoApp */;
+			target = EE5F3A82260AD18700945107 /* PointCloudKit */;
 			targetProxy = EE5F3AA0260AD18800945107 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -521,7 +533,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.acammm.pointcloudkit;
+				MARKETING_VERSION = 2.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.metra.Metra;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_VERSION = 5.0;
@@ -544,7 +557,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.acammm.pointcloudkit;
+				MARKETING_VERSION = 2.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.metra.Metra;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_VERSION = 5.0;
@@ -648,7 +662,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		EE5F3AA8260AD18800945107 /* Build configuration list for PBXNativeTarget "ARDemoApp" */ = {
+		EE5F3AA8260AD18800945107 /* Build configuration list for PBXNativeTarget "PointCloudKit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				EE5F3AA9260AD18800945107 /* Debug */,

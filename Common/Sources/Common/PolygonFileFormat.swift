@@ -168,15 +168,6 @@ public struct PolygonFileFormat {
 private protocol AsciiRepresentable {
     var ascii: String { get }
 }
-//
-//extension ParticleUniforms: AsciiRepresentable {
-//    #warning("Improve these conversion - just hacking now")
-//    fileprivate var ascii: String { "\(position.x) \(position.y) \(position.z) \(UInt(color.x * 255)) \(UInt(color.y * 255)) \(UInt(color.z * 255)) \(UInt(confidence))" }
-//}
-//
-//extension FaceUniforms: AsciiRepresentable {
-//    fileprivate var ascii: String { "\(vertexIndices.count) \(vertexIndices.map { String($0) }.joined(separator: " ") )" }
-//}
 
 extension Object3D: AsciiRepresentable {
     fileprivate func position(for index: Int) -> String {

@@ -20,6 +20,9 @@ struct ARDemoApp: App {
         Open3DSupport.sitePackagesURL.insertPythonPath()
         NumPySupport.sitePackagesURL.insertPythonPath()
 
+        UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor(Color.bone)]
+        UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor(Color.bone)]
+
         #if !targetEnvironment(simulator)
         guard ARWorldTrackingConfiguration.isSupported else {
             fatalError("""
@@ -44,7 +47,6 @@ struct ARDemoApp: App {
     var body: some Scene {
         WindowGroup {
             HomeView()
-                .accentColor(.red)
         }
     }
 }
