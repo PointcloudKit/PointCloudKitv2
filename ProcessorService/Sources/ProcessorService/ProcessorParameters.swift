@@ -59,7 +59,7 @@ extension ProcessorParameters.OutlierRemoval {
 
 extension ProcessorParameters.SurfaceReconstruction {
     public struct Poisson: Codable {
-        public var depth: Int = 11//9
+        public var depth: Int = 8
     }
 }
 

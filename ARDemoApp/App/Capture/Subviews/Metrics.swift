@@ -7,25 +7,16 @@
 
 import SwiftUI
 
-public struct MetricsView: View {
-    @Binding public var currentPointCount: Int
-    @Binding public var currentNormalCount: Int
-    @Binding public var currentFaceCount: Int
-    @Binding public var activity: Bool
+struct Metrics: View {
 
-    public init(
-        currentPointCount: Binding<Int>,
-        currentNormalCount: Binding<Int> = .constant(0),
-        currentFaceCount: Binding<Int> = .constant(0),
-        activity: Binding<Bool> = .constant(true)
-    ) {
-        self._currentPointCount = currentPointCount
-        self._currentNormalCount = currentNormalCount
-        self._currentFaceCount = currentFaceCount
-        self._activity = activity
-    }
+    // MARK: - Bindings
 
-    public var body: some View {
+    @Binding private(set) var currentPointCount: Int
+    @Binding private(set) var currentNormalCount: Int
+    @Binding private(set) var currentFaceCount: Int
+    @Binding private(set) var activity: Bool
+
+    var body: some View {
         HStack(alignment: .center) {
             VStack(alignment: .leading, spacing: 10) {
                 Label(

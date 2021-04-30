@@ -19,6 +19,7 @@ enum NodeIdentifier: String {
 final public class CaptureViewerModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     private var capture: PointCloudCapture
+
     @Published private var lastObject: Object3D?
     @Published private var object: Object3D?
     private let processor = ProcessorService()
@@ -103,7 +104,10 @@ final public class CaptureViewerModel: ObservableObject {
 
     private func convert(capture: PointCloudCapture) -> Future<Object3D, Never> {
         Future { promise in
-            let particles = capture.buffer.getMemoryRepresentationCopy(for: capture.count)
+            // Filter out the
+            let particles = capture.buffer.getMemoryRepresentationCopy(for: capture.count).filter { particle in
+                Int32(particle.confidence) >= capture.confidenceTreshold.rawValue
+            }
             let object = Object3D(vertices: particles.map(\.position),
                                   vertexConfidence: particles.map({ particle in UInt(particle.confidence) }),
                                   vertexColors: particles.map(\.color))

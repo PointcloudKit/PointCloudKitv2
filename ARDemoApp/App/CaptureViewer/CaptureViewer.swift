@@ -254,9 +254,11 @@ public struct CaptureViewer: View {
 
                 // Metrics
                 if !showProcessorParametersEditor {
-                    MetricsView(currentPointCount: $model.vertexCount,
-                                currentNormalCount: $model.normalCount,
-                                currentFaceCount: $model.triangleCount)
+                    // TODO use real data
+                    Metrics(currentPointCount: .constant(0),
+                            currentNormalCount: .constant(0),
+                            currentFaceCount: .constant(0),
+                            activity: .constant(true))
                 }
 
                 Spacer()

@@ -10,7 +10,7 @@ import MetalKit
 import ARKit
 
 // MARK: - drawRectResized
-extension PointCloudRendererService {
+extension RenderingService {
 
     public func resizeDrawRect(to size: CGSize) {
         viewportSize = size
@@ -53,7 +53,7 @@ extension PointCloudRendererService {
 }
 
 // MARK: - draw
-extension PointCloudRendererService {
+extension RenderingService {
 
     public func draw() {
         guard let renderDestination = renderDestination,
@@ -116,7 +116,7 @@ extension PointCloudRendererService {
 
     private func shouldAccumulate(frame: ARFrame) -> Bool {
         let cameraTransform = frame.camera.transform
-        return isAccumulating && (currentPointCount == 0
+        return capturing && (currentPointCount == 0
             || dot(cameraTransform.columns.2, lastCameraTransform.columns.2) <= cameraRotationThreshold
             || distance_squared(cameraTransform.columns.3, lastCameraTransform.columns.3) >= cameraTranslationThreshold)
     }

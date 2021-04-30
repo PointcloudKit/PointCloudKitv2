@@ -5,23 +5,41 @@ import ARKit
 import Combine
 import Common
 
-public final class PointCloudRendererService: ObservableObject {
+public enum ConfidenceTreshold: Int32, CaseIterable {
+    case low = 0, medium, high
+}
+
+public enum SamplingRate: Float, CaseIterable {
+    case slow = 0.2, regular = 1, fast = 1.5
+}
+
+public final class RenderingService: ObservableObject {
 
     // MARK: - Settings and Constants
 
     // Maximum number of points we store in the point cloud
-    let maxPoints = 409600 // Apples's default was 500k
+    let maxPoints = 524288 // 4096 * 128 // Apples's default was 500k
     // Number of sample points on the grid <=> How many point are sampled per frame
-    let numGridPoints = 500 // Apple's Default 500
+    let numGridPoints = 512 // Apple's Default 500
     // Particle's size in pixels
-    let particleSize: Float = 5 // Apple's Default 10
+    let particleSize: Float = 7 // Apple's Default 10
     let orientation = UIInterfaceOrientation.portrait
     // Camera's threshold values for detecting when the camera moves so that we can accumulate the points
-    let cameraRotationThreshold = cos(2 * .degreesToRadian)
-    let cameraTranslationThreshold: Float = pow(0.02, 2) // (meter-squared)
+    lazy var cameraRotationThreshold = Self.updateCameraRotationThreshold()
+    lazy var cameraTranslationThreshold = Self.updateCameraTranslationThreshold()
     // The max number of command buffers in flight
     let maxInFlightBuffers = 3
     lazy var rotateToARCamera = Self.makeRotateToARCameraMatrix(orientation: orientation)
+
+    private class func updateCameraRotationThreshold(with rate: SamplingRate = .regular) -> Float {
+        let degree = (2 * (1 / rate.rawValue))
+        return cos(degree * .degreesToRadian)
+    }
+
+    private class func updateCameraTranslationThreshold(with rate: SamplingRate = .regular) -> Float {
+        let meter = (0.02 * rate.rawValue)
+        return pow(meter, 2) // (meter-squared)
+    }
 
     // MARK: - Engine
 
@@ -70,7 +88,7 @@ public final class PointCloudRendererService: ObservableObject {
     lazy var pointCloudUniforms: PointCloudUniforms = {
         var uniforms = PointCloudUniforms()
         uniforms.maxPoints = Int32(maxPoints)
-        uniforms.confidenceThreshold = Int32(confidenceThreshold)
+        uniforms.confidenceThreshold = confidenceThreshold
         uniforms.particleSize = particleSize
         uniforms.cameraResolution = cameraResolution
         return uniforms
@@ -91,12 +109,48 @@ public final class PointCloudRendererService: ObservableObject {
     lazy var lastCameraTransform = sampleFrame.camera.transform
 
     // MARK: - Public Interfaces
-    @Published var isAccumulating: Bool = false
+    @Published public var running: Bool = false {
+        didSet {
+            switch running {
+            case true:
+                session.run(defaultARSessionConfiguration)
+            case false:
+                session.pause()
+            }
+        }
+    }
 
-    public var confidenceThreshold = 0 {
+    // A.k.a. accumulating
+    @Published public var capturing: Bool = false
+
+    @Published public var flush: Bool = false {
+        didSet {
+            if flush == true {
+                capturing = false
+                particlesBuffer.assign(Array(repeating: ParticleUniforms(), count: particlesBuffer.count))
+                currentPointCount = 0
+                currentPointIndex = 0
+                flush = false
+            }
+        }
+    }
+
+    public var confidenceThreshold = ConfidenceTreshold.medium {
         didSet {
             // apply the change for the shader
-            pointCloudUniforms.confidenceThreshold = Int32(confidenceThreshold)
+            pointCloudUniforms.confidenceThreshold = confidenceThreshold
+        }
+    }
+
+    public var horizontalSamplingRate: SamplingRate = .regular {
+        didSet {
+            cameraRotationThreshold = Self.updateCameraRotationThreshold(with: horizontalSamplingRate)
+        }
+    }
+
+    public var verticalSamplingRate: SamplingRate = .regular {
+        didSet {
+            cameraTranslationThreshold = Self.updateCameraTranslationThreshold(with: verticalSamplingRate)
         }
     }
 
@@ -144,6 +198,8 @@ public final class PointCloudRendererService: ObservableObject {
         depthStencilState = device.makeDepthStencilState(descriptor: depthStateDescriptor)!
 
         inFlightSemaphore = DispatchSemaphore(value: maxInFlightBuffers)
+        // Starts
+        running = true
     }
 
     // MARK: - AK Kit Session
@@ -153,45 +209,4 @@ public final class PointCloudRendererService: ObservableObject {
         configuration.frameSemantics = .sceneDepth
         return configuration
     }()
-
-    /// Start/Restart an AR session with the SceneDepth configuration
-    public func startSession() {
-        isAccumulating = false
-        if currentPointCount != 0 {
-            flushCapture()
-        }
-        // Create a world-tracking configuration, and
-        // enable the scene depth frame-semantic.
-
-        // start ARSession
-        session.run(defaultARSessionConfiguration)
-    }
-
-    /// Pause the AR session
-    public func pauseSession() {
-        session.pause()
-    }
-
-    /// Pause the AR session
-    public func resumeSession() {
-        session.run(defaultARSessionConfiguration)
-    }
-
-    // MARK: - Capture (Accumulation)
-
-    /// Stop accumulation (adding points to the current capture), but keep the AR session running
-    public func pauseCapture() {
-        isAccumulating = false
-    }
-
-    public func resumeCapture() {
-        isAccumulating = true
-    }
-
-    /// Pause accumulation and AR Session
-    public func flushCapture() {
-        particlesBuffer.assign(Array(repeating: ParticleUniforms(), count: particlesBuffer.count))
-        currentPointCount = 0
-        currentPointIndex = 0
-    }
 }

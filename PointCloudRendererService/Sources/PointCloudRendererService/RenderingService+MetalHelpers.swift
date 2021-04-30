@@ -10,7 +10,7 @@ import MetalKit
 import ARKit
 import Common
 
-extension PointCloudRendererService {
+extension RenderingService {
     func makeUnprojectionPipelineState() -> MTLRenderPipelineState? {
         guard let renderDestination = renderDestination,
               let vertexFunction = library.makeFunction(name: "unprojectVertex") else {

@@ -66,5 +66,4 @@ extension PointCloudCapture {
             /* * */ print(" <*> Time to run \(#function): \(Double(nanoTime) / 1_000_000) ms")
         }
     }
-
 }

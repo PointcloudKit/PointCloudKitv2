@@ -1,5 +1,5 @@
 //
-//  PointCloudRendererService+Asset.swift
+//  RenderingService+Asset.swift
 //  ARDemoApp
 //
 //  Created by Alexandre Camilleri on 25/03/2021.
@@ -12,6 +12,7 @@ import Common
 public struct PointCloudCapture {
     public var buffer: MetalBuffer<ParticleUniforms>
     public var count: Int
+    public var confidenceTreshold: ConfidenceTreshold
 
     public var stride: Int {
         buffer.stride
@@ -61,10 +62,11 @@ public struct PointCloudCapture {
     }
 }
 
-extension PointCloudRendererService {
-    public var capture: PointCloudCapture {
+extension RenderingService {
+    public func generateCapture() -> PointCloudCapture {
         PointCloudCapture(buffer: particlesBuffer,
-                          count: currentPointCount)
+                          count: currentPointCount,
+                          confidenceTreshold: confidenceThreshold)
     }
 }
 
