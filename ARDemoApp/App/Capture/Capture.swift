@@ -24,11 +24,10 @@ struct Capture: View {
     var body: some View {
         NavigationView {
             ZStack {
-                if navigateToCaptureViewer {
-                    NavigationLink(destination: CaptureViewer()
-                                    .environmentObject(CaptureViewerModel(capture: renderingService.generateCapture())),
-                                   isActive: $navigateToCaptureViewer) {  }
-                }
+                // Passing rendering service but just for having a way to generate a capture
+                // cause if I generate it here it's making work happen directly, so should find a way to "pass a way to get it"
+                NavigationLink(destination: CaptureViewer().environmentObject(renderingService),
+                               isActive: $navigateToCaptureViewer) { }
 
                 CaptureRendering(renderingService: renderingService,
                                  showCoachingOverlay: $showCoachingOverlay)

@@ -7,15 +7,15 @@
 
 import Foundation
 
-public class ProcessorParameters: Codable, ObservableObject {
-    @Published public var voxelDownSampling = VoxelDownSampling()
-    @Published public var outlierRemoval = OutlierRemoval()
-    @Published public var normalsEstimation = NormalsEstimation()
-    @Published public var surfaceReconstruction = SurfaceReconstruction()
+public struct ProcessorParameters: Codable {
+    public var voxelDownSampling = VoxelDownSampling()
+    public var outlierRemoval = OutlierRemoval()
+    public var normalsEstimation = NormalsEstimation()
+    public var surfaceReconstruction = SurfaceReconstruction()
 
     public init() {}
 
-    public required init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         voxelDownSampling = try container.decode(VoxelDownSampling.self, forKey: .voxelDownSampling)
         outlierRemoval = try container.decode(OutlierRemoval.self, forKey: .outlierRemoval)
@@ -23,9 +23,11 @@ public class ProcessorParameters: Codable, ObservableObject {
         surfaceReconstruction = try container.decode(SurfaceReconstruction.self, forKey: .surfaceReconstruction)
     }
 
-    public func restoreBaseValues() {
-        self.voxelDownSampling = VoxelDownSampling()
-        self.outlierRemoval = OutlierRemoval()
+    public mutating func restoreBaseValues() {
+        voxelDownSampling = VoxelDownSampling()
+        outlierRemoval = OutlierRemoval()
+        normalsEstimation = NormalsEstimation()
+        surfaceReconstruction = SurfaceReconstruction()
     }
 }
 
@@ -63,8 +65,14 @@ extension ProcessorParameters.SurfaceReconstruction {
     }
 }
 
-// MARK: - Custom Codable conformance due to @published
+// MARK: - Custom Codable
 extension ProcessorParameters {
+    enum CodingKeys: CodingKey {
+        case voxelDownSampling
+        case outlierRemoval
+        case normalsEstimation
+        case surfaceReconstruction
+    }
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
@@ -72,12 +80,5 @@ extension ProcessorParameters {
         try container.encode(outlierRemoval, forKey: .outlierRemoval)
         try container.encode(normalsEstimation, forKey: .normalsEstimation)
         try container.encode(surfaceReconstruction, forKey: .surfaceReconstruction)
-    }
-
-    enum CodingKeys: CodingKey {
-        case voxelDownSampling
-        case outlierRemoval
-        case normalsEstimation
-        case surfaceReconstruction
     }
 }

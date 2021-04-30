@@ -7,19 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8E8F5BA42616F45B005203E0 /* CaptureViewer in Frameworks */ = {isa = PBXBuildFile; productRef = 8E8F5BA32616F45B005203E0 /* CaptureViewer */; };
-		EE45170F26380BC5001C2A04 /* ProcessorService in Frameworks */ = {isa = PBXBuildFile; productRef = EE45170E26380BC5001C2A04 /* ProcessorService */; };
 		EE4EC387261EF10A00B2D858 /* Common in Frameworks */ = {isa = PBXBuildFile; productRef = EE4EC386261EF10A00B2D858 /* Common */; };
 		EE53FD63263BA75300F6C86F /* FlashlightService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE53FD62263BA75300F6C86F /* FlashlightService.swift */; };
 		EE53FD65263BAF2900F6C86F /* Metrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE53FD64263BAF2900F6C86F /* Metrics.swift */; };
 		EE53FD6A263BB02B00F6C86F /* CaptureViewerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE53FD68263BB02B00F6C86F /* CaptureViewerModel.swift */; };
 		EE53FD6B263BB02B00F6C86F /* CaptureViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE53FD67263BB02B00F6C86F /* CaptureViewer.swift */; };
 		EE53FD6C263BB02B00F6C86F /* PointCloudCapture+PointCloudNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE53FD69263BB02B00F6C86F /* PointCloudCapture+PointCloudNode.swift */; };
-		EE53FD70263BB06400F6C86F /* ProcessorParameters+UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE53FD6E263BB06300F6C86F /* ProcessorParameters+UserDefaults.swift */; };
 		EE53FD71263BB06400F6C86F /* ProcessorParametersEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE53FD6F263BB06400F6C86F /* ProcessorParametersEditor.swift */; };
 		EE53FD76263BB2ED00F6C86F /* CaptureRendering+CoachingOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE53FD73263BB2ED00F6C86F /* CaptureRendering+CoachingOverlay.swift */; };
 		EE53FD77263BB2ED00F6C86F /* CaptureRendering+Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE53FD74263BB2ED00F6C86F /* CaptureRendering+Coordinator.swift */; };
 		EE53FD78263BB2ED00F6C86F /* CaptureRendering.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE53FD75263BB2ED00F6C86F /* CaptureRendering.swift */; };
+		EE53FD7A263BCD4100F6C86F /* SceneRenderingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE53FD79263BCD4100F6C86F /* SceneRenderingService.swift */; };
+		EE53FD7F263BD46600F6C86F /* ProcessorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE53FD7E263BD46600F6C86F /* ProcessorService.swift */; };
+		EE53FD83263BD47900F6C86F /* ProcessorParameters+RawRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE53FD81263BD47900F6C86F /* ProcessorParameters+RawRepresentable.swift */; };
+		EE53FD84263BD47900F6C86F /* ProcessorParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE53FD82263BD47900F6C86F /* ProcessorParameters.swift */; };
+		EE53FD87263BD51E00F6C86F /* PythonKit in Frameworks */ = {isa = PBXBuildFile; productRef = EE53FD86263BD51E00F6C86F /* PythonKit */; };
+		EE53FD8A263BD60800F6C86F /* Open3D-iOS in Frameworks */ = {isa = PBXBuildFile; productRef = EE53FD89263BD60800F6C86F /* Open3D-iOS */; };
+		EE53FD8C263BEA1400F6C86F /* ExportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE53FD8B263BEA1400F6C86F /* ExportService.swift */; };
 		EE5F3A87260AD18700945107 /* ARDemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5F3A86260AD18700945107 /* ARDemoApp.swift */; };
 		EE5F3A89260AD18700945107 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5F3A88260AD18700945107 /* HomeView.swift */; };
 		EE5F3A8B260AD18800945107 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EE5F3A8A260AD18800945107 /* Assets.xcassets */; };
@@ -50,19 +54,21 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		8E8F5B8F2616F230005203E0 /* CaptureViewer */ = {isa = PBXFileReference; lastKnownFileType = folder; path = CaptureViewer; sourceTree = "<group>"; };
-		EE45170A26380B63001C2A04 /* ProcessorService */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ProcessorService; sourceTree = "<group>"; };
 		EE4EC37F261EF0DE00B2D858 /* Common */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Common; sourceTree = "<group>"; };
 		EE53FD62263BA75300F6C86F /* FlashlightService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashlightService.swift; sourceTree = "<group>"; };
 		EE53FD64263BAF2900F6C86F /* Metrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Metrics.swift; sourceTree = "<group>"; };
 		EE53FD67263BB02B00F6C86F /* CaptureViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureViewer.swift; sourceTree = "<group>"; };
 		EE53FD68263BB02B00F6C86F /* CaptureViewerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureViewerModel.swift; sourceTree = "<group>"; };
 		EE53FD69263BB02B00F6C86F /* PointCloudCapture+PointCloudNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PointCloudCapture+PointCloudNode.swift"; sourceTree = "<group>"; };
-		EE53FD6E263BB06300F6C86F /* ProcessorParameters+UserDefaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ProcessorParameters+UserDefaults.swift"; sourceTree = "<group>"; };
 		EE53FD6F263BB06400F6C86F /* ProcessorParametersEditor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProcessorParametersEditor.swift; sourceTree = "<group>"; };
 		EE53FD73263BB2ED00F6C86F /* CaptureRendering+CoachingOverlay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CaptureRendering+CoachingOverlay.swift"; sourceTree = "<group>"; };
 		EE53FD74263BB2ED00F6C86F /* CaptureRendering+Coordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CaptureRendering+Coordinator.swift"; sourceTree = "<group>"; };
 		EE53FD75263BB2ED00F6C86F /* CaptureRendering.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaptureRendering.swift; sourceTree = "<group>"; };
+		EE53FD79263BCD4100F6C86F /* SceneRenderingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneRenderingService.swift; sourceTree = "<group>"; };
+		EE53FD7E263BD46600F6C86F /* ProcessorService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessorService.swift; sourceTree = "<group>"; };
+		EE53FD81263BD47900F6C86F /* ProcessorParameters+RawRepresentable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ProcessorParameters+RawRepresentable.swift"; sourceTree = "<group>"; };
+		EE53FD82263BD47900F6C86F /* ProcessorParameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProcessorParameters.swift; sourceTree = "<group>"; };
+		EE53FD8B263BEA1400F6C86F /* ExportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportService.swift; sourceTree = "<group>"; };
 		EE5F3A83260AD18700945107 /* PointCloudKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PointCloudKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE5F3A86260AD18700945107 /* ARDemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARDemoApp.swift; sourceTree = "<group>"; };
 		EE5F3A88260AD18700945107 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -89,9 +95,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				EE4EC387261EF10A00B2D858 /* Common in Frameworks */,
-				EE45170F26380BC5001C2A04 /* ProcessorService in Frameworks */,
 				EEB00594262ED25800B7C9D2 /* PointCloudRendererService in Frameworks */,
-				8E8F5BA42616F45B005203E0 /* CaptureViewer in Frameworks */,
+				EE53FD87263BD51E00F6C86F /* PythonKit in Frameworks */,
+				EE53FD8A263BD60800F6C86F /* Open3D-iOS in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -115,10 +121,8 @@
 		8E8F5BA22616F45B005203E0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				EE45170A26380B63001C2A04 /* ProcessorService */,
 				EE849103262ED0DC00F231B1 /* PointCloudRendererService */,
 				EE4EC37F261EF0DE00B2D858 /* Common */,
-				8E8F5B8F2616F230005203E0 /* CaptureViewer */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -127,6 +131,9 @@
 			isa = PBXGroup;
 			children = (
 				EE53FD62263BA75300F6C86F /* FlashlightService.swift */,
+				EE53FD79263BCD4100F6C86F /* SceneRenderingService.swift */,
+				EE53FD80263BD46F00F6C86F /* Processor */,
+				EE53FD8B263BEA1400F6C86F /* ExportService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -145,7 +152,6 @@
 		EE53FD6D263BB04100F6C86F /* Subview */ = {
 			isa = PBXGroup;
 			children = (
-				EE53FD6E263BB06300F6C86F /* ProcessorParameters+UserDefaults.swift */,
 				EE53FD6F263BB06400F6C86F /* ProcessorParametersEditor.swift */,
 			);
 			path = Subview;
@@ -159,6 +165,16 @@
 				EE53FD74263BB2ED00F6C86F /* CaptureRendering+Coordinator.swift */,
 			);
 			path = CaptureRendering;
+			sourceTree = "<group>";
+		};
+		EE53FD80263BD46F00F6C86F /* Processor */ = {
+			isa = PBXGroup;
+			children = (
+				EE53FD7E263BD46600F6C86F /* ProcessorService.swift */,
+				EE53FD82263BD47900F6C86F /* ProcessorParameters.swift */,
+				EE53FD81263BD47900F6C86F /* ProcessorParameters+RawRepresentable.swift */,
+			);
+			path = Processor;
 			sourceTree = "<group>";
 		};
 		EE5F3A7A260AD18700945107 = {
@@ -281,8 +297,8 @@
 			packageProductDependencies = (
 				EE4EC386261EF10A00B2D858 /* Common */,
 				EEB00593262ED25800B7C9D2 /* PointCloudRendererService */,
-				8E8F5BA32616F45B005203E0 /* CaptureViewer */,
-				EE45170E26380BC5001C2A04 /* ProcessorService */,
+				EE53FD86263BD51E00F6C86F /* PythonKit */,
+				EE53FD89263BD60800F6C86F /* Open3D-iOS */,
 			);
 			productName = ARDemoApp;
 			productReference = EE5F3A83260AD18700945107 /* PointCloudKit.app */;
@@ -356,6 +372,8 @@
 			);
 			mainGroup = EE5F3A7A260AD18700945107;
 			packageReferences = (
+				EE53FD85263BD51E00F6C86F /* XCRemoteSwiftPackageReference "PythonKit" */,
+				EE53FD88263BD60800F6C86F /* XCRemoteSwiftPackageReference "Open3D-iOS" */,
 			);
 			productRefGroup = EE5F3A84260AD18700945107 /* Products */;
 			projectDirPath = "";
@@ -422,7 +440,10 @@
 			files = (
 				EE5F3A89260AD18700945107 /* HomeView.swift in Sources */,
 				EEC0D439260D9B140093141F /* Capture.swift in Sources */,
+				EE53FD8C263BEA1400F6C86F /* ExportService.swift in Sources */,
+				EE53FD7F263BD46600F6C86F /* ProcessorService.swift in Sources */,
 				EE53FD6A263BB02B00F6C86F /* CaptureViewerModel.swift in Sources */,
+				EE53FD7A263BCD4100F6C86F /* SceneRenderingService.swift in Sources */,
 				EE6A3DA226144FAD00D0203B /* CaptureToggleStyle.swift in Sources */,
 				EE53FD6C263BB02B00F6C86F /* PointCloudCapture+PointCloudNode.swift in Sources */,
 				EE53FD78263BB2ED00F6C86F /* CaptureRendering.swift in Sources */,
@@ -430,8 +451,9 @@
 				EE53FD63263BA75300F6C86F /* FlashlightService.swift in Sources */,
 				EE53FD65263BAF2900F6C86F /* Metrics.swift in Sources */,
 				EE53FD77263BB2ED00F6C86F /* CaptureRendering+Coordinator.swift in Sources */,
-				EE53FD70263BB06400F6C86F /* ProcessorParameters+UserDefaults.swift in Sources */,
+				EE53FD83263BD47900F6C86F /* ProcessorParameters+RawRepresentable.swift in Sources */,
 				EE53FD76263BB2ED00F6C86F /* CaptureRendering+CoachingOverlay.swift in Sources */,
+				EE53FD84263BD47900F6C86F /* ProcessorParameters.swift in Sources */,
 				EE53FD6B263BB02B00F6C86F /* CaptureViewer.swift in Sources */,
 				EE5F3A87260AD18700945107 /* ARDemoApp.swift in Sources */,
 				EE7AE5C8263AB0A500D60B95 /* CaptureControl.swift in Sources */,
@@ -759,18 +781,39 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		EE53FD85263BD51E00F6C86F /* XCRemoteSwiftPackageReference "PythonKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kewlbear/PythonKit.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+		EE53FD88263BD60800F6C86F /* XCRemoteSwiftPackageReference "Open3D-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kewlbear/Open3D-iOS.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
-		8E8F5BA32616F45B005203E0 /* CaptureViewer */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = CaptureViewer;
-		};
-		EE45170E26380BC5001C2A04 /* ProcessorService */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = ProcessorService;
-		};
 		EE4EC386261EF10A00B2D858 /* Common */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Common;
+		};
+		EE53FD86263BD51E00F6C86F /* PythonKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EE53FD85263BD51E00F6C86F /* XCRemoteSwiftPackageReference "PythonKit" */;
+			productName = PythonKit;
+		};
+		EE53FD89263BD60800F6C86F /* Open3D-iOS */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EE53FD88263BD60800F6C86F /* XCRemoteSwiftPackageReference "Open3D-iOS" */;
+			productName = "Open3D-iOS";
 		};
 		EEB00593262ED25800B7C9D2 /* PointCloudRendererService */ = {
 			isa = XCSwiftPackageProductDependency;

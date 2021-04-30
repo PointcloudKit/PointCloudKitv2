@@ -9,34 +9,58 @@ import SwiftUI
 import SceneKit
 import Common
 import ProcessorService
+import PointCloudRendererService
 
 public struct CaptureViewer: View {
-    @StateObject private var processorParameters = ProcessorParameters.fromUserDefaultOrNew
+    @AppStorage(ProcessorParameters.storageKey) private var processorParameters = ProcessorParameters()
 
-    @EnvironmentObject var model: CaptureViewerModel
+    @StateObject var sceneRenderingService = SceneRenderingService()
+    @StateObject var processorService = ProcessorService()
+    @StateObject var exportService = ExportService()
 
-    @State private var showingExportActionSheet = false
-    @State private var showingSCNExporter = false
-    @State private var showingPLYExporter = false
+    @State var capture: PointCloudCapture
+    @State var scene: SCNScene
+
+    @State var lastObject: Object3D?
+    @State var object: Object3D
+    @State var undoAvailable: Bool = false
+
+    //    func undo() {
+    //        processing = true
+    //        DispatchQueue.global(qos: .userInteractive).async { [weak self] in
+    //            guard let self = self, let lastObject = self.lastObject else { return }
+    //            self.capture.buffer.assign(with: lastObject.particles())
+    //            DispatchQueue.main.async {
+    //                self.object = lastObject
+    //                self.lastObject = nil
+    //                self.processing = false
+    //            }
+    //        }
+    //    }
+
+//    private(set) var capture: PointCloudCapture
+
+    @State private var showExportActionSheet = false
+    @State private var exportSCN = false
+    @State private var exportPLY = false
     // Main Parameters view
     @State private var showParameters: Bool = false
     @State private var showParameterControls: Bool = false
     @State private var showProcessorParametersEditor: Bool = false
 
-    public init() {}
-
     var exportScnButton: ActionSheet.Button {
-        ActionSheet.Button.default(Text("SCN (Apple's SceneKit)")) { showingSCNExporter = true }
+        ActionSheet.Button.default(Text("SCN (Apple's SceneKit)")) { exportSCN = true }
     }
 
     var exportPlyButton: ActionSheet.Button {
-        ActionSheet.Button.default(Text("PLY (Polygon File Format)")) { showingPLYExporter = true }
+        ActionSheet.Button.default(Text("PLY (Polygon File Format)")) { exportPLY = true }
     }
 
     var exportActionSheet: ActionSheet {
         var exportButtons = [exportScnButton]
 
-        if model.exportPlyAvailable {
+        // TODO check if ply is ready to beexported
+        if true {
             exportButtons.append(exportPlyButton)
         }
         exportButtons.append(.cancel())
@@ -46,8 +70,8 @@ public struct CaptureViewer: View {
 
     // MARK: - Paramters
 
-    private var processorsEnabled: Bool { !model.processing && !showProcessorParametersEditor }
-    private var reconstructionEnabled: Bool { processorsEnabled && model.normalsAvailable }
+    private var processorsEnabled: Bool { !processorService.processing && !showProcessorParametersEditor }
+    private var reconstructionEnabled: Bool { processorsEnabled && object.hasVertexNormals }
 
     var transformingParameters: some View {
         HStack {
@@ -64,7 +88,8 @@ public struct CaptureViewer: View {
                 HStack {
                     // MARK: Surface Reconstruction
                     Button(action: {
-                        model.normalsEstimation(parameters: processorParameters.normalsEstimation)
+                        // Add an Object manager or something that keep track of current object, undos, and do these operations. Then replace these by call to that manager for actions. Manager emcompas the service + state
+                        processorService.normalsEstimation(for: object, parameters: processorParameters.normalsEstimation)
                     }, label: {
                         Label(
                             title: { Text("Normal Estimation").foregroundColor(.bone) },
@@ -80,7 +105,7 @@ public struct CaptureViewer: View {
 
                     // MARK: Surface Reconstruction
                     Button(action: {
-                        model.poissonSurfaceReconstruction(parameters: processorParameters.surfaceReconstruction.poisson)
+                        processorService.poissonSurfaceReconstruction(for: object, parameters: processorParameters.surfaceReconstruction.poisson)
                     }, label: {
                         Label(
                             title: { Text("Surface Reconstruction").foregroundColor(.bone) },
@@ -112,46 +137,40 @@ public struct CaptureViewer: View {
                 HStack {
                     // MARK: Voxel DownSampling
                     Button(action: {
-                        model.voxelDownsampling(parameters: processorParameters.voxelDownSampling)
+                        processorService.voxelDownsampling(for: object, parameters: processorParameters.voxelDownSampling)
                     }, label: {
-                        Label(
-                            title: { Text("Voxel DownSampling").foregroundColor(.bone) },
-                            icon: {
+                        Label(title: { Text("Voxel DownSampling").foregroundColor(.bone) },
+                              icon: {
                                 Image(systemName: "cube")
                                     .font(.body)
                                     .foregroundColor(processorsEnabled ? .amazon : .spaceGray)
-                            }
-                        )
+                              })
                     })
                     .disabled(!processorsEnabled)
 
                     // MARK: Statistical Outlier Removal
                     Button(action: {
-                        model.statisticalOutlierRemoval(parameters: processorParameters.outlierRemoval.statistical)
+                        processorService.statisticalOutlierRemoval(for: object, parameters: processorParameters.outlierRemoval.statistical)
                     }, label: {
-                        Label(
-                            title: { Text("Statistical O.R.").foregroundColor(.bone) },
-                            icon: {
+                        Label(title: { Text("Statistical O.R.").foregroundColor(.bone) },
+                              icon: {
                                 Image(systemName: "aqi.high")
                                     .font(.body)
                                     .foregroundColor(processorsEnabled ? .amazon : .spaceGray)
-                            }
-                        )
+                              })
                     })
                     .disabled(!processorsEnabled)
 
                     // MARK: Radius Outlier Removal
                     Button(action: {
-                        model.radiusOutlierRemoval(parameters: processorParameters.outlierRemoval.radius)
+                        processorService.radiusOutlierRemoval(for: object, parameters: processorParameters.outlierRemoval.radius)
                     }, label: {
-                        Label(
-                            title: { Text("Radius O.R.").foregroundColor(.bone) },
-                            icon: {
+                        Label(title: { Text("Radius O.R.").foregroundColor(.bone) },
+                              icon: {
                                 Image(systemName: "aqi.medium")
                                     .font(.body)
                                     .foregroundColor(processorsEnabled ? .amazon : .spaceGray)
-                            }
-                        )
+                              })
                     })
                     .disabled(!processorsEnabled)
                 }
@@ -173,20 +192,20 @@ public struct CaptureViewer: View {
             ScrollView(.horizontal, showsIndicators: false, content: {
                 HStack {
 
-                    // MARK: Undo
-                    Button(action: {
-                        model.undo()
-                    }, label: {
-                        Label(
-                            title: { Text("Undo").foregroundColor(model.undoAvailable && processorsEnabled ? .bone : .spaceGray) },
-                            icon: {
-                                Image(systemName: "arrow.uturn.backward.square")
-                                    .font(.body)
-                                    .foregroundColor(model.undoAvailable && processorsEnabled  ? .amazon : .spaceGray)
-                            }
-                        )
-                    })
-                    .disabled(!model.undoAvailable || !processorsEnabled)
+//                    // MARK: Undo
+//                    Button(action: {
+//                        model.undo()
+//                    }, label: {
+//                        Label(
+//                            title: { Text("Undo").foregroundColor(model.undoAvailable && processorsEnabled ? .bone : .spaceGray) },
+//                            icon: {
+//                                Image(systemName: "arrow.uturn.backward.square")
+//                                    .font(.body)
+//                                    .foregroundColor(model.undoAvailable && processorsEnabled  ? .amazon : .spaceGray)
+//                            }
+//                        )
+//                    })
+//                    .disabled(!model.undoAvailable || !processorsEnabled)
 
                     // MARK: Processing Parameters
                     Button(action: {
@@ -228,21 +247,21 @@ public struct CaptureViewer: View {
 
             Button(action: {
                 withAnimation {
-                    showingExportActionSheet = true
+                    showExportActionSheet = true
                 }
             }, label: {
                 Image(systemName: "square.and.arrow.up")
                     .font(.system(size: 42, weight: .regular))
-                    .foregroundColor(showParameters || model.processing ? .spaceGray : .bone)
+                    .foregroundColor(showParameters || processorService.processing ? .spaceGray : .bone)
             })
-            .disabled(showParameters || model.processing)
+            .disabled(showParameters || processorService.processing)
         }
     }
 
     public var body: some View {
         ZStack {
-            SceneView(scene: model.scene,
-                      pointOfView: model.cameraNode,
+            SceneView(scene: scene,
+                      pointOfView: scene.rootNode.childNode(withName: NodeIdentifier.camera.rawValue, recursively: false),
                       options: [
                         .rendersContinuously,
                         .allowsCameraControl,
@@ -254,88 +273,90 @@ public struct CaptureViewer: View {
 
                 // Metrics
                 if !showProcessorParametersEditor {
-                    // TODO use real data
-                    Metrics(currentPointCount: .constant(0),
-                            currentNormalCount: .constant(0),
-                            currentFaceCount: .constant(0),
-                            activity: .constant(true))
+                    Metrics(currentPointCount: object.vertices.count,
+                            currentNormalCount: object.vertexNormals.count,
+                            currentFaceCount: object.triangles.count,
+                            activity: true)
                 }
 
                 Spacer()
 
-                ProgressView("Rendering...")
-                    .padding(20)
-                    .background(Color.black.opacity(0.8))
-                    .cornerRadius(10)
-                    .hiddenConditionally(!model.rendering)
-                    .foregroundColor(.bone)
+                if sceneRenderingService.rendering {
+                    ProgressView("Rendering...")
+                        .padding(20)
+                        .background(Color.black.opacity(0.8))
+                        .cornerRadius(10)
+                        .foregroundColor(.bone)
+                }
 
-                ProgressView("Processing...")
-                    .padding(20)
-                    .background(Color.black.opacity(0.8))
-                    .cornerRadius(10)
-                    .hiddenConditionally(!model.processing)
-                    .foregroundColor(.bone)
 
-                if showingSCNExporter {
-                    ProgressView("Exporting SCN...", value: model.exportProgress, total: 1)
-                        .hiddenConditionally(!model.exporting)
-                        .fileExporter(isPresented: $showingSCNExporter,
-                                      document: model.scnFile(),
+                if processorService.processing {
+                    ProgressView("Processing...")
+                        .padding(20)
+                        .background(Color.black.opacity(0.8))
+                        .cornerRadius(10)
+                        .foregroundColor(.bone)
+                }
+
+//                if showingSCNExporter {
+//                    ProgressView("Exporting SCN...", value: model.exportProgress, total: 1)
+//                        .hiddenConditionally(!model.exporting)
+//                        .fileExporter(isPresented: $showingSCNExporter,
+//                                      document: model.scnFile(),
+//                                      contentType: .sceneKitScene,
+                //                                      onCompletion: { _ in })
+                //                        .foregroundColor(.bone)
+                //                }
+
+                if exportService.exporting {
+                    ProgressView("\(exportService.info)", value: exportService.exportProgress, total: 1)
+                        .fileExporter(isPresented: $exportPLY,
+                                      document: exportService.generatePLYFile(from: object),
+                                      contentType: .polygon,
+                                      onCompletion: { _ in })
+                        .fileExporter(isPresented: $exportSCN,
+                                      document: exportService.generateSCNFile(from: sceneRenderingService.sc),
                                       contentType: .sceneKitScene,
                                       onCompletion: { _ in })
                         .foregroundColor(.bone)
                 }
-                if showingPLYExporter {
-                    ProgressView("Exporting PLY...", value: model.exportProgress, total: 1)
-                        .hiddenConditionally(!model.exporting)
-                        .fileExporter(isPresented: $showingPLYExporter,
-                                      document: model.plyFile(),
-                                      contentType: .polygon,
-                                      onCompletion: { _ in })
-                        .foregroundColor(.bone)
-                }
-
-                // Parameters
-                VStack {
-
-                    // Toggleable parameters list from the Controls section left bottom button
-                    if showParameters {
-                        if showProcessorParametersEditor {
-                            ProcessorParametersEditor()
-                                .environmentObject(processorParameters)
-                                .environmentObject(ProcessorParametersEditorModel(shown: $showProcessorParametersEditor))
-                                .padding(.horizontal, 20)
-                                .padding(.vertical, 10)
-                                .transition(.moveAndFade)
-                        }
-
-                        if !showProcessorParametersEditor {
-                            transformingParameters
-                                .padding(.horizontal, 20)
-                                .padding(.top, 10)
-                                .transition(.moveAndFade)
-                            cleaningParameters
-                                .padding(.horizontal, 20)
-                                .transition(.moveAndFade)
-                            genericParameters
-                                .padding(.horizontal, 20)
-                                .transition(.moveAndFade)
-                        }
-                    }
-
-                    if !showProcessorParametersEditor {
-                        // Controls Section at the bottom of the screen
-                        controlsSection
-                            .padding(.top, 10)
-                            .padding(.horizontal, 20)
-                    }
-                }
-                .background(Color.black.opacity(0.8))
-
             }
+
+            // Parameters
+            VStack {
+
+                // Toggleable parameters list from the Controls section left bottom button
+                if showParameters {
+                    if showProcessorParametersEditor {
+                        ProcessorParametersEditor(parameters: $processorParameters)
+                            .padding(.horizontal, 20)
+                            .padding(.vertical, 10)
+                            .transition(.moveAndFade)
+                    }
+
+                    transformingParameters
+                        .padding(.horizontal, 20)
+                        .padding(.top, 10)
+                        .transition(.moveAndFade)
+                    cleaningParameters
+                        .padding(.horizontal, 20)
+                        .transition(.moveAndFade)
+                    genericParameters
+                        .padding(.horizontal, 20)
+                        .transition(.moveAndFade)
+                }
+
+                if !showProcessorParametersEditor {
+                    // Controls Section at the bottom of the screen
+                    controlsSection
+                        .padding(.top, 10)
+                        .padding(.horizontal, 20)
+                }
+            }
+            .background(Color.black.opacity(0.8))
+
         }
-        .actionSheet(isPresented: $showingExportActionSheet, content: {
+        .actionSheet(isPresented: $showExportActionSheet, content: {
             exportActionSheet
         })
         .navigationBarTitle("Viewer", displayMode: .inline)

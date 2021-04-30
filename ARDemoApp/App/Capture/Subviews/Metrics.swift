@@ -11,10 +11,10 @@ struct Metrics: View {
 
     // MARK: - Bindings
 
-    @Binding private(set) var currentPointCount: Int
-    @Binding private(set) var currentNormalCount: Int
-    @Binding private(set) var currentFaceCount: Int
-    @Binding private(set) var activity: Bool
+    private(set) var currentPointCount: Int
+    private(set) var currentNormalCount: Int
+    private(set) var currentFaceCount: Int
+    private(set) var activity: Bool
 
     var body: some View {
         HStack(alignment: .center) {

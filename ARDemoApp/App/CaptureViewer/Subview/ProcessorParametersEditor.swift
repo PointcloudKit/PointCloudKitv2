@@ -10,19 +10,9 @@ import SceneKit
 import Common
 import ProcessorService
 
-// MARK: - Processing Parameters
-
-final class ProcessorParametersEditorModel: ObservableObject {
-    @Binding var shown: Bool
-
-    init(shown: Binding<Bool>) {
-        self._shown = shown
-    }
-}
-
 struct ProcessorParametersEditor: View {
-    @EnvironmentObject var model: ProcessorParametersEditorModel
-    @EnvironmentObject var parameters: ProcessorParameters
+
+    @Binding var parameters: ProcessorParameters
 
     var surfaceReconstructionSection: some View {
         VStack {
@@ -142,30 +132,6 @@ struct ProcessorParametersEditor: View {
 
     var generalSection: some View {
         HStack {
-            Button(
-                action: {
-                    DispatchQueue.main.async {
-                        parameters.writeToUserDefault()
-                    }
-                    // Dismiss
-                    withAnimation {
-                        model.shown = false
-                    }
-                },
-                label: {
-                    Label(
-                        title: { Text("Done").foregroundColor(.bone) },
-                        icon: {
-                            Image(systemName: "chevron.down.square")
-                                .font(.title3)
-                                .foregroundColor(.amazon)
-                        }
-                    )
-                }
-            )
-
-            Spacer()
-
             Button(
                 action: {
                     parameters.restoreBaseValues()
