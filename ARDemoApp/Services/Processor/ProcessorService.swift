@@ -10,9 +10,9 @@ import PythonSupport
 import PythonKit
 import LinkPython
 
-public typealias O3DPointCloud = PythonObject
-public typealias O3DTriangleMeshes = PythonObject
-typealias O3DThreadState = UnsafeMutableRawPointer
+public typealias Open3DPointCloud = PythonObject
+public typealias Open3DTriangleMeshes = PythonObject
+typealias Open3DThreadState = UnsafeMutableRawPointer
 
 public enum ProcessorServiceError: Error {
     case unknown
@@ -32,20 +32,54 @@ public enum FaceProcessor {
 }
 
 final public class ProcessorService {
-
     let o3d = Python.import("open3d")
     let numpy = Python.import("numpy")
-    private var tstate: O3DThreadState?
 
-    public init() {
-        #if DEBUG
-        o3d.utility.VerbosityContextManager(o3d.utility.VerbosityLevel.Debug)
-        #endif
+    private var tstate: Open3DThreadState?
+
+    // MARK: - Point Cloud Processing operations - Parameters are from the `ProcessorParameters` in Model
+    func voxelDownsampling(
+        of object: Object3D,
+        with parameters: ProcessorParameters.VoxelDownSampling
+    ) -> Future<Object3D, ProcessorServiceError> {
+        process(object, with: [VertexProcessor.voxelDownSampling(voxelSize: parameters.voxelSize)])
+    }
+
+    func statisticalOutlierRemoval(
+        of object: Object3D,
+        with parameters: ProcessorParameters.OutlierRemoval.Statistical
+    ) -> Future<Object3D, ProcessorServiceError> {
+        process(object, with: [VertexProcessor.statisticalOutlierRemoval(neighbors: parameters.neighbors,
+                                                                         stdRatio: parameters.stdRatio)])
+    }
+
+    func radiusOutlierRemoval(
+        of object: Object3D,
+        with parameters: ProcessorParameters.OutlierRemoval.Radius
+    ) -> Future<Object3D, ProcessorServiceError> {
+        process(object, with: [VertexProcessor.radiusOutlierRemoval(pointsCount: parameters.pointsCount,
+                                                                    radius: parameters.radius)])
+    }
+
+    func normalsEstimation(
+        of object: Object3D,
+        with parameters: ProcessorParameters.NormalsEstimation
+    ) -> Future<Object3D, ProcessorServiceError> {
+        process(object, with: [VertexProcessor.normalsEstimation(radius: parameters.radius,
+                                                                 maxNearestNeighbors: parameters.maxNearestNeighbors)])
+    }
+
+    func poissonSurfaceReconstruction(
+        of object: Object3D,
+        with parameters: ProcessorParameters.SurfaceReconstruction.Poisson
+    ) -> Future<Object3D, ProcessorServiceError> {
+        // FAUT KI YE LE NORMAL
+        process(object, with: [FaceProcessor.poissonSurfaceReconstruction(depth: parameters.depth)])
     }
 
     // MARK: - Open3D helpers
 
-    public func process(_ input: PLYFile, with processors: [VertexProcessor]) -> Future<Object3D, ProcessorServiceError> {
+   private func process(_ object: Object3D, with processors: [VertexProcessor]) -> Future<Object3D, ProcessorServiceError> {
         self.tstate = PyEval_SaveThread()
         return Future { [weak self] promise in
             guard let self = self else {
@@ -62,12 +96,15 @@ final public class ProcessorService {
                 PyGILState_Release(gstate)
             }
 
-            // Generate TMP file
-            guard let plyFileURL = try? input.writeTemporaryFile() else {
-                return promise(.failure(.temporaryFile))
-            }
-            // Load PointCloud from TMP file into Open3D
-            var pointCloud = self.o3d.io.read_point_cloud(plyFileURL.path)
+            // convert Object3D to Open3D pointcloud
+            var pointCloud = self.convertObject3DPointCloud(object)
+
+//            // Generate TMP file
+//            guard let plyFileURL = try? input.writeTemporaryFile() else {
+//                return promise(.failure(.temporaryFile))
+//            }
+//            // Load PointCloud from TMP file into Open3D
+//            var pointCloud = self.o3d.io.read_point_cloud(plyFileURL.path)
 
             // Apply processors
             for processor in processors {
@@ -84,20 +121,16 @@ final public class ProcessorService {
             }
 
             // Convert Open3D PointCloud to Object3D
-            let object = self.convertO3D(pointCloud: pointCloud)
+            let object = self.convertOpen3D(pointCloud: pointCloud)
             promise(.success(object))
         }
     }
 
-    public func process(_ input: PLYFile, with processors: [FaceProcessor]) -> Future<Object3D, ProcessorServiceError> {
+    private func process(_ object: Object3D, with processors: [FaceProcessor]) -> Future<Object3D, ProcessorServiceError> {
         self.tstate = PyEval_SaveThread()
         return Future { [weak self] promise in
             guard let self = self else {
                 return promise(.failure(.unknown))
-            }
-            // Generate TMP file
-            guard let plyFileURL = try? input.writeTemporaryFile() else {
-                return promise(.failure(.temporaryFile))
             }
 
             // Python THREAD management stuff copied from Kewlbear programs
@@ -111,54 +144,23 @@ final public class ProcessorService {
                 PyGILState_Release(gstate)
             }
 
-            // Load PointCloud from TMP file into Open3D
-            let pointCloud = self.o3d.io.read_point_cloud(plyFileURL.path)
-
             // Apply processors
             for processor in processors {
                 switch processor {
                 case let .poissonSurfaceReconstruction(depth):
+                    let pointCloud = self.convertObject3DPointCloud(object)
                     let triangleMeshes = self.surfaceReconstruction(pointCloud, depth: depth)
                     // Convert Open3D TriangleMesh back to our Face Uniform
-                    let object = self.convertO3D(triangleMeshes: triangleMeshes)
+                    let object = self.convertOpen3D(triangleMeshes: triangleMeshes)
                     promise(.success(object))
                 }
             }
         }
     }
 
-    private func convertO3D(pointCloud: O3DPointCloud) -> Object3D {
-        let vertices: [Float3] = numpy.asarray(pointCloud.points).map { point in Float3(Float(point[0])!,
-                                                                                        Float(point[1])!,
-                                                                                        Float(point[2])!) }
-        let colors: [Float3] = numpy.asarray(pointCloud.colors).map { color in Float3(Float(color[0])!,
-                                                                                      Float(color[1])!,
-                                                                                      Float(color[2])!) }
-        let normals: [Float3] = numpy.asarray(pointCloud.normals).map { normal in Float3(Float(normal[0])!,
-                                                                                         Float(normal[1])!,
-                                                                                         Float(normal[2])!) }
-        return Object3D(vertices: vertices, vertexColors: colors, vertexNormals: normals)
-    }
-
-    private func convertO3D(triangleMeshes: O3DTriangleMeshes) -> Object3D {
-        let vertices: [Float3] = numpy.asarray(triangleMeshes.vertices).map { vertex in Float3(Float(vertex[0])!,
-                                                                                               Float(vertex[1])!,
-                                                                                               Float(vertex[2])!) }
-        let colors: [Float3] = numpy.asarray(triangleMeshes.vertex_colors).map { color in Float3(Float(color[0])!,
-                                                                                                 Float(color[1])!,
-                                                                                                 Float(color[2])!) }
-        let normals: [Float3] = numpy.asarray(triangleMeshes.vertex_normals).map { normal in Float3(Float(normal[0])!,
-                                                                                                    Float(normal[1])!,
-                                                                                                    Float(normal[2])!) }
-        let triangles: [UInt3] = numpy.asarray(triangleMeshes.triangles).map { triangle in UInt3(UInt(triangle[0])!,
-                                                                                                 UInt(triangle[1])!,
-                                                                                                 UInt(triangle[2])!)}
-        return Object3D(vertices: vertices, vertexColors: colors, vertexNormals: normals, triangles: triangles)
-    }
-
     // MARK: - Open3D point cloud processing methods
 
-    private func o3dVoxelDownSampling(_ pointCloud: PythonObject, voxelSize: Double) -> O3DPointCloud {
+    private func o3dVoxelDownSampling(_ pointCloud: PythonObject, voxelSize: Double) -> Open3DPointCloud {
         pointCloud.voxel_down_sample(voxelSize)
         // Uniform downsample
         // let downSampledPointCloud = pointCloud.uniform_down_sample(5) // Every K points k == 5
@@ -173,7 +175,7 @@ final public class ProcessorService {
     ///   - stdRatio: which allows setting the threshold level based on the standard deviation of the average distances
     ///    across the point cloud. The lower this number the more aggressive the filter will be.
     /// - Returns: inlierPointCloud
-    private func o3dStatisticalOutlierRemoval(_ pointCloud: PythonObject, neighbors: Int, stdRatio: Double) -> O3DPointCloud {
+    private func o3dStatisticalOutlierRemoval(_ pointCloud: PythonObject, neighbors: Int, stdRatio: Double) -> Open3DPointCloud {
         pointCloud.remove_statistical_outlier(neighbors, stdRatio)[0]
         // pointCloud.select_by_index(result[1])
     }
@@ -184,7 +186,7 @@ final public class ProcessorService {
     ///   - pointsCount: lets you pick the minimum amount of points that the sphere should contain
     ///   - radius: defines the radius of the sphere that will be used for counting the neighbors.
     /// - Returns: inlierPointCloud
-    private func o3dRadiusOutlierRemoval(_ pointCloud: PythonObject, pointsCount: Int, radius: Double) -> O3DPointCloud {
+    private func o3dRadiusOutlierRemoval(_ pointCloud: PythonObject, pointsCount: Int, radius: Double) -> Open3DPointCloud {
         pointCloud.remove_radius_outlier(pointsCount, radius)[0]
         // pointCloud.select_by_index(result[1])
     }
@@ -222,7 +224,70 @@ final public class ProcessorService {
     ///
     ///  Returns
     ///  Tuple[open3d.cpu.pybind.geometry.TriangleMesh, open3d.cpu.pybind.utility.DoubleVector]
-    private func surfaceReconstruction(_ pointCloud: PythonObject, depth: Int) -> O3DTriangleMeshes {
+    private func surfaceReconstruction(_ pointCloud: PythonObject, depth: Int) -> Open3DTriangleMeshes {
         o3d.geometry.TriangleMesh.create_from_point_cloud_poisson(pointCloud, depth)[0]
+    }
+}
+
+// MARK: - Converters
+extension ProcessorService {
+
+    // MARK: - PointCloudKit -> Open3D
+    func convertObject3DPointCloud(_ object: Object3D) -> Open3DPointCloud {
+        let pythonPoints = PythonObject(object.vertices.map { PythonObject([$0.x, $0.y, $0.z]) })
+        let pythonColors = PythonObject(object.vertexColors.map { PythonObject([$0.x, $0.y, $0.z]) })
+        let pythonNormals = PythonObject(object.vertexNormals.map { PythonObject([$0.x, $0.y, $0.z]) })
+        let pointCloud = o3d.geometry.PointCloud()
+        pointCloud.points = o3d.utility.Vector3dVector(pythonPoints)
+        pointCloud.colors = o3d.utility.Vector3dVector(pythonColors)
+        pointCloud.normals = o3d.utility.Vector3dVector(pythonNormals)
+        return pointCloud
+    }
+
+    // MARK: - PointCloudKit -> Open3D
+    func convertObject3DTriangleMesh(_ object: Object3D) -> Open3DTriangleMeshes {
+        let points = object.vertices.map { PythonObject([$0.x, $0.y, $0.z]) }
+        let colors = object.vertexColors.map { PythonObject([$0.x, $0.y, $0.z]) }
+        let normals = object.vertexNormals.map { PythonObject([$0.x, $0.y, $0.z]) }
+        let triangles = object.triangles.map { PythonObject([$0.x, $0.y, $0.z]) }
+        let triangleMeshes = o3d.geometry.TriangleMesh()
+        triangleMeshes.vertices = o3d.Vector3dVector(points)
+        triangleMeshes.vertex_colors = o3d.utility.Vector3dVector(colors)
+        triangleMeshes.vertex_normal = o3d.utility.Vector3dVector(normals)
+        triangleMeshes.triangles = o3d.Vector3dVector(triangles)
+        return triangleMeshes
+    }
+
+    // MARK: - Open3D -> PointCloudKit
+    func convertOpen3D(pointCloud: Open3DPointCloud) -> Object3D {
+        let vertices: [Float3] = // Array(numpy: numpy.asarray(pointCloud.points))
+            numpy.asarray(pointCloud.points).map { point in Float3(Float(point[0])!,
+                                                                   Float(point[1])!,
+                                                                   Float(point[2])!) }
+        let colors: [Float3] = // Array(numpy: numpy.asarray(pointCloud.colors))
+            numpy.asarray(pointCloud.colors).map { color in Float3(Float(color[0])!,
+                                                                   Float(color[1])!,
+                                                                   Float(color[2])!) }
+        let normals: [Float3] = // Array(numpy: numpy.asarray(pointCloud.normals))
+            numpy.asarray(pointCloud.normals).map { normal in Float3(Float(normal[0])!,
+                                                                     Float(normal[1])!,
+                                                                     Float(normal[2])!) }
+        return Object3D(vertices: vertices, vertexColors: colors, vertexNormals: normals)
+    }
+
+    func convertOpen3D(triangleMeshes: Open3DTriangleMeshes) -> Object3D {
+        let vertices: [Float3] = numpy.asarray(triangleMeshes.vertices).map { vertex in Float3(Float(vertex[0])!,
+                                                                                               Float(vertex[1])!,
+                                                                                               Float(vertex[2])!) }
+        let colors: [Float3] = numpy.asarray(triangleMeshes.vertex_colors).map { color in Float3(Float(color[0])!,
+                                                                                                 Float(color[1])!,
+                                                                                                 Float(color[2])!) }
+        let normals: [Float3] = numpy.asarray(triangleMeshes.vertex_normals).map { normal in Float3(Float(normal[0])!,
+                                                                                                    Float(normal[1])!,
+                                                                                                    Float(normal[2])!) }
+        let triangles: [UInt3] = numpy.asarray(triangleMeshes.triangles).map { triangle in UInt3(UInt(triangle[0])!,
+                                                                                                 UInt(triangle[1])!,
+                                                                                                 UInt(triangle[2])!)}
+        return Object3D(vertices: vertices, vertexColors: colors, vertexNormals: normals, triangles: triangles)
     }
 }

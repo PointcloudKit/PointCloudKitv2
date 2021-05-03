@@ -98,7 +98,11 @@ public final class RenderingService: ObservableObject {
     // MARK: Particles buffer
     private(set) public var particlesBuffer: MetalBuffer<ParticleUniforms>
     var currentPointIndex = 0
-    @Published public var currentPointCount = 0
+    @Published public var currentPointCount = 0 {
+        didSet {
+            particleBufferWrapper.count = currentPointCount
+        }
+    }
 
     // MARK: - Sampling
 
@@ -109,6 +113,10 @@ public final class RenderingService: ObservableObject {
     lazy var lastCameraTransform = sampleFrame.camera.transform
 
     // MARK: - Public Interfaces
+
+    // Used by the outside world to access the captured particles without too many memory fuckery
+    @Published public var particleBufferWrapper: ParticleBufferWrapper
+
     @Published public var running: Bool = false {
         didSet {
             switch running {
@@ -139,6 +147,7 @@ public final class RenderingService: ObservableObject {
         didSet {
             // apply the change for the shader
             pointCloudUniforms.confidenceThreshold = confidenceThreshold
+            particleBufferWrapper.confidenceTreshold = confidenceThreshold
         }
     }
 
@@ -199,6 +208,9 @@ public final class RenderingService: ObservableObject {
 
         inFlightSemaphore = DispatchSemaphore(value: maxInFlightBuffers)
         // Starts
+        particleBufferWrapper = ParticleBufferWrapper(buffer: particlesBuffer,
+                                                      count: 0,
+                                                      confidenceTreshold: .medium)
         running = true
     }
 

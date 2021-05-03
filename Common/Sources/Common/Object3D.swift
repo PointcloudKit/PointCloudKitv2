@@ -43,8 +43,15 @@ public struct Object3D {
 
 extension Object3D {
     public func particles() -> [ParticleUniforms] {
-        return zip(vertices, vertexColors).map { point, color in
-            ParticleUniforms(position: point, color: color)
+        return zip(vertices, zip(vertexColors, vertexConfidence)).map { point, arg in
+            /* * */ let start = DispatchTime.now()
+            let (color, confidence) = arg
+
+            let particles = ParticleUniforms(position: point, color: color, confidence: Float(confidence))
+            /* * */ let end = DispatchTime.now()
+            /* * */ let nanoTime = end.uptimeNanoseconds - start.uptimeNanoseconds
+            /* * */ print(" <*> Time to run convert Object3D to particles : \(Double(nanoTime) / 1_000_000) ms")
+            return particles
         }
     }
 }

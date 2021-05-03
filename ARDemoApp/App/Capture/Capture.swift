@@ -9,9 +9,6 @@ import SwiftUI
 import Common
 import PointCloudRendererService
 
-final class CaptureModel: ObservableObject {
-}
-
 struct Capture: View {
 
     // MARK: - Owned
@@ -24,20 +21,18 @@ struct Capture: View {
     var body: some View {
         NavigationView {
             ZStack {
-                if navigateToCaptureViewer {
-                    NavigationLink(destination: CaptureViewer()
-                                    .environmentObject(CaptureViewerModel(capture: renderingService.generateCapture())),
-                                   isActive: $navigateToCaptureViewer) {  }
-                }
+                NavigationLink(destination: CaptureViewer()
+                                .environmentObject(renderingService.particleBufferWrapper),
+                               isActive: $navigateToCaptureViewer) { }
 
                 CaptureRendering(renderingService: renderingService,
                                  showCoachingOverlay: $showCoachingOverlay)
 
                 VStack {
-                    Metrics(currentPointCount: $renderingService.currentPointCount,
-                            currentNormalCount: .constant(0),
-                            currentFaceCount: .constant(0),
-                            activity: $renderingService.capturing)
+                    Metrics(currentPointCount: renderingService.currentPointCount,
+                            currentNormalCount: 0,
+                            currentFaceCount: 0,
+                            activity: renderingService.capturing)
 
                     Spacer()
 

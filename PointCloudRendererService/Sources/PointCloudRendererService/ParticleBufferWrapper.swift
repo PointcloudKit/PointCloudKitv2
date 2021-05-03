@@ -1,5 +1,5 @@
 //
-//  PointCloudCapture.swift
+//  ParticleBufferWrapper.swift
 //  PointCloudKit
 //
 //  Created by Alexandre Camilleri on 30/04/2021.
@@ -9,10 +9,18 @@ import MetalKit
 import SceneKit.SCNGeometry
 import Common
 
-public struct PointCloudCapture {
-    public var buffer: MetalBuffer<ParticleUniforms>
-    public var count: Int
+public final class ParticleBufferWrapper: ObservableObject {
+    // Hold more info, is >= to count
+    public let buffer: MetalBuffer<ParticleUniforms>
+    @Published public var count: Int
+    // The user selected treshold, to filter buffer
     public var confidenceTreshold: ConfidenceTreshold
+
+    public init(buffer: MetalBuffer<ParticleUniforms>, count: Int, confidenceTreshold: ConfidenceTreshold) {
+        self.buffer = buffer
+        self.count = count
+        self.confidenceTreshold = confidenceTreshold
+    }
 
     public var stride: Int {
         buffer.stride
@@ -59,9 +67,9 @@ public struct PointCloudCapture {
 
     public func reloadBufferContent(with particles: [ParticleUniforms]) {
         buffer.assign(with: particles)
+        count = particles.count
     }
 }
-
 
 extension SCNGeometrySource.Semantic {
 

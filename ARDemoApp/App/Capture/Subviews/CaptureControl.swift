@@ -8,7 +8,6 @@
 import Foundation
 import SwiftUI
 import Common
-import CaptureViewer
 import PointCloudRendererService
 
 struct CaptureControl: View {
