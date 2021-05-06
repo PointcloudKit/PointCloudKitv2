@@ -18,73 +18,62 @@ enum NodeIdentifier: String {
 
 final class SceneRenderModel: ObservableObject {
     var cancellables = Set<AnyCancellable>()
-}
-
-struct SceneRender: View {
-
-    let model = SceneRenderModel()
 
     let particleBuffer: ParticleBufferWrapper
-    let particleCount: Int
 
-    @State var rendering = false
+    @Published var particleCount: Int = 0
+    @Published var scene: SCNScene = SCNScene()
+    @Published var rendering = false
 
-    var scene: SCNScene {
-        let scene = SCNScene()
-        let cameraNode = SCNNode()
+    init(particleBuffer: ParticleBufferWrapper, initialParticleCount: Int) {
+        self.particleBuffer = particleBuffer
 
-        cameraNode.camera = SCNCamera()
-        cameraNode.name = NodeIdentifier.camera.rawValue
-
-        scene.rootNode.addChildNode(ambientLightNode)
-        scene.background.contents = UIColor.black
-
-        pointCloudNode(from: particleBuffer)
-            .receive(on: DispatchQueue.main)
-            .sink { pointCloudRootNode in
-                // Add new pointCloudNode
-                scene.rootNode.addChildNode(pointCloudRootNode)
-                // Adjust camera
-                cameraNode.look(at: pointCloudRootNode.position)
-                cameraNode.position.z += 5
-                scene.rootNode.addChildNode(cameraNode)
-            }
-            .store(in: &model.cancellables)
-
-        return scene
+        initializeScene()
+        updateScene(particleCount: initialParticleCount)
     }
 
-    var ambientLightNode: SCNNode {
+    lazy var ambientLightNode: SCNNode = {
         let ambientLightNode = SCNNode()
         let light = SCNLight()
 
         light.type = .ambient
         ambientLightNode.light = light
         return ambientLightNode
+    }()
+
+    lazy var cameraNode: SCNNode = {
+        let cameraNode = SCNNode()
+        cameraNode.camera = SCNCamera()
+        cameraNode.name = NodeIdentifier.camera.rawValue
+        return cameraNode
+    }()
+
+    private func initializeScene() {
+        scene.rootNode.addChildNode(ambientLightNode)
+        scene.rootNode.addChildNode(cameraNode)
+        scene.background.contents = UIColor.black
     }
 
-    public var body: some View {
-        let scene = scene
-
-        ZStack {
-            SceneView(scene: scene,
-                      pointOfView: scene.rootNode.childNode(withName: NodeIdentifier.camera.rawValue,
-                                                            recursively: false),
-                      options: [.allowsCameraControl,
-                                .autoenablesDefaultLighting])
-
-            if rendering {
-                ProgressView("Rendering...")
-                    .padding(20)
-                    .background(Color.black.opacity(0.8))
-                    .cornerRadius(10)
-                    .foregroundColor(.bone)
+    func updateScene(particleCount: Int) {
+        rendering = true
+        self.particleCount = particleCount
+        pointCloudNode(from: particleBuffer)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] pointCloudRootNode in
+                defer { self?.rendering = false }
+                guard let self = self else { return }
+                // Remove existing if any
+                self.scene.rootNode
+                    .childNode(withName: NodeIdentifier.pointCloudRoot.rawValue, recursively: false)?
+                    .removeFromParentNode()
+                // Add new pointCloudNode
+                self.scene.rootNode.addChildNode(pointCloudRootNode)
+                // Adjust camera
+                self.cameraNode.look(at: pointCloudRootNode.position)
+                self.cameraNode.position.z += 5
             }
-        }
+            .store(in: &cancellables)
     }
-}
-
-extension SceneRender {
 
     private static let positionVertex = ParticleBufferWrapper.Component.position
     private static let colorVertex = ParticleBufferWrapper.Component.color
@@ -96,7 +85,7 @@ extension SceneRender {
                 /* * */ let start = DispatchTime.now()
                 let rawBuffer = particleBuffer.buffer.rawBuffer
                 let dataStride = particleBuffer.stride
-                let vertexCount = particleCount
+                let vertexCount = self.particleCount
 
                 // Our data sources from Metal
                 let positionSource = SCNGeometrySource(buffer: rawBuffer,
@@ -139,6 +128,28 @@ extension SceneRender {
                 /* * */ let end = DispatchTime.now()
                 /* * */ let nanoTime = end.uptimeNanoseconds - start.uptimeNanoseconds
                 /* * */ print(" <*> SceneRenderer - Generate SCNNode from particleBuffer \(#function): \(Double(nanoTime) / 1_000_000) ms")
+            }
+        }
+    }
+}
+
+struct SceneRender: View {
+
+    @EnvironmentObject var model: SceneRenderModel
+
+    public var body: some View {
+        ZStack {
+            SceneView(scene: model.scene,
+                      pointOfView: model.cameraNode,
+                      options: [.allowsCameraControl,
+                                .autoenablesDefaultLighting])
+
+            if model.rendering {
+                ProgressView("Rendering...")
+                    .padding(20)
+                    .background(Color.black.opacity(0.8))
+                    .cornerRadius(10)
+                    .foregroundColor(.bone)
             }
         }
     }

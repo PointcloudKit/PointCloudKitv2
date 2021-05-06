@@ -9,11 +9,17 @@ import SwiftUI
 import Common
 import PointCloudRendererService
 
+final class CaptureModel: ObservableObject {
+
+    @Published var renderingService = RenderingService(metalDevice: MTLCreateSystemDefaultDevice()!)
+
+}
+
 struct Capture: View {
 
     // MARK: - Owned
 
-    @StateObject var renderingService = RenderingService(metalDevice: MTLCreateSystemDefaultDevice()!)
+    @EnvironmentObject var model: CaptureModel
 
     @State var showCoachingOverlay = false
     @State var navigateToCaptureViewer = false
@@ -21,19 +27,20 @@ struct Capture: View {
     var body: some View {
         NavigationView {
             ZStack {
-                NavigationLink(destination: CaptureViewer(particleBuffer: renderingService.particleBufferWrapper,
-                                                          initialCaptureParticleCount: renderingService.currentPointCount,
-                                                          confidenceTreshold: renderingService.confidenceThreshold),
+                NavigationLink(destination: CaptureViewer()
+                                .environmentObject(CaptureViewerModel(particleBuffer: model.renderingService.particleBufferWrapper,
+                                                                      particleCount: model.renderingService.currentPointCount,
+                                                                      confidenceTreshold: model.renderingService.confidenceThreshold)),
                                isActive: $navigateToCaptureViewer) { }
 
-                CaptureRendering(renderingService: renderingService,
+                CaptureRendering(renderingService: model.renderingService,
                                  showCoachingOverlay: $showCoachingOverlay)
 
                 VStack {
-                    Metrics(currentPointCount: renderingService.currentPointCount,
+                    Metrics(currentPointCount: model.renderingService.currentPointCount,
                             currentNormalCount: 0,
                             currentFaceCount: 0,
-                            activity: renderingService.capturing)
+                            activity: model.renderingService.capturing)
 
                     Spacer()
 
@@ -43,6 +50,7 @@ struct Capture: View {
                         .padding(.bottom, 20)
                         .padding(.horizontal, 20)
                         .background(Color.black.opacity(0.8))
+                        .environmentObject(model.renderingService)
                 }
             }
             .background(Color.black)
@@ -52,9 +60,7 @@ struct Capture: View {
             .edgesIgnoringSafeArea(.bottom)
         }
         .onDisappear {
-            renderingService.capturing = false
+            model.renderingService.capturing = false
         }
-        .environmentObject(CaptureViewerModel())
-        .environmentObject(renderingService)
     }
 }

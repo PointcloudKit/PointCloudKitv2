@@ -13,6 +13,20 @@ import Combine
 final class CaptureViewerModel: ObservableObject {
     var cancellables = Set<AnyCancellable>()
 
+    let particleBuffer: ParticleBufferWrapper
+    let particleCount: Int
+    let confidenceTreshold: ConfidenceTreshold
+
+    @Published var object: Object3D = Object3D()
+
+    lazy var sceneRenderModel: SceneRenderModel = {
+        SceneRenderModel(particleBuffer: particleBuffer, initialParticleCount: particleCount)
+    }()
+
+    lazy var captureControlModel: CaptureViewerControlModel = {
+        CaptureViewerControlModel(processorService: ProcessorService(), exportService: ExportService())
+    }()
+
     // MARK: - PointCloudKit -> PointCloudKit
     class func convert(_ particleBuffer: ParticleBufferWrapper, particleCount: Int) -> Future<Object3D, Never> {
         Future { promise in
@@ -25,54 +39,51 @@ final class CaptureViewerModel: ObservableObject {
             }
         }
     }
+
+    init(particleBuffer: ParticleBufferWrapper, particleCount: Int, confidenceTreshold: ConfidenceTreshold) {
+        self.particleBuffer = particleBuffer
+        self.particleCount = particleCount
+        self.confidenceTreshold = confidenceTreshold
+
+        sceneRenderModel.particleCount = particleCount
+
+        CaptureViewerModel.convert(particleBuffer, particleCount: particleCount)
+            .receive(on: DispatchQueue.main)
+            .sink(receiveValue: { object in
+                self.object = object
+//                self.sceneRenderModel.particleCount = object.vertices.count
+                self.sceneRenderModel.updateScene(particleCount: object.vertices.count)
+            })
+            .store(in: &cancellables)
+    }
 }
 
 struct CaptureViewer: View {
 
     @EnvironmentObject var model: CaptureViewerModel
 
-    let particleBuffer: ParticleBufferWrapper
-    let initialCaptureParticleCount: Int
-    let confidenceTreshold: ConfidenceTreshold
-
-    @State var object: Object3D = Object3D()
-    @State var processing = false
-
     public var body: some View {
         ZStack {
-            SceneRender(particleBuffer: particleBuffer,
-                        particleCount: object.vertices.count)
+            SceneRender()
 
             VStack {
 
-                Metrics(currentPointCount: object.vertices.count,
-                        currentNormalCount: object.vertexNormals.count,
-                        currentFaceCount: object.triangles.count,
+                Metrics(currentPointCount: model.object.vertices.count,
+                        currentNormalCount: model.object.vertexNormals.count,
+                        currentFaceCount: model.object.triangles.count,
                         activity: true)
 
                 Spacer()
 
-                CaptureViewerControl(particleBuffer: particleBuffer,
-                                     object: $object,
-                                     processing: $processing,
-                                     confidenceTreshold: confidenceTreshold)
+                #warning("move these to the model")
+                CaptureViewerControl(particleBuffer: model.particleBuffer,
+                                     object: $model.object,
+                                     confidenceTreshold: model.confidenceTreshold)
             }
 
         }
-        .environmentObject(CaptureViewerControlModel())
         .navigationBarTitle("Viewer", displayMode: .inline)
-        .onAppear {
-            processing = true
-            CaptureViewerModel.convert(particleBuffer, particleCount: initialCaptureParticleCount)
-                .receive(on: DispatchQueue.main)
-                .sink(receiveValue: { object in
-                    self.object = object
-                    processing = false
-                })
-                .store(in: &model.cancellables)
-        }
-        .onDisappear {
-            model.cancellables.forEach { cancellable in cancellable.cancel() }
-        }
+        .environmentObject(model.sceneRenderModel)
+        .environmentObject(model.captureControlModel)
     }
 }
