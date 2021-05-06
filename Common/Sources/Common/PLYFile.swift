@@ -17,6 +17,7 @@ public final class PLYFile: FileDocument, ObservableObject {
     public static let readableContentTypes = [UTType.polygon]
     public static let writableContentTypes = [UTType.polygon]
 
+    @Published public private(set) var writtingToDisk = false
     @Published public private(set) var writeToDiskProgress = 0.0
 
     // by default our document is empty
@@ -42,21 +43,11 @@ public final class PLYFile: FileDocument, ObservableObject {
         writeToDiskProgress = 0
         write(object, to: temporaryFileURL, progressHandler: { [weak self] (progress) in
             self?.writeToDiskProgress = progress
+            if progress == 1 {
+                self?.writtingToDisk = false
+            }
         })
         return try FileWrapper(url: temporaryFileURL)
-    }
-
-    public func writeTemporaryFile() throws -> URL {
-        let temporaryDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory(),
-                                        isDirectory: true)
-        let temporaryFileName = ProcessInfo().globallyUniqueString + ".ply"
-        let temporaryFileURL = temporaryDirectoryURL.appendingPathComponent(temporaryFileName)
-
-        writeToDiskProgress = 0
-        write(object, to: temporaryFileURL) { [weak self] (progress) in
-            self?.writeToDiskProgress = progress
-        }
-        return temporaryFileURL
     }
 
     private func generatePlyFileAsciiData(from object: Object3D) -> Data? {
@@ -71,7 +62,9 @@ public final class PLYFile: FileDocument, ObservableObject {
         progressHandler(0.5)
         do {
             try data.write(to: url, options: [])
-        } catch { fatalError(error.localizedDescription) }
+        } catch {
+            fatalError(error.localizedDescription)
+        }
         progressHandler(1.0)
     }
 }

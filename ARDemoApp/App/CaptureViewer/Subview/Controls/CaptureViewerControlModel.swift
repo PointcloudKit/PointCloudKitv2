@@ -13,10 +13,13 @@ import Combine
 final class CaptureViewerControlModel: ObservableObject {
     public var cancellables = Set<AnyCancellable>()
 
-    private let processorService = ProcessorService()
-    let exportService = ExportService()
+    let processorService: ProcessorService
+    let exportService: ExportService
 
-    @Published var exporting = false
+    init(processorService: ProcessorService, exportService: ExportService) {
+        self.processorService = processorService
+        self.exportService = exportService
+    }
 
     // MARK: - Point Cloud Processing operations - Parameters are from the `ProcessorParameters` in Model
     func voxelDownsampling(_ object: Object3D, parameters: ProcessorParameters.VoxelDownSampling) -> Future<Object3D, ProcessorServiceError> {

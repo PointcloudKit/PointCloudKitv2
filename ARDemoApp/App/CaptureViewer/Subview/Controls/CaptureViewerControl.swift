@@ -16,20 +16,18 @@ struct CaptureViewerControl: View {
 
     let particleBuffer: ParticleBufferWrapper
     @Binding var object: Object3D
-    @Binding var processing: Bool
 
     let confidenceTreshold: ConfidenceTreshold
 
-    @State private var showExportActionSheet = false
-    @State private var exportSCN = false
-    @State private var exportPLY = false
-    // Main Parameters view
-    @State private var showParameters: Bool = false
-    @State private var showParameterControls: Bool = false
-    @State private var showProcessorParametersEditor: Bool = false
+    @State private var showExportTypeSelection = false
+    @State private var showParameters = false
+    @State private var showParameterControls = false
+    @State private var showProcessorParametersEditor = false
 
+    @State var processing = false
+    @State var exportPLY = false
     @State var lastObject: Object3D?
-    @State var undoAvailable: Bool = false
+    @State var undoAvailable = false
 
     func undo() {
         guard let lastObject = lastObject else { return }
@@ -284,7 +282,7 @@ struct CaptureViewerControl: View {
 
             Button(action: {
                 withAnimation {
-                    showExportActionSheet = true
+                    showExportTypeSelection = true
                 }
             }, label: {
                 Image(systemName: "square.and.arrow.up")
@@ -296,60 +294,57 @@ struct CaptureViewerControl: View {
     }
 
     public var body: some View {
-        ZStack {
-
-            VStack {
-
-                // Toggleable parameters list from the Controls section left bottom button
-                if showParameters {
-                    if showProcessorParametersEditor {
-                        ProcessorParametersEditor(parameters: $processorParameters)
-                            .padding(.horizontal, 20)
-                            .padding(.vertical, 10)
-                            .transition(.moveAndFade)
-                    }
-
-                    transformingParameters
-                        .padding(.horizontal, 20)
-                        .padding(.top, 10)
-                        .transition(.moveAndFade)
-                    cleaningParameters
-                        .padding(.horizontal, 20)
-                        .transition(.moveAndFade)
-                    genericParameters
-                        .padding(.horizontal, 20)
-                        .transition(.moveAndFade)
-                }
-
-                if !showProcessorParametersEditor {
-                    // Controls Section at the bottom of the screen
-                    controlsSection
-                        .padding(.top, 10)
-                        .padding(.horizontal, 20)
-                }
+        VStack {
+            if model.exportService.exporting {
+                ProgressView("\(model.exportService.info)", value: model.exportService.exportProgress,
+                             total: 1)
+                    .padding(20)
+                    .cornerRadius(10, corners: [.topLeft, .topRight])
+                    .foregroundColor(.bone)
             }
-            .background(Color.black.opacity(0.8))
 
             if processing {
                 ProgressView("Processing...")
-                    .padding(20)
-                    .background(Color.black.opacity(0.8))
-                    .cornerRadius(10)
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 10)
+                    .cornerRadius(10, corners: [.topLeft, .topRight])
                     .foregroundColor(.bone)
             }
 
-            if model.exporting {
-                ProgressView("\(model.exportService.info)", value: model.exportService.exportProgress, total: 1)
-                    .fileExporter(isPresented: $exportPLY,
-                                  document: model.exportService.generatePLYFile(from: object),
-                                  contentType: .polygon,
-                                  onCompletion: { _ in })
-                    .foregroundColor(.bone)
+            // Toggleable parameters list from the Controls section left bottom button
+            if showParameters {
+                if showProcessorParametersEditor {
+                    ProcessorParametersEditor(parameters: $processorParameters)
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 10)
+                        .transition(.moveAndFade)
+                }
+
+                transformingParameters
+                    .padding(.horizontal, 20)
+                    .padding(.top, 10)
+                    .transition(.moveAndFade)
+                cleaningParameters
+                    .padding(.horizontal, 20)
+                    .transition(.moveAndFade)
+                genericParameters
+                    .padding(.horizontal, 20)
+                    .transition(.moveAndFade)
+            }
+
+            if !showProcessorParametersEditor {
+                // Controls Section at the bottom of the screen
+                controlsSection
+                    .padding(.top, 10)
+                    .padding(.horizontal, 20)
             }
         }
-        .actionSheet(isPresented: $showExportActionSheet, content: {
-            exportActionSheet
-        })
+        .background(Color.black.opacity(0.8))
+        .actionSheet(isPresented: $showExportTypeSelection) { exportActionSheet }
+        .fileExporter(isPresented: $exportPLY,
+                      document: model.exportService.generatePLYFile(from: object),
+                      contentType: .polygon,
+                      onCompletion: { _ in })
         .onDisappear {
             model.cancellables.forEach { cancellable in cancellable.cancel() }
         }

@@ -12,7 +12,8 @@ import SceneKit
 final class ExportService: ObservableObject {
 
     @Published var exportProgress = 1.0
-    @Published var info = "-"
+    @Published var info = "Exporting..."
+    @Published var exporting = false
 
     func generateSCNFile(from scene: SCNScene) -> SCNFile {
         let file = SCNFile(scene: scene)
@@ -20,6 +21,9 @@ final class ExportService: ObservableObject {
         file.$writeToDiskProgress
             .receive(on: DispatchQueue.main)
             .assign(to: &$exportProgress)
+        file.$writtingToDisk
+            .receive(on: DispatchQueue.main)
+            .assign(to: &$exporting)
         return file
     }
 
@@ -29,6 +33,9 @@ final class ExportService: ObservableObject {
         file.$writeToDiskProgress
             .receive(on: DispatchQueue.main)
             .assign(to: &$exportProgress)
+        file.$writtingToDisk
+            .receive(on: DispatchQueue.main)
+            .assign(to: &$exporting)
         return file
     }
 }

@@ -139,7 +139,7 @@ public final class RenderingService: ObservableObject {
         }
     }
 
-    public var confidenceThreshold = ConfidenceTreshold.medium {
+    public var confidenceThreshold = ConfidenceTreshold.low {
         didSet {
             // apply the change for the shader
             pointCloudUniforms.confidenceThreshold = confidenceThreshold

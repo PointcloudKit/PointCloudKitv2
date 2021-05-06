@@ -31,7 +31,7 @@ public enum FaceProcessor {
     case poissonSurfaceReconstruction(depth: Int)
 }
 
-final public class ProcessorService {
+final public class ProcessorService: ObservableObject {
     let o3d = Python.import("open3d")
     let numpy = Python.import("numpy")
 
@@ -80,81 +80,85 @@ final public class ProcessorService {
     // MARK: - Open3D helpers
 
    private func process(_ object: Object3D, with processors: [VertexProcessor]) -> Future<Object3D, ProcessorServiceError> {
-        self.tstate = PyEval_SaveThread()
         return Future { [weak self] promise in
             guard let self = self else {
                 return promise(.failure(.unknown))
             }
-            // Python THREAD management stuff copied from Kewlbear programs
-            let gstate = PyGILState_Ensure()
-            defer {
-                DispatchQueue.main.async {
-                    guard let tstate = self.tstate else { fatalError() }
-                    PyEval_RestoreThread(tstate)
-                    self.tstate = nil
+            DispatchQueue.global(qos: .userInteractive).async {
+                // Python THREAD management stuff copied from Kewlbear programs
+                let gstate = PyGILState_Ensure()
+                defer {
+                    DispatchQueue.main.async {
+                        guard let tstate = self.tstate else { fatalError() }
+                        PyEval_RestoreThread(tstate)
+                        self.tstate = nil
+                    }
+                    PyGILState_Release(gstate)
                 }
-                PyGILState_Release(gstate)
-            }
 
-            // convert Object3D to Open3D pointcloud
-            var pointCloud = self.convertObject3DPointCloud(object)
+                // convert Object3D to Open3D pointcloud
+                var pointCloud = self.convertObject3DPointCloud(object)
 
-//            // Generate TMP file
-//            guard let plyFileURL = try? input.writeTemporaryFile() else {
-//                return promise(.failure(.temporaryFile))
-//            }
-//            // Load PointCloud from TMP file into Open3D
-//            var pointCloud = self.o3d.io.read_point_cloud(plyFileURL.path)
+                //            // Generate TMP file
+                //            guard let plyFileURL = try? input.writeTemporaryFile() else {
+                //                return promise(.failure(.temporaryFile))
+                //            }
+                //            // Load PointCloud from TMP file into Open3D
+                //            var pointCloud = self.o3d.io.read_point_cloud(plyFileURL.path)
 
-            // Apply processors
-            for processor in processors {
-                switch processor {
-                case let .voxelDownSampling(voxelSize):
-                    pointCloud = self.o3dVoxelDownSampling(pointCloud, voxelSize: voxelSize)
-                case let .statisticalOutlierRemoval(neighbors, stdRatio):
-                    pointCloud = self.o3dStatisticalOutlierRemoval(pointCloud, neighbors: neighbors, stdRatio: stdRatio)
-                case let .radiusOutlierRemoval(pointsCount, radius):
-                    pointCloud = self.o3dRadiusOutlierRemoval(pointCloud, pointsCount: pointsCount, radius: radius)
-                case let .normalsEstimation(radius, maxNearestNeighbors):
-                    self.o3dNormalsEstimation(pointCloud, radius: radius, maxNearestNeighbors: maxNearestNeighbors)
+                // Apply processors
+                for processor in processors {
+                    switch processor {
+                    case let .voxelDownSampling(voxelSize):
+                        pointCloud = self.o3dVoxelDownSampling(pointCloud, voxelSize: voxelSize)
+                    case let .statisticalOutlierRemoval(neighbors, stdRatio):
+                        pointCloud = self.o3dStatisticalOutlierRemoval(pointCloud, neighbors: neighbors, stdRatio: stdRatio)
+                    case let .radiusOutlierRemoval(pointsCount, radius):
+                        pointCloud = self.o3dRadiusOutlierRemoval(pointCloud, pointsCount: pointsCount, radius: radius)
+                    case let .normalsEstimation(radius, maxNearestNeighbors):
+                        self.o3dNormalsEstimation(pointCloud, radius: radius, maxNearestNeighbors: maxNearestNeighbors)
+                    }
                 }
-            }
 
-            // Convert Open3D PointCloud to Object3D
-            let object = self.convertOpen3D(pointCloud: pointCloud)
-            promise(.success(object))
+                // Convert Open3D PointCloud to Object3D
+                let object = self.convertOpen3D(pointCloud: pointCloud)
+                promise(.success(object))
+            }
+            self.tstate = PyEval_SaveThread()
         }
     }
 
     private func process(_ object: Object3D, with processors: [FaceProcessor]) -> Future<Object3D, ProcessorServiceError> {
-        self.tstate = PyEval_SaveThread()
         return Future { [weak self] promise in
             guard let self = self else {
                 return promise(.failure(.unknown))
             }
 
-            // Python THREAD management stuff copied from Kewlbear programs
-            let gstate = PyGILState_Ensure()
-            defer {
-                DispatchQueue.main.async {
-                    guard let tstate = self.tstate else { fatalError() }
-                    PyEval_RestoreThread(tstate)
-                    self.tstate = nil
+            DispatchQueue.global(qos: .userInteractive).async {
+                // Python THREAD management stuff copied from Kewlbear programs
+                let gstate = PyGILState_Ensure()
+                defer {
+                    DispatchQueue.main.async {
+                        guard let tstate = self.tstate else { fatalError() }
+                        PyEval_RestoreThread(tstate)
+                        self.tstate = nil
+                    }
+                    PyGILState_Release(gstate)
                 }
-                PyGILState_Release(gstate)
-            }
 
-            // Apply processors
-            for processor in processors {
-                switch processor {
-                case let .poissonSurfaceReconstruction(depth):
-                    let pointCloud = self.convertObject3DPointCloud(object)
-                    let triangleMeshes = self.surfaceReconstruction(pointCloud, depth: depth)
-                    // Convert Open3D TriangleMesh back to our Face Uniform
-                    let object = self.convertOpen3D(triangleMeshes: triangleMeshes)
-                    promise(.success(object))
+                // Apply processors
+                for processor in processors {
+                    switch processor {
+                    case let .poissonSurfaceReconstruction(depth):
+                        let pointCloud = self.convertObject3DPointCloud(object)
+                        let triangleMeshes = self.surfaceReconstruction(pointCloud, depth: depth)
+                        // Convert Open3D TriangleMesh back to our Face Uniform
+                        let object = self.convertOpen3D(triangleMeshes: triangleMeshes)
+                        promise(.success(object))
+                    }
                 }
             }
+            self.tstate = PyEval_SaveThread()
         }
     }
 
