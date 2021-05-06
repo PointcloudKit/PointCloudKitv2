@@ -21,8 +21,9 @@ struct Capture: View {
     var body: some View {
         NavigationView {
             ZStack {
-                NavigationLink(destination: CaptureViewer()
-                                .environmentObject(renderingService.particleBufferWrapper),
+                NavigationLink(destination: CaptureViewer(particleBuffer: renderingService.particleBufferWrapper,
+                                                          initialCaptureParticleCount: renderingService.currentPointCount,
+                                                          confidenceTreshold: renderingService.confidenceThreshold),
                                isActive: $navigateToCaptureViewer) { }
 
                 CaptureRendering(renderingService: renderingService,
@@ -38,7 +39,6 @@ struct Capture: View {
 
                     CaptureControl(showCoachingOverlay: $showCoachingOverlay,
                                    navigateToCaptureViewer: $navigateToCaptureViewer)
-                        .environmentObject(renderingService)
                         .padding(.top, 10)
                         .padding(.bottom, 20)
                         .padding(.horizontal, 20)
@@ -54,5 +54,7 @@ struct Capture: View {
         .onDisappear {
             renderingService.capturing = false
         }
+        .environmentObject(CaptureViewerModel())
+        .environmentObject(renderingService)
     }
 }

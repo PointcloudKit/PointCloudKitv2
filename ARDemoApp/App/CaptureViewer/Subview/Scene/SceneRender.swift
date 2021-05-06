@@ -24,7 +24,8 @@ struct SceneRender: View {
 
     let model = SceneRenderModel()
 
-    @EnvironmentObject var particleBuffer: ParticleBufferWrapper
+    let particleBuffer: ParticleBufferWrapper
+    let particleCount: Int
 
     @State var rendering = false
 
@@ -38,7 +39,7 @@ struct SceneRender: View {
         scene.rootNode.addChildNode(ambientLightNode)
         scene.background.contents = UIColor.black
 
-        particleBuffer.pointCloudNode()
+        pointCloudNode(from: particleBuffer)
             .receive(on: DispatchQueue.main)
             .sink { pointCloudRootNode in
                 // Add new pointCloudNode
@@ -63,15 +64,14 @@ struct SceneRender: View {
     }
 
     public var body: some View {
+        let scene = scene
+
         ZStack {
             SceneView(scene: scene,
-                      pointOfView: scene.rootNode.childNode(withName: NodeIdentifier.camera.rawValue, recursively: false),
-                      options: [
-                        .rendersContinuously,
-                        .allowsCameraControl,
-                        .autoenablesDefaultLighting,
-                        .temporalAntialiasingEnabled
-                      ])
+                      pointOfView: scene.rootNode.childNode(withName: NodeIdentifier.camera.rawValue,
+                                                            recursively: false),
+                      options: [.allowsCameraControl,
+                                .autoenablesDefaultLighting])
 
             if rendering {
                 ProgressView("Rendering...")
@@ -84,20 +84,19 @@ struct SceneRender: View {
     }
 }
 
-
-extension ParticleBufferWrapper {
+extension SceneRender {
 
     private static let positionVertex = ParticleBufferWrapper.Component.position
     private static let colorVertex = ParticleBufferWrapper.Component.color
     // private static let confidence = ParticleBuffer.Component.confidence
 
-    public func pointCloudNode() -> Future<SCNNode, Never> {
+    private func pointCloudNode(from particleBuffer: ParticleBufferWrapper) -> Future<SCNNode, Never> {
         Future { promise in
             DispatchQueue.global(qos: .userInitiated).async {
                 /* * */ let start = DispatchTime.now()
-                let rawBuffer = self.buffer.rawBuffer
-                let dataStride = self.stride
-                let vertexCount = self.count
+                let rawBuffer = particleBuffer.buffer.rawBuffer
+                let dataStride = particleBuffer.stride
+                let vertexCount = particleCount
 
                 // Our data sources from Metal
                 let positionSource = SCNGeometrySource(buffer: rawBuffer,
@@ -139,7 +138,7 @@ extension ParticleBufferWrapper {
                 promise(.success(pointCloudRootNode))
                 /* * */ let end = DispatchTime.now()
                 /* * */ let nanoTime = end.uptimeNanoseconds - start.uptimeNanoseconds
-                /* * */ print(" <*> Time to generate pointCloudNode from particleBuffer \(#function): \(Double(nanoTime) / 1_000_000) ms")
+                /* * */ print(" <*> SceneRenderer - Generate SCNNode from particleBuffer \(#function): \(Double(nanoTime) / 1_000_000) ms")
             }
         }
     }

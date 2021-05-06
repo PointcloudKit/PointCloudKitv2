@@ -9,17 +9,12 @@ import MetalKit
 import SceneKit.SCNGeometry
 import Common
 
-public final class ParticleBufferWrapper: ObservableObject {
+public struct ParticleBufferWrapper {
     // Hold more info, is >= to count
     public let buffer: MetalBuffer<ParticleUniforms>
-    @Published public var count: Int
-    // The user selected treshold, to filter buffer
-    public var confidenceTreshold: ConfidenceTreshold
 
-    public init(buffer: MetalBuffer<ParticleUniforms>, count: Int, confidenceTreshold: ConfidenceTreshold) {
+    public init(buffer: MetalBuffer<ParticleUniforms>) {
         self.buffer = buffer
-        self.count = count
-        self.confidenceTreshold = confidenceTreshold
     }
 
     public var stride: Int {
@@ -67,7 +62,6 @@ public final class ParticleBufferWrapper: ObservableObject {
 
     public func reloadBufferContent(with particles: [ParticleUniforms]) {
         buffer.assign(with: particles)
-        count = particles.count
     }
 }
 

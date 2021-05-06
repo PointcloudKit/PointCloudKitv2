@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 public typealias UInt3 = SIMD3<UInt>
 
@@ -42,16 +43,19 @@ public struct Object3D {
 }
 
 extension Object3D {
-    public func particles() -> [ParticleUniforms] {
-        return zip(vertices, zip(vertexColors, vertexConfidence)).map { point, arg in
-            /* * */ let start = DispatchTime.now()
-            let (color, confidence) = arg
-
-            let particles = ParticleUniforms(position: point, color: color, confidence: Float(confidence))
-            /* * */ let end = DispatchTime.now()
-            /* * */ let nanoTime = end.uptimeNanoseconds - start.uptimeNanoseconds
-            /* * */ print(" <*> Time to run convert Object3D to particles : \(Double(nanoTime) / 1_000_000) ms")
-            return particles
+    public func particles() -> Future<[ParticleUniforms], Never> {
+        Future { promise in
+            DispatchQueue.global(qos: .userInteractive).async {
+                /* * */ let start = DispatchTime.now()
+                let particles = zip(vertices, zip(vertexColors, vertexConfidence)).map { point, arg -> ParticleUniforms in
+                    let (color, confidence) = arg
+                    return ParticleUniforms(position: point, color: color, confidence: Float(confidence))
+                }
+                /* * */ let end = DispatchTime.now()
+                /* * */ let nanoTime = end.uptimeNanoseconds - start.uptimeNanoseconds
+                /* * */ print(" <*> Object3D -> particles : \(Double(nanoTime) / 1_000_000) ms")
+                promise(.success(particles))
+            }
         }
     }
 }

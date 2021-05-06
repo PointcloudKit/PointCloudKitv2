@@ -10,34 +10,69 @@ import Common
 import PointCloudRendererService
 import Combine
 
-public struct CaptureViewer: View {
+final class CaptureViewerModel: ObservableObject {
+    var cancellables = Set<AnyCancellable>()
 
-    @EnvironmentObject var particleBuffer: ParticleBufferWrapper
+    // MARK: - PointCloudKit -> PointCloudKit
+    class func convert(_ particleBuffer: ParticleBufferWrapper, particleCount: Int) -> Future<Object3D, Never> {
+        Future { promise in
+            DispatchQueue.global(qos: .userInitiated).async {
+                let particles = particleBuffer.buffer.getMemoryRepresentationCopy(for: particleCount)
+                let object = Object3D(vertices: particles.map(\.position),
+                                      vertexConfidence: particles.map({ particle in UInt(particle.confidence) }),
+                                      vertexColors: particles.map(\.color))
+                promise(.success(object))
+            }
+        }
+    }
+}
+
+struct CaptureViewer: View {
+
+    @EnvironmentObject var model: CaptureViewerModel
+
+    let particleBuffer: ParticleBufferWrapper
+    let initialCaptureParticleCount: Int
+    let confidenceTreshold: ConfidenceTreshold
+
+    @State var object: Object3D = Object3D()
+    @State var processing = false
 
     public var body: some View {
         ZStack {
-            SceneRender()
+            SceneRender(particleBuffer: particleBuffer,
+                        particleCount: object.vertices.count)
 
             VStack {
 
-//                Metrics(currentPointCount: model.object.vertices.count,
-//                        currentNormalCount: model.object.vertexNormals.count,
-//                        currentFaceCount: model.object.triangles.count,
-//                        activity: true)
+                Metrics(currentPointCount: object.vertices.count,
+                        currentNormalCount: object.vertexNormals.count,
+                        currentFaceCount: object.triangles.count,
+                        activity: true)
 
                 Spacer()
 
-                CaptureViewerControl()
-                    .environmentObject(CaptureViewerControlModel(particleBuffer: particleBuffer))
+                CaptureViewerControl(particleBuffer: particleBuffer,
+                                     object: $object,
+                                     processing: $processing,
+                                     confidenceTreshold: confidenceTreshold)
             }
 
         }
-//        .onAppear {
-////            sceneRenderingService.updatePointCloud(with: particleBuffer)
-////            processorService.initialize(with: particleBuffer)
-//
-//        }
-        .environmentObject(particleBuffer)
+        .environmentObject(CaptureViewerControlModel())
         .navigationBarTitle("Viewer", displayMode: .inline)
+        .onAppear {
+            processing = true
+            CaptureViewerModel.convert(particleBuffer, particleCount: initialCaptureParticleCount)
+                .receive(on: DispatchQueue.main)
+                .sink(receiveValue: { object in
+                    self.object = object
+                    processing = false
+                })
+                .store(in: &model.cancellables)
+        }
+        .onDisappear {
+            model.cancellables.forEach { cancellable in cancellable.cancel() }
+        }
     }
 }

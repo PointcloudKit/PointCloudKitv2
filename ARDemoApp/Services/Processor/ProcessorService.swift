@@ -234,6 +234,7 @@ extension ProcessorService {
 
     // MARK: - PointCloudKit -> Open3D
     func convertObject3DPointCloud(_ object: Object3D) -> Open3DPointCloud {
+        /* * */ let start = DispatchTime.now()
         let pythonPoints = PythonObject(object.vertices.map { PythonObject([$0.x, $0.y, $0.z]) })
         let pythonColors = PythonObject(object.vertexColors.map { PythonObject([$0.x, $0.y, $0.z]) })
         let pythonNormals = PythonObject(object.vertexNormals.map { PythonObject([$0.x, $0.y, $0.z]) })
@@ -241,11 +242,15 @@ extension ProcessorService {
         pointCloud.points = o3d.utility.Vector3dVector(pythonPoints)
         pointCloud.colors = o3d.utility.Vector3dVector(pythonColors)
         pointCloud.normals = o3d.utility.Vector3dVector(pythonNormals)
+        /* * */ let end = DispatchTime.now()
+        /* * */ let nanoTime = end.uptimeNanoseconds - start.uptimeNanoseconds
+        /* * */ print(" <*> Processor - Object3D -> O3D pointCLoud \(#function): \(Double(nanoTime) / 1_000_000) ms")
         return pointCloud
     }
 
     // MARK: - PointCloudKit -> Open3D
     func convertObject3DTriangleMesh(_ object: Object3D) -> Open3DTriangleMeshes {
+        /* * */ let start = DispatchTime.now()
         let points = object.vertices.map { PythonObject([$0.x, $0.y, $0.z]) }
         let colors = object.vertexColors.map { PythonObject([$0.x, $0.y, $0.z]) }
         let normals = object.vertexNormals.map { PythonObject([$0.x, $0.y, $0.z]) }
@@ -255,11 +260,15 @@ extension ProcessorService {
         triangleMeshes.vertex_colors = o3d.utility.Vector3dVector(colors)
         triangleMeshes.vertex_normal = o3d.utility.Vector3dVector(normals)
         triangleMeshes.triangles = o3d.Vector3dVector(triangles)
+        /* * */ let end = DispatchTime.now()
+        /* * */ let nanoTime = end.uptimeNanoseconds - start.uptimeNanoseconds
+        /* * */ print(" <*> Processor - Object3D -> O3D triangleMeshes \(#function): \(Double(nanoTime) / 1_000_000) ms")
         return triangleMeshes
     }
 
     // MARK: - Open3D -> PointCloudKit
     func convertOpen3D(pointCloud: Open3DPointCloud) -> Object3D {
+        /* * */ let start = DispatchTime.now()
         let vertices: [Float3] = // Array(numpy: numpy.asarray(pointCloud.points))
             numpy.asarray(pointCloud.points).map { point in Float3(Float(point[0])!,
                                                                    Float(point[1])!,
@@ -272,10 +281,18 @@ extension ProcessorService {
             numpy.asarray(pointCloud.normals).map { normal in Float3(Float(normal[0])!,
                                                                      Float(normal[1])!,
                                                                      Float(normal[2])!) }
-        return Object3D(vertices: vertices, vertexColors: colors, vertexNormals: normals)
+        let confidence = [UInt].init(repeating: UInt(ConfidenceTreshold.high.rawValue), count: vertices.count)
+        /* * */ let end = DispatchTime.now()
+        /* * */ let nanoTime = end.uptimeNanoseconds - start.uptimeNanoseconds
+        /* * */ print(" <*> Processor - O3D pointCloud -> Object3D \(#function): \(Double(nanoTime) / 1_000_000) ms")
+        return Object3D(vertices: vertices,
+                        vertexConfidence: confidence,
+                        vertexColors: colors,
+                        vertexNormals: normals)
     }
 
     func convertOpen3D(triangleMeshes: Open3DTriangleMeshes) -> Object3D {
+        /* * */ let start = DispatchTime.now()
         let vertices: [Float3] = numpy.asarray(triangleMeshes.vertices).map { vertex in Float3(Float(vertex[0])!,
                                                                                                Float(vertex[1])!,
                                                                                                Float(vertex[2])!) }
@@ -288,6 +305,14 @@ extension ProcessorService {
         let triangles: [UInt3] = numpy.asarray(triangleMeshes.triangles).map { triangle in UInt3(UInt(triangle[0])!,
                                                                                                  UInt(triangle[1])!,
                                                                                                  UInt(triangle[2])!)}
-        return Object3D(vertices: vertices, vertexColors: colors, vertexNormals: normals, triangles: triangles)
+        let confidence = [UInt].init(repeating: UInt(ConfidenceTreshold.high.rawValue), count: vertices.count)
+        /* * */ let end = DispatchTime.now()
+        /* * */ let nanoTime = end.uptimeNanoseconds - start.uptimeNanoseconds
+        /* * */ print(" <*> Processor - O3D Triangles -> Object3D \(#function): \(Double(nanoTime) / 1_000_000) ms")
+        return Object3D(vertices: vertices,
+                        vertexConfidence: confidence,
+                        vertexColors: colors,
+                        vertexNormals: normals,
+                        triangles: triangles)
     }
 }

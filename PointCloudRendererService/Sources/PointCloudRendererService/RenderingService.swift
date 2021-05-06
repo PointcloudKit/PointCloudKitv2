@@ -98,11 +98,7 @@ public final class RenderingService: ObservableObject {
     // MARK: Particles buffer
     private(set) public var particlesBuffer: MetalBuffer<ParticleUniforms>
     var currentPointIndex = 0
-    @Published public var currentPointCount = 0 {
-        didSet {
-            particleBufferWrapper.count = currentPointCount
-        }
-    }
+    @Published public var currentPointCount = 0
 
     // MARK: - Sampling
 
@@ -147,7 +143,6 @@ public final class RenderingService: ObservableObject {
         didSet {
             // apply the change for the shader
             pointCloudUniforms.confidenceThreshold = confidenceThreshold
-            particleBufferWrapper.confidenceTreshold = confidenceThreshold
         }
     }
 
@@ -208,9 +203,7 @@ public final class RenderingService: ObservableObject {
 
         inFlightSemaphore = DispatchSemaphore(value: maxInFlightBuffers)
         // Starts
-        particleBufferWrapper = ParticleBufferWrapper(buffer: particlesBuffer,
-                                                      count: 0,
-                                                      confidenceTreshold: .medium)
+        particleBufferWrapper = ParticleBufferWrapper(buffer: particlesBuffer)
         running = true
     }
 

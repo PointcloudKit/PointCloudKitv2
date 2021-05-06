@@ -6,11 +6,19 @@
 //
 
 import SwiftUI
+import PointCloudRendererService
+import Common
 
 struct CaptureViewerControl: View {
     @AppStorage(ProcessorParameters.storageKey) private var processorParameters = ProcessorParameters()
 
     @EnvironmentObject var model: CaptureViewerControlModel
+
+    let particleBuffer: ParticleBufferWrapper
+    @Binding var object: Object3D
+    @Binding var processing: Bool
+
+    let confidenceTreshold: ConfidenceTreshold
 
     @State private var showExportActionSheet = false
     @State private var exportSCN = false
@@ -19,6 +27,35 @@ struct CaptureViewerControl: View {
     @State private var showParameters: Bool = false
     @State private var showParameterControls: Bool = false
     @State private var showProcessorParametersEditor: Bool = false
+
+    @State var lastObject: Object3D?
+    @State var undoAvailable: Bool = false
+
+    func undo() {
+        guard let lastObject = lastObject else { return }
+        object = lastObject
+        self.lastObject = nil
+        undoAvailable = false
+
+        redraw()
+    }
+
+    private func update(with object: Object3D) {
+        lastObject = self.object
+        self.object = object
+        undoAvailable = true
+
+        redraw()
+    }
+
+    private func redraw() {
+        object.particles()
+            .receive(on: DispatchQueue.main)
+            .sink(receiveValue: { particles in
+                particleBuffer.buffer.assign(with: particles)
+            })
+            .store(in: &model.cancellables)
+    }
 
     // MARK: - UI
 
@@ -29,10 +66,7 @@ struct CaptureViewerControl: View {
     var exportActionSheet: ActionSheet {
         var exportButtons = [ActionSheet.Button]()
 
-        // TODO check if PLY is ready to be exported
-        if true {
-            exportButtons.append(exportPlyButton)
-        }
+        exportButtons.append(exportPlyButton)
         exportButtons.append(.cancel())
 
         return ActionSheet(title: Text("Export Type"), message: Text("Supported export formats"), buttons: exportButtons)
@@ -40,8 +74,8 @@ struct CaptureViewerControl: View {
 
     // MARK: - Paramters
 
-    private var processorsEnabled: Bool { !model.processing && !showProcessorParametersEditor }
-    private var reconstructionEnabled: Bool { processorsEnabled && model.object.hasVertexNormals }
+    private var processorsEnabled: Bool { !processing && !showProcessorParametersEditor }
+    private var reconstructionEnabled: Bool { processorsEnabled && object.hasVertexNormals }
 
     var transformingParameters: some View {
         HStack {
@@ -56,9 +90,16 @@ struct CaptureViewerControl: View {
 
             ScrollView(.horizontal, showsIndicators: false, content: {
                 HStack {
-                    // MARK: Surface Reconstruction
+                    // MARK: Normal Estimation
                     Button(action: {
-                        model.normalsEstimation(parameters: processorParameters.normalsEstimation)
+                        processing = true
+                        model.normalsEstimation(object, parameters: processorParameters.normalsEstimation)
+                            .receive(on: DispatchQueue.main)
+                            .sink(receiveCompletion: {_ in processing = false },
+                                  receiveValue: { object in
+                                    self.update(with: object)
+                                  })
+                            .store(in: &model.cancellables)
                     }, label: {
                         Label(
                             title: { Text("Normal Estimation").foregroundColor(.bone) },
@@ -74,7 +115,14 @@ struct CaptureViewerControl: View {
 
                     // MARK: Surface Reconstruction
                     Button(action: {
-                        model.poissonSurfaceReconstruction(parameters: processorParameters.surfaceReconstruction.poisson)
+                        processing = true
+                        model.poissonSurfaceReconstruction(object, parameters: processorParameters.surfaceReconstruction.poisson)
+                            .receive(on: DispatchQueue.main)
+                            .sink(receiveCompletion: {_ in processing = false },
+                                  receiveValue: { object in
+                                    self.update(with: object)
+                                  })
+                            .store(in: &model.cancellables)
                     }, label: {
                         Label(
                             title: { Text("Surface Reconstruction").foregroundColor(.bone) },
@@ -106,7 +154,14 @@ struct CaptureViewerControl: View {
                 HStack {
                     // MARK: Voxel DownSampling
                     Button(action: {
-                        model.voxelDownsampling(parameters: processorParameters.voxelDownSampling)
+                        processing = true
+                        model.voxelDownsampling(object, parameters: processorParameters.voxelDownSampling)
+                            .receive(on: DispatchQueue.main)
+                            .sink(receiveCompletion: {_ in processing = false },
+                                  receiveValue: { object in
+                                    self.update(with: object)
+                                  })
+                            .store(in: &model.cancellables)
                     }, label: {
                         Label(title: { Text("Voxel DownSampling").foregroundColor(.bone) },
                               icon: {
@@ -119,7 +174,14 @@ struct CaptureViewerControl: View {
 
                     // MARK: Statistical Outlier Removal
                     Button(action: {
-                        model.statisticalOutlierRemoval(parameters: processorParameters.outlierRemoval.statistical)
+                        processing = true
+                        model.statisticalOutlierRemoval(object, parameters: processorParameters.outlierRemoval.statistical)
+                            .receive(on: DispatchQueue.main)
+                            .sink(receiveCompletion: {_ in processing = false },
+                                  receiveValue: { object in
+                                    self.update(with: object)
+                                  })
+                            .store(in: &model.cancellables)
                     }, label: {
                         Label(title: { Text("Statistical O.R.").foregroundColor(.bone) },
                               icon: {
@@ -132,7 +194,14 @@ struct CaptureViewerControl: View {
 
                     // MARK: Radius Outlier Removal
                     Button(action: {
-                        model.radiusOutlierRemoval(parameters: processorParameters.outlierRemoval.radius)
+                        processing = true
+                        model.radiusOutlierRemoval(object, parameters: processorParameters.outlierRemoval.radius)
+                            .receive(on: DispatchQueue.main)
+                            .sink(receiveCompletion: {_ in processing = false },
+                                  receiveValue: { object in
+                                    self.update(with: object)
+                                  })
+                            .store(in: &model.cancellables)
                     }, label: {
                         Label(title: { Text("Radius O.R.").foregroundColor(.bone) },
                               icon: {
@@ -160,21 +229,20 @@ struct CaptureViewerControl: View {
 
             ScrollView(.horizontal, showsIndicators: false, content: {
                 HStack {
-
                     // MARK: Undo
                     Button(action: {
-                        model.undo()
+                        undo()
                     }, label: {
                         Label(
-                            title: { Text("Undo").foregroundColor(model.undoAvailable && processorsEnabled ? .bone : .spaceGray) },
+                            title: { Text("Undo").foregroundColor(undoAvailable && processorsEnabled ? .bone : .spaceGray) },
                             icon: {
                                 Image(systemName: "arrow.uturn.backward.square")
                                     .font(.body)
-                                    .foregroundColor(model.undoAvailable && processorsEnabled  ? .amazon : .spaceGray)
+                                    .foregroundColor(undoAvailable && processorsEnabled  ? .amazon : .spaceGray)
                             }
                         )
                     })
-                    .disabled(!model.undoAvailable || !processorsEnabled)
+                    .disabled(!undoAvailable || !processorsEnabled)
 
                     // MARK: Processing Parameters
                     Button(action: {
@@ -221,32 +289,14 @@ struct CaptureViewerControl: View {
             }, label: {
                 Image(systemName: "square.and.arrow.up")
                     .font(.system(size: 42, weight: .regular))
-                    .foregroundColor(showParameters || model.processing ? .spaceGray : .bone)
+                    .foregroundColor(showParameters || processing ? .spaceGray : .bone)
             })
-            .disabled(showParameters || model.processing)
+            .disabled(showParameters || processing)
         }
     }
 
-
     public var body: some View {
         ZStack {
-
-            if model.processing {
-                ProgressView("Processing...")
-                    .padding(20)
-                    .background(Color.black.opacity(0.8))
-                    .cornerRadius(10)
-                    .foregroundColor(.bone)
-            }
-
-            if model.exporting {
-                ProgressView("\(model.exportService.info)", value: model.exportService.exportProgress, total: 1)
-                    .fileExporter(isPresented: $exportPLY,
-                                  document: model.exportService.generatePLYFile(from: model.object),
-                                  contentType: .polygon,
-                                  onCompletion: { _ in })
-                    .foregroundColor(.bone)
-            }
 
             VStack {
 
@@ -279,13 +329,29 @@ struct CaptureViewerControl: View {
                 }
             }
             .background(Color.black.opacity(0.8))
+
+            if processing {
+                ProgressView("Processing...")
+                    .padding(20)
+                    .background(Color.black.opacity(0.8))
+                    .cornerRadius(10)
+                    .foregroundColor(.bone)
+            }
+
+            if model.exporting {
+                ProgressView("\(model.exportService.info)", value: model.exportService.exportProgress, total: 1)
+                    .fileExporter(isPresented: $exportPLY,
+                                  document: model.exportService.generatePLYFile(from: object),
+                                  contentType: .polygon,
+                                  onCompletion: { _ in })
+                    .foregroundColor(.bone)
+            }
         }
         .actionSheet(isPresented: $showExportActionSheet, content: {
             exportActionSheet
         })
-        .onAppear {
-            model.initialize()
+        .onDisappear {
+            model.cancellables.forEach { cancellable in cancellable.cancel() }
         }
     }
-
 }
