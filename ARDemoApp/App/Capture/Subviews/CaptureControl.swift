@@ -154,7 +154,7 @@ struct CaptureControl: View {
     var controls: some View {
         HStack {
 
-            HStack(alignment: .center, spacing: 20) {
+            HStack(spacing: 20) {
                 Button(action: {
                     withAnimation {
                         showParameters.toggle()
@@ -198,7 +198,7 @@ struct CaptureControl: View {
                 }
             }, label: {
                 Image(systemName: "cube.transparent")
-                    .font(.title2)
+                    .font(.title)
                     .foregroundColor(navigationToCaptureViewerAllowed ? .amazon : .charredBone)
             })
             .disabled(!navigationToCaptureViewerAllowed)
