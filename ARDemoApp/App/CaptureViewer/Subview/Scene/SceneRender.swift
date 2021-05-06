@@ -22,7 +22,7 @@ final class SceneRenderModel: ObservableObject {
 
 struct SceneRender: View {
 
-    let model = SceneRenderModel()
+    @EnvironmentObject var model: SceneRenderModel
 
     let particleBuffer: ParticleBufferWrapper
     let particleCount: Int

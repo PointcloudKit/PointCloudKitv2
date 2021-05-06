@@ -13,6 +13,10 @@ import Combine
 final class CaptureViewerModel: ObservableObject {
     var cancellables = Set<AnyCancellable>()
 
+    let captureViewerModel = CaptureViewerControlModel(processorService: ProcessorService(), exportService: ExportService())
+
+    let sceneRendererModel = SceneRenderModel()
+
     // MARK: - PointCloudKit -> PointCloudKit
     class func convert(_ particleBuffer: ParticleBufferWrapper, particleCount: Int) -> Future<Object3D, Never> {
         Future { promise in
@@ -36,12 +40,12 @@ struct CaptureViewer: View {
     let confidenceTreshold: ConfidenceTreshold
 
     @State var object: Object3D = Object3D()
-    @State var processing = false
 
     public var body: some View {
         ZStack {
             SceneRender(particleBuffer: particleBuffer,
                         particleCount: object.vertices.count)
+                .environmentObject(model.sceneRendererModel)
 
             VStack {
 
@@ -54,20 +58,17 @@ struct CaptureViewer: View {
 
                 CaptureViewerControl(particleBuffer: particleBuffer,
                                      object: $object,
-                                     processing: $processing,
                                      confidenceTreshold: confidenceTreshold)
+                    .environmentObject(model.captureViewerModel)
             }
 
         }
-        .environmentObject(CaptureViewerControlModel())
         .navigationBarTitle("Viewer", displayMode: .inline)
         .onAppear {
-            processing = true
             CaptureViewerModel.convert(particleBuffer, particleCount: initialCaptureParticleCount)
                 .receive(on: DispatchQueue.main)
                 .sink(receiveValue: { object in
                     self.object = object
-                    processing = false
                 })
                 .store(in: &model.cancellables)
         }
