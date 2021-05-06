@@ -9,27 +9,7 @@ import SwiftUI
 import Common
 import PointCloudRendererService
 import Combine
-
-final class CaptureViewerModel: ObservableObject {
-    var cancellables = Set<AnyCancellable>()
-
-    let captureViewerModel = CaptureViewerControlModel(processorService: ProcessorService(), exportService: ExportService())
-
-    let sceneRendererModel = SceneRenderModel()
-
-    // MARK: - PointCloudKit -> PointCloudKit
-    class func convert(_ particleBuffer: ParticleBufferWrapper, particleCount: Int) -> Future<Object3D, Never> {
-        Future { promise in
-            DispatchQueue.global(qos: .userInitiated).async {
-                let particles = particleBuffer.buffer.getMemoryRepresentationCopy(for: particleCount)
-                let object = Object3D(vertices: particles.map(\.position),
-                                      vertexConfidence: particles.map({ particle in UInt(particle.confidence) }),
-                                      vertexColors: particles.map(\.color))
-                promise(.success(object))
-            }
-        }
-    }
-}
+import SceneKit
 
 struct CaptureViewer: View {
 
@@ -43,9 +23,12 @@ struct CaptureViewer: View {
 
     public var body: some View {
         ZStack {
-            SceneRender(particleBuffer: particleBuffer,
-                        particleCount: object.vertices.count)
-                .environmentObject(model.sceneRendererModel)
+
+            SceneView(scene: model.updatedScene(using: particleBuffer, particleCount: object.vertices.count),
+                      pointOfView: model.cameraNode,
+                      options: [.allowsCameraControl,
+                                .autoenablesDefaultLighting,
+                                .rendersContinuously])
 
             VStack {
 
@@ -59,7 +42,7 @@ struct CaptureViewer: View {
                 CaptureViewerControl(particleBuffer: particleBuffer,
                                      object: $object,
                                      confidenceTreshold: confidenceTreshold)
-                    .environmentObject(model.captureViewerModel)
+                    .environmentObject(model.captureViewerControlModel)
             }
 
         }

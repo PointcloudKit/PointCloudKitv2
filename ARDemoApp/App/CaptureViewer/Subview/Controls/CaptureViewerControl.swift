@@ -183,7 +183,7 @@ struct CaptureViewerControl: View {
                     }, label: {
                         Label(title: { Text("Statistical O.R.").foregroundColor(.bone) },
                               icon: {
-                                Image(systemName: "aqi.high")
+                                Image(systemName: "camera.filters")
                                     .font(.body)
                                     .foregroundColor(processorsEnabled ? .amazon : .charredBone)
                               })

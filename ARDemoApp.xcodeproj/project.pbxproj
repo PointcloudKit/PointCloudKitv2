@@ -26,11 +26,11 @@
 		EE5F3A8E260AD18800945107 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EE5F3A8D260AD18800945107 /* Preview Assets.xcassets */; };
 		EE5F3A99260AD18800945107 /* ARDemoAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5F3A98260AD18800945107 /* ARDemoAppTests.swift */; };
 		EE5F3AA4260AD18800945107 /* ARDemoAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5F3AA3260AD18800945107 /* ARDemoAppUITests.swift */; };
+		EE6031872643BED300DEBBED /* CaptureViewerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6031862643BED300DEBBED /* CaptureViewerViewModel.swift */; };
 		EE6A3DA226144FAD00D0203B /* CaptureToggleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6A3DA126144FAD00D0203B /* CaptureToggleStyle.swift */; };
 		EE7AE5C8263AB0A500D60B95 /* CaptureControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7AE5C7263AB0A500D60B95 /* CaptureControl.swift */; };
 		EE7D8114263F8B4E00133FD1 /* PointCloudRendererService in Frameworks */ = {isa = PBXBuildFile; productRef = EE7D8113263F8B4E00133FD1 /* PointCloudRendererService */; };
 		EE7D8116263F8B5100133FD1 /* Common in Frameworks */ = {isa = PBXBuildFile; productRef = EE7D8115263F8B5100133FD1 /* Common */; };
-		EE7D811A263FE9D800133FD1 /* SceneRender.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7D8119263FE9D800133FD1 /* SceneRender.swift */; };
 		EE7D8120263FF26B00133FD1 /* CaptureViewerControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7D811F263FF26B00133FD1 /* CaptureViewerControl.swift */; };
 		EE7D8122263FFF6300133FD1 /* CaptureViewerControlModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7D8121263FFF6300133FD1 /* CaptureViewerControlModel.swift */; };
 		EEC0D439260D9B140093141F /* Capture.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEC0D438260D9B140093141F /* Capture.swift */; };
@@ -78,9 +78,9 @@
 		EE5F3A9F260AD18800945107 /* ARDemoAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ARDemoAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE5F3AA3260AD18800945107 /* ARDemoAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARDemoAppUITests.swift; sourceTree = "<group>"; };
 		EE5F3AA5260AD18800945107 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EE6031862643BED300DEBBED /* CaptureViewerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureViewerViewModel.swift; sourceTree = "<group>"; };
 		EE6A3DA126144FAD00D0203B /* CaptureToggleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureToggleStyle.swift; sourceTree = "<group>"; };
 		EE7AE5C7263AB0A500D60B95 /* CaptureControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureControl.swift; sourceTree = "<group>"; };
-		EE7D8119263FE9D800133FD1 /* SceneRender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneRender.swift; sourceTree = "<group>"; };
 		EE7D811F263FF26B00133FD1 /* CaptureViewerControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureViewerControl.swift; sourceTree = "<group>"; };
 		EE7D8121263FFF6300133FD1 /* CaptureViewerControlModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureViewerControlModel.swift; sourceTree = "<group>"; };
 		EE849103262ED0DC00F231B1 /* PointCloudRendererService */ = {isa = PBXFileReference; lastKnownFileType = folder; path = PointCloudRendererService; sourceTree = "<group>"; };
@@ -142,6 +142,7 @@
 			children = (
 				EE53FD6D263BB04100F6C86F /* Subview */,
 				EE53FD67263BB02B00F6C86F /* CaptureViewer.swift */,
+				EE6031862643BED300DEBBED /* CaptureViewerViewModel.swift */,
 			);
 			path = CaptureViewer;
 			sourceTree = "<group>";
@@ -150,7 +151,6 @@
 			isa = PBXGroup;
 			children = (
 				EE7D811E263FF25100133FD1 /* Controls */,
-				EE7D811D263FF00F00133FD1 /* Scene */,
 			);
 			path = Subview;
 			sourceTree = "<group>";
@@ -243,14 +243,6 @@
 				EE7AE5C7263AB0A500D60B95 /* CaptureControl.swift */,
 			);
 			path = Subviews;
-			sourceTree = "<group>";
-		};
-		EE7D811D263FF00F00133FD1 /* Scene */ = {
-			isa = PBXGroup;
-			children = (
-				EE7D8119263FE9D800133FD1 /* SceneRender.swift */,
-			);
-			path = Scene;
 			sourceTree = "<group>";
 		};
 		EE7D811E263FF25100133FD1 /* Controls */ = {
@@ -460,6 +452,7 @@
 				EE53FD8C263BEA1400F6C86F /* ExportService.swift in Sources */,
 				EE53FD7F263BD46600F6C86F /* ProcessorService.swift in Sources */,
 				EE6A3DA226144FAD00D0203B /* CaptureToggleStyle.swift in Sources */,
+				EE6031872643BED300DEBBED /* CaptureViewerViewModel.swift in Sources */,
 				EE53FD78263BB2ED00F6C86F /* CaptureRendering.swift in Sources */,
 				EE53FD71263BB06400F6C86F /* ProcessorParametersEditor.swift in Sources */,
 				EE53FD63263BA75300F6C86F /* FlashlightService.swift in Sources */,
@@ -470,7 +463,6 @@
 				EE53FD76263BB2ED00F6C86F /* CaptureRendering+CoachingOverlay.swift in Sources */,
 				EE53FD84263BD47900F6C86F /* ProcessorParameters.swift in Sources */,
 				EE53FD6B263BB02B00F6C86F /* CaptureViewer.swift in Sources */,
-				EE7D811A263FE9D800133FD1 /* SceneRender.swift in Sources */,
 				EE5F3A87260AD18700945107 /* ARDemoApp.swift in Sources */,
 				EE7AE5C8263AB0A500D60B95 /* CaptureControl.swift in Sources */,
 			);

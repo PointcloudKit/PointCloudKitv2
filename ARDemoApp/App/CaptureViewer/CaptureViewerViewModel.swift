@@ -1,96 +1,84 @@
 //
-//  CaptureViewerScene.swift
+//  CaptureViewerViewModel.swift
 //  PointCloudKit
 //
-//  Created by Alexandre Camilleri on 03/05/2021.
+//  Created by Alexandre Camilleri on 06/05/2021.
 //
 
-import SwiftUI
+import Foundation
 import SceneKit
-import Common
 import PointCloudRendererService
 import Combine
+import Common
 
 enum NodeIdentifier: String {
     case camera = "com.pointCloudKit.nodes.camera"
     case pointCloudRoot = "com.pointCloudKit.nodes.pointCloudRootRoot"
 }
 
-final class SceneRenderModel: ObservableObject {
+final class CaptureViewerModel: ObservableObject {
     var cancellables = Set<AnyCancellable>()
-}
 
-struct SceneRender: View {
+    let captureViewerControlModel = CaptureViewerControlModel(processorService: ProcessorService(), exportService: ExportService())
 
-    @EnvironmentObject var model: SceneRenderModel
+    private let scene = SCNScene()
+    let cameraNode = SCNNode()
+    var pointCloudNode: SCNNode?
 
-    let particleBuffer: ParticleBufferWrapper
-    let particleCount: Int
-
-    @State var rendering = false
-
-    var scene: SCNScene {
-        let scene = SCNScene()
-        let cameraNode = SCNNode()
-
-        cameraNode.camera = SCNCamera()
-        cameraNode.name = NodeIdentifier.camera.rawValue
-
-        scene.rootNode.addChildNode(ambientLightNode)
-        scene.background.contents = UIColor.black
-
-        pointCloudNode(from: particleBuffer)
-            .receive(on: DispatchQueue.main)
-            .sink { pointCloudRootNode in
-                // Add new pointCloudNode
-                scene.rootNode.addChildNode(pointCloudRootNode)
-                // Adjust camera
-                cameraNode.look(at: pointCloudRootNode.position)
-                cameraNode.position.z += 5
-                scene.rootNode.addChildNode(cameraNode)
-            }
-            .store(in: &model.cancellables)
-
-        return scene
-    }
-
-    var ambientLightNode: SCNNode {
-        let ambientLightNode = SCNNode()
-        let light = SCNLight()
-
-        light.type = .ambient
-        ambientLightNode.light = light
-        return ambientLightNode
-    }
-
-    public var body: some View {
-        let scene = scene
-
-        ZStack {
-            SceneView(scene: scene,
-                      pointOfView: scene.rootNode.childNode(withName: NodeIdentifier.camera.rawValue,
-                                                            recursively: false),
-                      options: [.allowsCameraControl,
-                                .autoenablesDefaultLighting])
-
-            if rendering {
-                ProgressView("Rendering...")
-                    .padding(20)
-                    .background(Color.black.opacity(0.8))
-                    .cornerRadius(10)
-                    .foregroundColor(.bone)
+    // MARK: - PointCloudKit -> PointCloudKit
+    class func convert(_ particleBuffer: ParticleBufferWrapper, particleCount: Int) -> Future<Object3D, Never> {
+        Future { promise in
+            DispatchQueue.global(qos: .userInitiated).async {
+                let particles = particleBuffer.buffer.getMemoryRepresentationCopy(for: particleCount)
+                let object = Object3D(vertices: particles.map(\.position),
+                                      vertexConfidence: particles.map({ particle in UInt(particle.confidence) }),
+                                      vertexColors: particles.map(\.color))
+                promise(.success(object))
             }
         }
     }
+
+    init() {
+        cameraNode.camera = SCNCamera()
+        cameraNode.name = NodeIdentifier.camera.rawValue
+        scene.rootNode.addChildNode(cameraNode)
+
+        let ambientLightNode = SCNNode()
+        let light = SCNLight()
+        light.type = .ambient
+        ambientLightNode.light = light
+        scene.rootNode.addChildNode(ambientLightNode)
+
+        scene.background.contents = UIColor.black
+    }
+
+    func updatedScene(using particleBuffer: ParticleBufferWrapper, particleCount: Int) -> SCNScene {
+        pointCloudNode(from: particleBuffer, particleCount: particleCount)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] pointCloudRootNode in
+                guard let self = self else { return }
+                self.pointCloudNode?.removeFromParentNode()
+                self.pointCloudNode = pointCloudRootNode
+                // Add new pointCloudNode
+                self.scene.rootNode.addChildNode(pointCloudRootNode)
+                // Adjust camera
+                self.cameraNode.look(at: pointCloudRootNode.position)
+                self.cameraNode.position.z += 5
+            }
+            .store(in: &cancellables)
+
+        return scene
+    }
 }
 
-extension SceneRender {
+
+extension CaptureViewerModel {
 
     private static let positionVertex = ParticleBufferWrapper.Component.position
     private static let colorVertex = ParticleBufferWrapper.Component.color
     // private static let confidence = ParticleBuffer.Component.confidence
 
-    private func pointCloudNode(from particleBuffer: ParticleBufferWrapper) -> Future<SCNNode, Never> {
+    private func pointCloudNode(from particleBuffer: ParticleBufferWrapper, particleCount: Int) -> Future<SCNNode, Never> {
         Future { promise in
             DispatchQueue.global(qos: .userInitiated).async {
                 /* * */ let start = DispatchTime.now()
@@ -138,7 +126,7 @@ extension SceneRender {
                 promise(.success(pointCloudRootNode))
                 /* * */ let end = DispatchTime.now()
                 /* * */ let nanoTime = end.uptimeNanoseconds - start.uptimeNanoseconds
-                /* * */ print(" <*> SceneRenderer - Generate SCNNode from particleBuffer \(#function): \(Double(nanoTime) / 1_000_000) ms")
+                /* * */ print(" <*> CaptureViewerModel - Generate SCNNode from particleBuffer \(#function): \(Double(nanoTime) / 1_000_000) ms")
             }
         }
     }
