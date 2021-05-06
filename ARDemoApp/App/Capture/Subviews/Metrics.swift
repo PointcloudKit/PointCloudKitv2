@@ -24,7 +24,7 @@ struct Metrics: View {
                     icon: {
                         Image(systemName: "aqi.medium")
                             .font(.body)
-                            .foregroundColor(!activity ? .spaceGray : .amazon)
+                            .foregroundColor(!activity ? .charredBone : .amazon)
                     }
                 )
 
@@ -33,7 +33,7 @@ struct Metrics: View {
                     icon: {
                         Image(systemName: "line.diagonal.arrow")
                             .font(.body)
-                            .foregroundColor(!activity ? .spaceGray : .amazon)
+                            .foregroundColor(!activity ? .charredBone : .amazon)
                     }
                 )
 
@@ -42,7 +42,7 @@ struct Metrics: View {
                     icon: {
                         Image(systemName: "square.2.stack.3d")
                             .font(.body)
-                            .foregroundColor(!activity ? .spaceGray : .amazon)
+                            .foregroundColor(!activity ? .charredBone : .amazon)
                     }
                 )
             }

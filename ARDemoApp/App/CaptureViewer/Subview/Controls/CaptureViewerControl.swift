@@ -106,7 +106,7 @@ struct CaptureViewerControl: View {
                             icon: {
                                 Image(systemName: "line.diagonal.arrow")
                                     .font(.body)
-                                    .foregroundColor(processorsEnabled ? .amazon : .spaceGray)
+                                    .foregroundColor(processorsEnabled ? .amazon : .charredBone)
                                     .padding(.trailing, 1)
                             }
                         )
@@ -129,7 +129,7 @@ struct CaptureViewerControl: View {
                             icon: {
                                 Image(systemName: "skew")
                                     .font(.body)
-                                    .foregroundColor(reconstructionEnabled ? .amazon : .spaceGray)
+                                    .foregroundColor(reconstructionEnabled ? .amazon : .charredBone)
                             }
                         )
                     })
@@ -167,7 +167,7 @@ struct CaptureViewerControl: View {
                               icon: {
                                 Image(systemName: "cube")
                                     .font(.body)
-                                    .foregroundColor(processorsEnabled ? .amazon : .spaceGray)
+                                    .foregroundColor(processorsEnabled ? .amazon : .charredBone)
                               })
                     })
                     .disabled(!processorsEnabled)
@@ -187,7 +187,7 @@ struct CaptureViewerControl: View {
                               icon: {
                                 Image(systemName: "aqi.high")
                                     .font(.body)
-                                    .foregroundColor(processorsEnabled ? .amazon : .spaceGray)
+                                    .foregroundColor(processorsEnabled ? .amazon : .charredBone)
                               })
                     })
                     .disabled(!processorsEnabled)
@@ -207,7 +207,7 @@ struct CaptureViewerControl: View {
                               icon: {
                                 Image(systemName: "aqi.medium")
                                     .font(.body)
-                                    .foregroundColor(processorsEnabled ? .amazon : .spaceGray)
+                                    .foregroundColor(processorsEnabled ? .amazon : .charredBone)
                               })
                     })
                     .disabled(!processorsEnabled)
@@ -234,11 +234,11 @@ struct CaptureViewerControl: View {
                         undo()
                     }, label: {
                         Label(
-                            title: { Text("Undo").foregroundColor(undoAvailable && processorsEnabled ? .bone : .spaceGray) },
+                            title: { Text("Undo").foregroundColor(undoAvailable && processorsEnabled ? .bone : .charredBone) },
                             icon: {
                                 Image(systemName: "arrow.uturn.backward.square")
                                     .font(.body)
-                                    .foregroundColor(undoAvailable && processorsEnabled  ? .amazon : .spaceGray)
+                                    .foregroundColor(undoAvailable && processorsEnabled  ? .amazon : .charredBone)
                             }
                         )
                     })
@@ -289,7 +289,7 @@ struct CaptureViewerControl: View {
             }, label: {
                 Image(systemName: "square.and.arrow.up")
                     .font(.system(size: 42, weight: .regular))
-                    .foregroundColor(showParameters || processing ? .spaceGray : .bone)
+                    .foregroundColor(showParameters || processing ? .charredBone : .bone)
             })
             .disabled(showParameters || processing)
         }

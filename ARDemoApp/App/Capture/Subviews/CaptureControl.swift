@@ -106,7 +106,7 @@ struct CaptureControl: View {
                 Label(title: { }, icon: {
                     Image(systemName: flashlightActive ? "flashlight.on.fill" : "flashlight.off.fill")
                         .font(.title)
-                        .foregroundColor(!flashlightControlDisabled ? .amazon : .spaceGray)
+                        .foregroundColor(!flashlightControlDisabled ? .amazon : .charredBone)
                 })
             })
             .disabled(flashlightControlDisabled)
@@ -124,7 +124,7 @@ struct CaptureControl: View {
                 Label(title: { }, icon: {
                     Image(systemName: "circlebadge.2")
                         .font(.title)
-                        .foregroundColor(!confidenceControlDisabled ? .amazon : .spaceGray)
+                        .foregroundColor(!confidenceControlDisabled ? .amazon : .charredBone)
                 })
             })
             .disabled(confidenceControlDisabled)
@@ -142,7 +142,7 @@ struct CaptureControl: View {
                 Label(title: { }, icon: {
                         Image(systemName: "speedometer")
                             .font(.title)
-                            .foregroundColor(!captureRateControlDisabled ? .amazon : .spaceGray)
+                            .foregroundColor(!captureRateControlDisabled ? .amazon : .charredBone)
                     })
             })
             .disabled(captureRateControlDisabled)
@@ -163,7 +163,7 @@ struct CaptureControl: View {
                     Image(systemName: "slider.horizontal.3")
                         .font(.title2)
                         .scaleEffect(showParameters ? 0.9 : 1)
-                        .foregroundColor(showCoachingOverlay ? .spaceGray : (showParameters ? .amazon : .bone))
+                        .foregroundColor(showCoachingOverlay ? .charredBone : (showParameters ? .amazon : .bone))
                 })
                 .disabled(showCoachingOverlay)
 
@@ -175,7 +175,7 @@ struct CaptureControl: View {
                 }, label: {
                     Image(systemName: "trash")
                         .font(.title2)
-                        .foregroundColor(flushAllowed ? .red : .spaceGray)
+                        .foregroundColor(flushAllowed ? .red : .charredBone)
                 })
                 .disabled(!flushAllowed)
             }
@@ -199,7 +199,7 @@ struct CaptureControl: View {
             }, label: {
                 Image(systemName: "cube.transparent")
                     .font(.title2)
-                    .foregroundColor(navigationToCaptureViewerAllowed ? .amazon : .spaceGray)
+                    .foregroundColor(navigationToCaptureViewerAllowed ? .amazon : .charredBone)
             })
             .disabled(!navigationToCaptureViewerAllowed)
         }
