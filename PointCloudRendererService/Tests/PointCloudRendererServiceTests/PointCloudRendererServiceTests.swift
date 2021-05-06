@@ -3,11 +3,11 @@ import XCTest
 
 final class PointCloudRendererServiceTests: XCTestCase {
     func testExample() {
-        let pointCloudRendererService = PointCloudRendererService(metalDevice: MTLCreateSystemDefaultDevice()!)
+        let pointCloudRendererService = RenderingService(metalDevice: MTLCreateSystemDefaultDevice()!)
 
-        // PointCloudCaptureRenderingView' View Model
-        let viewModel = PointCloudCaptureRenderingView.ViewModel(renderingService: pointCloudRenderingService)
-        let view = PointCloudCaptureRenderingView(viewModel: viewModel)
+        // CaptureRendering' View Model
+        let viewModel = CaptureRendering.ViewModel(renderingService: pointCloudRenderingService)
+        let view = CaptureRendering(viewModel: viewModel)
 
     }
 

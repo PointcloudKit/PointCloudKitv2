@@ -74,7 +74,7 @@ public struct MetalBuffer<Element>: Resource {
 
         /* * */ let end = DispatchTime.now()
         /* * */ let nanoTime = end.uptimeNanoseconds - start.uptimeNanoseconds
-        /* * */ print(" <*> Time to run \(#function): \(Double(nanoTime) / 1_000_000) ms")
+        /* * */ print(" <*> MetalBuffer - GPU to CPU : \(Double(nanoTime) / 1_000_000) ms")
         return result
     }
 

@@ -7,10 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8E8F5BA42616F45B005203E0 /* CaptureViewer in Frameworks */ = {isa = PBXBuildFile; productRef = 8E8F5BA32616F45B005203E0 /* CaptureViewer */; };
-		8EEF76AA2616D24F00A6BDC1 /* FileIO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EEF76A92616D24F00A6BDC1 /* FileIO.swift */; };
-		EE45170F26380BC5001C2A04 /* ProcessorService in Frameworks */ = {isa = PBXBuildFile; productRef = EE45170E26380BC5001C2A04 /* ProcessorService */; };
-		EE4EC387261EF10A00B2D858 /* Common in Frameworks */ = {isa = PBXBuildFile; productRef = EE4EC386261EF10A00B2D858 /* Common */; };
+		EE53FD63263BA75300F6C86F /* FlashlightService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE53FD62263BA75300F6C86F /* FlashlightService.swift */; };
+		EE53FD65263BAF2900F6C86F /* Metrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE53FD64263BAF2900F6C86F /* Metrics.swift */; };
+		EE53FD6B263BB02B00F6C86F /* CaptureViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE53FD67263BB02B00F6C86F /* CaptureViewer.swift */; };
+		EE53FD71263BB06400F6C86F /* ProcessorParametersEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE53FD6F263BB06400F6C86F /* ProcessorParametersEditor.swift */; };
+		EE53FD76263BB2ED00F6C86F /* CaptureRendering+CoachingOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE53FD73263BB2ED00F6C86F /* CaptureRendering+CoachingOverlay.swift */; };
+		EE53FD77263BB2ED00F6C86F /* CaptureRendering+Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE53FD74263BB2ED00F6C86F /* CaptureRendering+Coordinator.swift */; };
+		EE53FD78263BB2ED00F6C86F /* CaptureRendering.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE53FD75263BB2ED00F6C86F /* CaptureRendering.swift */; };
+		EE53FD7F263BD46600F6C86F /* ProcessorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE53FD7E263BD46600F6C86F /* ProcessorService.swift */; };
+		EE53FD83263BD47900F6C86F /* ProcessorParameters+RawRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE53FD81263BD47900F6C86F /* ProcessorParameters+RawRepresentable.swift */; };
+		EE53FD84263BD47900F6C86F /* ProcessorParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE53FD82263BD47900F6C86F /* ProcessorParameters.swift */; };
+		EE53FD87263BD51E00F6C86F /* PythonKit in Frameworks */ = {isa = PBXBuildFile; productRef = EE53FD86263BD51E00F6C86F /* PythonKit */; };
+		EE53FD8A263BD60800F6C86F /* Open3D-iOS in Frameworks */ = {isa = PBXBuildFile; productRef = EE53FD89263BD60800F6C86F /* Open3D-iOS */; };
+		EE53FD8C263BEA1400F6C86F /* ExportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE53FD8B263BEA1400F6C86F /* ExportService.swift */; };
 		EE5F3A87260AD18700945107 /* ARDemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5F3A86260AD18700945107 /* ARDemoApp.swift */; };
 		EE5F3A89260AD18700945107 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5F3A88260AD18700945107 /* HomeView.swift */; };
 		EE5F3A8B260AD18800945107 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EE5F3A8A260AD18800945107 /* Assets.xcassets */; };
@@ -18,9 +27,13 @@
 		EE5F3A99260AD18800945107 /* ARDemoAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5F3A98260AD18800945107 /* ARDemoAppTests.swift */; };
 		EE5F3AA4260AD18800945107 /* ARDemoAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5F3AA3260AD18800945107 /* ARDemoAppUITests.swift */; };
 		EE6A3DA226144FAD00D0203B /* CaptureToggleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6A3DA126144FAD00D0203B /* CaptureToggleStyle.swift */; };
-		EE6A3DB326155F2700D0203B /* CaptureModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6A3DB226155F2700D0203B /* CaptureModel.swift */; };
-		EEB00594262ED25800B7C9D2 /* PointCloudRendererService in Frameworks */ = {isa = PBXBuildFile; productRef = EEB00593262ED25800B7C9D2 /* PointCloudRendererService */; };
-		EEC0D439260D9B140093141F /* CaptureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEC0D438260D9B140093141F /* CaptureView.swift */; };
+		EE7AE5C8263AB0A500D60B95 /* CaptureControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7AE5C7263AB0A500D60B95 /* CaptureControl.swift */; };
+		EE7D8114263F8B4E00133FD1 /* PointCloudRendererService in Frameworks */ = {isa = PBXBuildFile; productRef = EE7D8113263F8B4E00133FD1 /* PointCloudRendererService */; };
+		EE7D8116263F8B5100133FD1 /* Common in Frameworks */ = {isa = PBXBuildFile; productRef = EE7D8115263F8B5100133FD1 /* Common */; };
+		EE7D811A263FE9D800133FD1 /* SceneRender.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7D8119263FE9D800133FD1 /* SceneRender.swift */; };
+		EE7D8120263FF26B00133FD1 /* CaptureViewerControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7D811F263FF26B00133FD1 /* CaptureViewerControl.swift */; };
+		EE7D8122263FFF6300133FD1 /* CaptureViewerControlModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7D8121263FFF6300133FD1 /* CaptureViewerControlModel.swift */; };
+		EEC0D439260D9B140093141F /* Capture.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEC0D438260D9B140093141F /* Capture.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,10 +54,18 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		8E8F5B8F2616F230005203E0 /* CaptureViewer */ = {isa = PBXFileReference; lastKnownFileType = folder; path = CaptureViewer; sourceTree = "<group>"; };
-		8EEF76A92616D24F00A6BDC1 /* FileIO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileIO.swift; sourceTree = "<group>"; };
-		EE45170A26380B63001C2A04 /* ProcessorService */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ProcessorService; sourceTree = "<group>"; };
 		EE4EC37F261EF0DE00B2D858 /* Common */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Common; sourceTree = "<group>"; };
+		EE53FD62263BA75300F6C86F /* FlashlightService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashlightService.swift; sourceTree = "<group>"; };
+		EE53FD64263BAF2900F6C86F /* Metrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Metrics.swift; sourceTree = "<group>"; };
+		EE53FD67263BB02B00F6C86F /* CaptureViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureViewer.swift; sourceTree = "<group>"; };
+		EE53FD6F263BB06400F6C86F /* ProcessorParametersEditor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProcessorParametersEditor.swift; sourceTree = "<group>"; };
+		EE53FD73263BB2ED00F6C86F /* CaptureRendering+CoachingOverlay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CaptureRendering+CoachingOverlay.swift"; sourceTree = "<group>"; };
+		EE53FD74263BB2ED00F6C86F /* CaptureRendering+Coordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CaptureRendering+Coordinator.swift"; sourceTree = "<group>"; };
+		EE53FD75263BB2ED00F6C86F /* CaptureRendering.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaptureRendering.swift; sourceTree = "<group>"; };
+		EE53FD7E263BD46600F6C86F /* ProcessorService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessorService.swift; sourceTree = "<group>"; };
+		EE53FD81263BD47900F6C86F /* ProcessorParameters+RawRepresentable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ProcessorParameters+RawRepresentable.swift"; sourceTree = "<group>"; };
+		EE53FD82263BD47900F6C86F /* ProcessorParameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProcessorParameters.swift; sourceTree = "<group>"; };
+		EE53FD8B263BEA1400F6C86F /* ExportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportService.swift; sourceTree = "<group>"; };
 		EE5F3A83260AD18700945107 /* PointCloudKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PointCloudKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE5F3A86260AD18700945107 /* ARDemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARDemoApp.swift; sourceTree = "<group>"; };
 		EE5F3A88260AD18700945107 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -58,9 +79,12 @@
 		EE5F3AA3260AD18800945107 /* ARDemoAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARDemoAppUITests.swift; sourceTree = "<group>"; };
 		EE5F3AA5260AD18800945107 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EE6A3DA126144FAD00D0203B /* CaptureToggleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureToggleStyle.swift; sourceTree = "<group>"; };
-		EE6A3DB226155F2700D0203B /* CaptureModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaptureModel.swift; sourceTree = "<group>"; };
+		EE7AE5C7263AB0A500D60B95 /* CaptureControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureControl.swift; sourceTree = "<group>"; };
+		EE7D8119263FE9D800133FD1 /* SceneRender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneRender.swift; sourceTree = "<group>"; };
+		EE7D811F263FF26B00133FD1 /* CaptureViewerControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureViewerControl.swift; sourceTree = "<group>"; };
+		EE7D8121263FFF6300133FD1 /* CaptureViewerControlModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureViewerControlModel.swift; sourceTree = "<group>"; };
 		EE849103262ED0DC00F231B1 /* PointCloudRendererService */ = {isa = PBXFileReference; lastKnownFileType = folder; path = PointCloudRendererService; sourceTree = "<group>"; };
-		EEC0D438260D9B140093141F /* CaptureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureView.swift; sourceTree = "<group>"; };
+		EEC0D438260D9B140093141F /* Capture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Capture.swift; sourceTree = "<group>"; };
 		EEF3608D263A5C3700342B6F /* FastlaneSnapshots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FastlaneSnapshots.swift; sourceTree = "<group>"; };
 		EEF3608F263A5C3700342B6F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -70,10 +94,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EE4EC387261EF10A00B2D858 /* Common in Frameworks */,
-				EE45170F26380BC5001C2A04 /* ProcessorService in Frameworks */,
-				EEB00594262ED25800B7C9D2 /* PointCloudRendererService in Frameworks */,
-				8E8F5BA42616F45B005203E0 /* CaptureViewer in Frameworks */,
+				EE53FD87263BD51E00F6C86F /* PythonKit in Frameworks */,
+				EE7D8114263F8B4E00133FD1 /* PointCloudRendererService in Frameworks */,
+				EE53FD8A263BD60800F6C86F /* Open3D-iOS in Frameworks */,
+				EE7D8116263F8B5100133FD1 /* Common in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -97,10 +121,8 @@
 		8E8F5BA22616F45B005203E0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				EE45170A26380B63001C2A04 /* ProcessorService */,
 				EE849103262ED0DC00F231B1 /* PointCloudRendererService */,
 				EE4EC37F261EF0DE00B2D858 /* Common */,
-				8E8F5B8F2616F230005203E0 /* CaptureViewer */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -108,9 +130,49 @@
 		8EEF76A32616D1DD00A6BDC1 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				8EEF76A92616D24F00A6BDC1 /* FileIO.swift */,
+				EE53FD62263BA75300F6C86F /* FlashlightService.swift */,
+				EE53FD80263BD46F00F6C86F /* Processor */,
+				EE53FD8B263BEA1400F6C86F /* ExportService.swift */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		EE53FD66263BB00C00F6C86F /* CaptureViewer */ = {
+			isa = PBXGroup;
+			children = (
+				EE53FD6D263BB04100F6C86F /* Subview */,
+				EE53FD67263BB02B00F6C86F /* CaptureViewer.swift */,
+			);
+			path = CaptureViewer;
+			sourceTree = "<group>";
+		};
+		EE53FD6D263BB04100F6C86F /* Subview */ = {
+			isa = PBXGroup;
+			children = (
+				EE7D811E263FF25100133FD1 /* Controls */,
+				EE7D811D263FF00F00133FD1 /* Scene */,
+			);
+			path = Subview;
+			sourceTree = "<group>";
+		};
+		EE53FD72263BB2E400F6C86F /* CaptureRendering */ = {
+			isa = PBXGroup;
+			children = (
+				EE53FD75263BB2ED00F6C86F /* CaptureRendering.swift */,
+				EE53FD73263BB2ED00F6C86F /* CaptureRendering+CoachingOverlay.swift */,
+				EE53FD74263BB2ED00F6C86F /* CaptureRendering+Coordinator.swift */,
+			);
+			path = CaptureRendering;
+			sourceTree = "<group>";
+		};
+		EE53FD80263BD46F00F6C86F /* Processor */ = {
+			isa = PBXGroup;
+			children = (
+				EE53FD7E263BD46600F6C86F /* ProcessorService.swift */,
+				EE53FD82263BD47900F6C86F /* ProcessorParameters.swift */,
+				EE53FD81263BD47900F6C86F /* ProcessorParameters+RawRepresentable.swift */,
+			);
+			path = Processor;
 			sourceTree = "<group>";
 		};
 		EE5F3A7A260AD18700945107 = {
@@ -173,11 +235,39 @@
 			path = ARDemoAppUITests;
 			sourceTree = "<group>";
 		};
+		EE7AE5C9263AB0C300D60B95 /* Subviews */ = {
+			isa = PBXGroup;
+			children = (
+				EE53FD72263BB2E400F6C86F /* CaptureRendering */,
+				EE53FD64263BAF2900F6C86F /* Metrics.swift */,
+				EE7AE5C7263AB0A500D60B95 /* CaptureControl.swift */,
+			);
+			path = Subviews;
+			sourceTree = "<group>";
+		};
+		EE7D811D263FF00F00133FD1 /* Scene */ = {
+			isa = PBXGroup;
+			children = (
+				EE7D8119263FE9D800133FD1 /* SceneRender.swift */,
+			);
+			path = Scene;
+			sourceTree = "<group>";
+		};
+		EE7D811E263FF25100133FD1 /* Controls */ = {
+			isa = PBXGroup;
+			children = (
+				EE7D811F263FF26B00133FD1 /* CaptureViewerControl.swift */,
+				EE7D8121263FFF6300133FD1 /* CaptureViewerControlModel.swift */,
+				EE53FD6F263BB06400F6C86F /* ProcessorParametersEditor.swift */,
+			);
+			path = Controls;
+			sourceTree = "<group>";
+		};
 		EEC0D437260D9B020093141F /* Capture */ = {
 			isa = PBXGroup;
 			children = (
-				EEC0D438260D9B140093141F /* CaptureView.swift */,
-				EE6A3DB226155F2700D0203B /* CaptureModel.swift */,
+				EE7AE5C9263AB0C300D60B95 /* Subviews */,
+				EEC0D438260D9B140093141F /* Capture.swift */,
 				EE6A3DA126144FAD00D0203B /* CaptureToggleStyle.swift */,
 			);
 			path = Capture;
@@ -189,6 +279,7 @@
 				EE5F3A86260AD18700945107 /* ARDemoApp.swift */,
 				EE5F3A88260AD18700945107 /* HomeView.swift */,
 				EEC0D437260D9B020093141F /* Capture */,
+				EE53FD66263BB00C00F6C86F /* CaptureViewer */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -220,10 +311,10 @@
 			);
 			name = PointCloudKit;
 			packageProductDependencies = (
-				EE4EC386261EF10A00B2D858 /* Common */,
-				EEB00593262ED25800B7C9D2 /* PointCloudRendererService */,
-				8E8F5BA32616F45B005203E0 /* CaptureViewer */,
-				EE45170E26380BC5001C2A04 /* ProcessorService */,
+				EE53FD86263BD51E00F6C86F /* PythonKit */,
+				EE53FD89263BD60800F6C86F /* Open3D-iOS */,
+				EE7D8113263F8B4E00133FD1 /* PointCloudRendererService */,
+				EE7D8115263F8B5100133FD1 /* Common */,
 			);
 			productName = ARDemoApp;
 			productReference = EE5F3A83260AD18700945107 /* PointCloudKit.app */;
@@ -297,6 +388,8 @@
 			);
 			mainGroup = EE5F3A7A260AD18700945107;
 			packageReferences = (
+				EE53FD85263BD51E00F6C86F /* XCRemoteSwiftPackageReference "PythonKit" */,
+				EE53FD88263BD60800F6C86F /* XCRemoteSwiftPackageReference "Open3D-iOS" */,
 			);
 			productRefGroup = EE5F3A84260AD18700945107 /* Products */;
 			projectDirPath = "";
@@ -362,11 +455,24 @@
 			buildActionMask = 2147483647;
 			files = (
 				EE5F3A89260AD18700945107 /* HomeView.swift in Sources */,
-				EEC0D439260D9B140093141F /* CaptureView.swift in Sources */,
-				EE6A3DB326155F2700D0203B /* CaptureModel.swift in Sources */,
-				8EEF76AA2616D24F00A6BDC1 /* FileIO.swift in Sources */,
+				EEC0D439260D9B140093141F /* Capture.swift in Sources */,
+				EE7D8122263FFF6300133FD1 /* CaptureViewerControlModel.swift in Sources */,
+				EE53FD8C263BEA1400F6C86F /* ExportService.swift in Sources */,
+				EE53FD7F263BD46600F6C86F /* ProcessorService.swift in Sources */,
 				EE6A3DA226144FAD00D0203B /* CaptureToggleStyle.swift in Sources */,
+				EE53FD78263BB2ED00F6C86F /* CaptureRendering.swift in Sources */,
+				EE53FD71263BB06400F6C86F /* ProcessorParametersEditor.swift in Sources */,
+				EE53FD63263BA75300F6C86F /* FlashlightService.swift in Sources */,
+				EE53FD65263BAF2900F6C86F /* Metrics.swift in Sources */,
+				EE53FD77263BB2ED00F6C86F /* CaptureRendering+Coordinator.swift in Sources */,
+				EE7D8120263FF26B00133FD1 /* CaptureViewerControl.swift in Sources */,
+				EE53FD83263BD47900F6C86F /* ProcessorParameters+RawRepresentable.swift in Sources */,
+				EE53FD76263BB2ED00F6C86F /* CaptureRendering+CoachingOverlay.swift in Sources */,
+				EE53FD84263BD47900F6C86F /* ProcessorParameters.swift in Sources */,
+				EE53FD6B263BB02B00F6C86F /* CaptureViewer.swift in Sources */,
+				EE7D811A263FE9D800133FD1 /* SceneRender.swift in Sources */,
 				EE5F3A87260AD18700945107 /* ARDemoApp.swift in Sources */,
+				EE7AE5C8263AB0A500D60B95 /* CaptureControl.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -691,22 +797,43 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		EE53FD85263BD51E00F6C86F /* XCRemoteSwiftPackageReference "PythonKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kewlbear/PythonKit.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+		EE53FD88263BD60800F6C86F /* XCRemoteSwiftPackageReference "Open3D-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kewlbear/Open3D-iOS.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
-		8E8F5BA32616F45B005203E0 /* CaptureViewer */ = {
+		EE53FD86263BD51E00F6C86F /* PythonKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = CaptureViewer;
+			package = EE53FD85263BD51E00F6C86F /* XCRemoteSwiftPackageReference "PythonKit" */;
+			productName = PythonKit;
 		};
-		EE45170E26380BC5001C2A04 /* ProcessorService */ = {
+		EE53FD89263BD60800F6C86F /* Open3D-iOS */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = ProcessorService;
+			package = EE53FD88263BD60800F6C86F /* XCRemoteSwiftPackageReference "Open3D-iOS" */;
+			productName = "Open3D-iOS";
 		};
-		EE4EC386261EF10A00B2D858 /* Common */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Common;
-		};
-		EEB00593262ED25800B7C9D2 /* PointCloudRendererService */ = {
+		EE7D8113263F8B4E00133FD1 /* PointCloudRendererService */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = PointCloudRendererService;
+		};
+		EE7D8115263F8B5100133FD1 /* Common */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Common;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
