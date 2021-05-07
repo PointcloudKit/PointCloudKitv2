@@ -24,7 +24,7 @@
         "repositoryURL": "https://github.com/pvieito/LoggerKit.git",
         "state": {
           "branch": "master",
-          "revision": "9a10b40b3bdb6634571122f4a32d61fa34391e74",
+          "revision": "e196efccdcc3b9f1e4c9b1cd52ae775bbf760d8a",
           "version": null
         }
       },
@@ -33,7 +33,7 @@
         "repositoryURL": "https://github.com/kewlbear/NumPy-iOS.git",
         "state": {
           "branch": "main",
-          "revision": "45e45d464e5151bbfdbf54642d53e7c30f8b2f6a",
+          "revision": "f4537d068d06013394eb0d3be1b8f76e7629cda2",
           "version": null
         }
       },
@@ -78,7 +78,7 @@
         "repositoryURL": "https://github.com/apple/swift-argument-parser",
         "state": {
           "branch": "main",
-          "revision": "47bd06ebeff8146ecd0020809e186218b46f465f",
+          "revision": "986d191f94cec88f6350056da59c2e59e83d1229",
           "version": null
         }
       }
