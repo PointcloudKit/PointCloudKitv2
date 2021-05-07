@@ -47,14 +47,15 @@ struct Capture: View {
             }
             .background(Color.black)
             .statusBar(hidden: true)
-            .navigationBarTitleDisplayMode(.large)
+            .navigationBarTitleDisplayMode(.automatic)
             .navigationTitle("Capture")
             .edgesIgnoringSafeArea(.bottom)
         }
+        // For Ipad
+        .navigationViewStyle(StackNavigationViewStyle())
         .onDisappear {
             renderingService.capturing = false
         }
-        .environmentObject(CaptureViewerModel())
         .environmentObject(renderingService)
     }
 }

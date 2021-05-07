@@ -10,6 +10,7 @@ import PointCloudRendererService
 import Common
 
 struct CaptureViewerControl: View {
+    @AppStorage("CaptureViewer.firstAppearance") private var firstAppearance = true
     @AppStorage(ProcessorParameters.storageKey) private var processorParameters = ProcessorParameters()
 
     @EnvironmentObject var model: CaptureViewerControlModel
@@ -20,6 +21,7 @@ struct CaptureViewerControl: View {
     let confidenceTreshold: ConfidenceTreshold
 
     @State private var showExportTypeSelection = false
+    @State private var showInformation = false
     @State private var showParameters = false
     @State private var showParameterControls = false
     @State private var showProcessorParametersEditor = false
@@ -183,7 +185,7 @@ struct CaptureViewerControl: View {
                     }, label: {
                         Label(title: { Text("Statistical O.R.").foregroundColor(.bone) },
                               icon: {
-                                Image(systemName: "camera.filters")
+                                Image(systemName: "aqi.medium")
                                     .font(.body)
                                     .foregroundColor(processorsEnabled ? .amazon : .charredBone)
                               })
@@ -203,7 +205,7 @@ struct CaptureViewerControl: View {
                     }, label: {
                         Label(title: { Text("Radius O.R.").foregroundColor(.bone) },
                               icon: {
-                                Image(systemName: "aqi.medium")
+                                Image(systemName: "camera.filters")
                                     .font(.body)
                                     .foregroundColor(processorsEnabled ? .amazon : .charredBone)
                               })
@@ -267,29 +269,49 @@ struct CaptureViewerControl: View {
     var controlsSection: some View {
         HStack {
 
-            Button(action: {
-                withAnimation {
-                    showParameters.toggle()
+            HStack(spacing: 20) {
+                Button(action: {
+                    withAnimation {
+                        showParameters.toggle()
+                    }
+                }, label: {
+                    Image(systemName: "slider.horizontal.3")
+                        .font(.system(size: 42, weight: .regular))
+                        .scaleEffect(showParameters ? 0.9 : 1)
+                        .foregroundColor(showParameters ? .amazon : .bone)
+                })
+
+                Button(action: {
+                    withAnimation {
+                        showInformation = true
+                    }
+                }, label: {
+                    Image(systemName: "info.circle")
+                        .font(.title)
+                        .foregroundColor(.bone)
+                })
+                .alert(isPresented: $showInformation) {
+                    Alert(title: Text("Processing and export"),
+                          message: Text("The Viewer allows you to navigate in your capture and further denoise/enhance it using on device processing! \nNo more uploading your surroundings to the cloud and waiting hours for processing, this app respect your privacy and cannot be compromised.\n Once satisfied, the right bottom export allow you to save your capture on your phone and share it to the world."),
+                          dismissButton: .default(Text("Got it!")))
                 }
-            }, label: {
-                Image(systemName: "slider.horizontal.3")
-                    .font(.system(size: 42, weight: .regular))
-                    .scaleEffect(showParameters ? 0.9 : 1)
-                    .foregroundColor(showParameters ? .amazon : .bone)
-            })
+            }
 
             Spacer()
 
             Button(action: {
-                withAnimation {
-                    showExportTypeSelection = true
-                }
-            }, label: {
-                Image(systemName: "square.and.arrow.up")
-                    .font(.system(size: 42, weight: .regular))
-                    .foregroundColor(showParameters || processing ? .charredBone : .bone)
-            })
-            .disabled(showParameters || processing)
+                    withAnimation {
+                        showExportTypeSelection = true
+                    }
+                }, label: {
+                    Image(systemName: "square.and.arrow.down")
+                        .font(.system(size: 42, weight: .regular))
+                        .foregroundColor(showParameters || processing ? .charredBone : .bone)
+                })
+                .disabled(showParameters || processing)
+
+                // Add a share button
+
         }
     }
 
@@ -339,12 +361,17 @@ struct CaptureViewerControl: View {
                     .padding(.horizontal, 20)
             }
         }
-        .background(Color.black.opacity(0.8))
         .actionSheet(isPresented: $showExportTypeSelection) { exportActionSheet }
         .fileExporter(isPresented: $exportPLY,
                       document: model.exportService.generatePLYFile(from: object),
                       contentType: .polygon,
                       onCompletion: { _ in })
+        .onAppear {
+            if firstAppearance {
+                showInformation = true
+                firstAppearance = false
+            }
+        }
         .onDisappear {
             model.cancellables.forEach { cancellable in cancellable.cancel() }
         }

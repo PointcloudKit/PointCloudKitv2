@@ -71,7 +71,7 @@ struct ProcessorParametersEditor: View {
                 Label(
                     title: { Text("Statistical Outlier Removal").foregroundColor(.bone) },
                     icon: {
-                        Image(systemName: "camera.filters")
+                        Image(systemName: "aqi.medium")
                             .font(.title2)
                             .foregroundColor(.amazon)
                     }
@@ -102,7 +102,7 @@ struct ProcessorParametersEditor: View {
                 Label(
                     title: { Text("Radius Outlier Removal").foregroundColor(.bone) },
                     icon: {
-                        Image(systemName: "aqi.medium")
+                        Image(systemName: "camera.filters")
                             .font(.title2)
                             .foregroundColor(.amazon)
                     }

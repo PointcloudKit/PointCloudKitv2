@@ -13,7 +13,7 @@ import SceneKit
 
 struct CaptureViewer: View {
 
-    @EnvironmentObject var model: CaptureViewerModel
+    @StateObject var model = CaptureViewerModel()
 
     let particleBuffer: ParticleBufferWrapper
     let initialCaptureParticleCount: Int
@@ -23,7 +23,6 @@ struct CaptureViewer: View {
 
     public var body: some View {
         ZStack {
-
             SceneView(scene: model.updatedScene(using: particleBuffer, particleCount: object.vertices.count),
                       pointOfView: model.cameraNode,
                       options: [.allowsCameraControl,
@@ -43,6 +42,8 @@ struct CaptureViewer: View {
                                      object: $object,
                                      confidenceTreshold: confidenceTreshold)
                     .environmentObject(model.captureViewerControlModel)
+                    .padding(.bottom, 20)
+                    .background(Color.black.opacity(0.8))
             }
 
         }
@@ -58,5 +59,6 @@ struct CaptureViewer: View {
         .onDisappear {
             model.cancellables.forEach { cancellable in cancellable.cancel() }
         }
+        .edgesIgnoringSafeArea(.bottom)
     }
 }

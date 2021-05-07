@@ -49,10 +49,12 @@ struct Metrics: View {
             .padding(.vertical, 10)
             .padding(.horizontal, 10)
             .background(Color.black.opacity(0.8))
-            .cornerRadius(20, corners: [.bottomRight])
+            .cornerRadius(20, corners: [.allCorners])
             .clipped()
 
             Spacer()
         }
+        .padding(.top, 10)
+        .padding(.trailing, 10)
     }
 }

@@ -11,6 +11,7 @@ import Common
 import PointCloudRendererService
 
 struct CaptureControl: View {
+    @AppStorage("Capture.firstAppearance") private var firstAppearance = true
 
     // MARK: - Bindings
 
@@ -24,6 +25,7 @@ struct CaptureControl: View {
     // MARK: - State
 
     @State private var showParameters: Bool = false
+    @State private var showInformation: Bool = false
     @State private var showParameterControls: Bool = false
     @State private var flashlightActive: Bool = false
     @State private var showSubParameter: Bool = false
@@ -188,20 +190,40 @@ struct CaptureControl: View {
 
             Spacer()
 
-            let navigationToCaptureViewerAllowed = !renderingService.capturing
-                && renderingService.currentPointCount != 0
-                && !showCoachingOverlay
-            Button(action: {
-                withAnimation {
-                    navigateToCaptureViewer = true
-                    renderingService.capturing = false
+            HStack(spacing: 20) {
+                let showInformationAllowed = !showCoachingOverlay
+                Button(action: {
+                    withAnimation {
+                        showInformation = true
+                        renderingService.capturing = false
+                    }
+                }, label: {
+                    Image(systemName: "info.circle")
+                        .font(.title)
+                        .foregroundColor(showInformationAllowed ? .bone : .charredBone)
+                })
+                .alert(isPresented: $showInformation) {
+                    Alert(title: Text("Capturing Point Cloud"),
+                          message: Text("This application allow you to sample the world around you using RGBD data. \nColor and Luminosity come from the Camera feed, meanwhile the new LiDAR sensor allows to capture depth information even in low light environments. \nThis app combine these informations each frame to generate vertices and then process them in the next screen (The Cube button below). \nIn order to get new data, move the phone around!"),
+                          dismissButton: .default(Text("Got it!"), action: { renderingService.capturing = true }))
                 }
-            }, label: {
-                Image(systemName: "cube.transparent")
-                    .font(.title)
-                    .foregroundColor(navigationToCaptureViewerAllowed ? .amazon : .charredBone)
-            })
-            .disabled(!navigationToCaptureViewerAllowed)
+                .disabled(!showInformationAllowed)
+
+                let navigationToCaptureViewerAllowed = renderingService.currentPointCount != 0
+                    && !showCoachingOverlay
+                    && !showInformation
+                Button(action: {
+                    withAnimation {
+                        renderingService.capturing = false
+                        navigateToCaptureViewer = true
+                    }
+                }, label: {
+                    Image(systemName: "cube.transparent")
+                        .font(.title)
+                        .foregroundColor(navigationToCaptureViewerAllowed ? .amazon : .charredBone)
+                })
+                .disabled(!navigationToCaptureViewerAllowed)
+            }
         }
     }
 
@@ -234,10 +256,17 @@ struct CaptureControl: View {
                 .transition(.moveAndFade)
 
                 Divider()
+                    .padding(.bottom, 10)
             }
 
             // Show sub controls + toogle capture + go to capture viewer
             controls
+        }
+        .onAppear {
+            if firstAppearance {
+                showInformation = true
+                firstAppearance = false
+            }
         }
     }
 }

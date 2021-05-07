@@ -71,7 +71,6 @@ final class CaptureViewerModel: ObservableObject {
     }
 }
 
-
 extension CaptureViewerModel {
 
     private static let positionVertex = ParticleBufferWrapper.Component.position

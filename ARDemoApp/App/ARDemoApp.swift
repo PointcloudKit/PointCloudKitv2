@@ -22,6 +22,7 @@ struct ARDemoApp: App {
 
         UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor(Color.bone)]
         UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor(Color.bone)]
+        UINavigationBar.appearance().isTranslucent = true
 
         #if !targetEnvironment(simulator)
         guard ARWorldTrackingConfiguration.isSupported else {
