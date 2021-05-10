@@ -14,12 +14,6 @@ public typealias Open3DPointCloud = PythonObject
 public typealias Open3DTriangleMeshes = PythonObject
 typealias Open3DThreadState = UnsafeMutableRawPointer
 
-public enum ProcessorServiceError: Error {
-    case unknown
-    case temporaryFile
-    case pythonThreadState
-}
-
 public enum VertexProcessor {
     case statisticalOutlierRemoval(neighbors: Int, stdRatio: Double)
     case radiusOutlierRemoval(pointsCount: Int, radius: Double)
@@ -73,7 +67,6 @@ final public class ProcessorService: ObservableObject {
         of object: Object3D,
         with parameters: ProcessorParameters.SurfaceReconstruction.Poisson
     ) -> Future<Object3D, ProcessorServiceError> {
-        // FAUT KI YE LE NORMAL
         process(object, with: [FaceProcessor.poissonSurfaceReconstruction(depth: parameters.depth)])
     }
 
@@ -98,13 +91,6 @@ final public class ProcessorService: ObservableObject {
 
                 // convert Object3D to Open3D pointcloud
                 var pointCloud = self.convertObject3DPointCloud(object)
-
-                //            // Generate TMP file
-                //            guard let plyFileURL = try? input.writeTemporaryFile() else {
-                //                return promise(.failure(.temporaryFile))
-                //            }
-                //            // Load PointCloud from TMP file into Open3D
-                //            var pointCloud = self.o3d.io.read_point_cloud(plyFileURL.path)
 
                 // Apply processors
                 for processor in processors {
@@ -150,6 +136,9 @@ final public class ProcessorService: ObservableObject {
                 for processor in processors {
                     switch processor {
                     case let .poissonSurfaceReconstruction(depth):
+                        guard object.hasVertexNormals else {
+                            return promise(.failure(.missingNormals))
+                        }
                         let pointCloud = self.convertObject3DPointCloud(object)
                         let triangleMeshes = self.surfaceReconstruction(pointCloud, depth: depth)
                         // Convert Open3D TriangleMesh back to our Face Uniform

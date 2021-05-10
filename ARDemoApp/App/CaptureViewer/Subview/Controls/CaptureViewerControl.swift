@@ -8,8 +8,14 @@
 import SwiftUI
 import PointCloudRendererService
 import Common
+import Combine
 
 struct CaptureViewerControl: View {
+
+    enum AlertType {
+        case information, error(message: String)
+    }
+
     @AppStorage("CaptureViewer.firstAppearance") private var firstAppearance = true
     @AppStorage(ProcessorParameters.storageKey) private var processorParameters = ProcessorParameters()
 
@@ -21,7 +27,8 @@ struct CaptureViewerControl: View {
     let confidenceTreshold: ConfidenceTreshold
 
     @State private var showExportTypeSelection = false
-    @State private var showInformation = false
+    @State private var showAlert = false
+    @State private var activeAlert: AlertType = .information
     @State private var showParameters = false
     @State private var showParameterControls = false
     @State private var showProcessorParametersEditor = false
@@ -75,7 +82,6 @@ struct CaptureViewerControl: View {
     // MARK: - Paramters
 
     private var processorsEnabled: Bool { !processing && !showProcessorParametersEditor }
-    private var reconstructionEnabled: Bool { processorsEnabled && object.hasVertexNormals }
 
     var transformingParameters: some View {
         HStack {
@@ -95,10 +101,7 @@ struct CaptureViewerControl: View {
                         processing = true
                         model.normalsEstimation(object, parameters: processorParameters.normalsEstimation)
                             .receive(on: DispatchQueue.main)
-                            .sink(receiveCompletion: {_ in processing = false },
-                                  receiveValue: { object in
-                                    self.update(with: object)
-                                  })
+                            .sink(receiveCompletion: processingCompleted, receiveValue: receivedFromProcessing)
                             .store(in: &model.cancellables)
                     }, label: {
                         Label(
@@ -118,10 +121,7 @@ struct CaptureViewerControl: View {
                         processing = true
                         model.poissonSurfaceReconstruction(object, parameters: processorParameters.surfaceReconstruction.poisson)
                             .receive(on: DispatchQueue.main)
-                            .sink(receiveCompletion: {_ in processing = false },
-                                  receiveValue: { object in
-                                    self.update(with: object)
-                                  })
+                            .sink(receiveCompletion: processingCompleted, receiveValue: receivedFromProcessing)
                             .store(in: &model.cancellables)
                     }, label: {
                         Label(
@@ -129,11 +129,11 @@ struct CaptureViewerControl: View {
                             icon: {
                                 Image(systemName: "skew")
                                     .font(.body)
-                                    .foregroundColor(reconstructionEnabled ? .amazon : .charredBone)
+                                    .foregroundColor(processorsEnabled ? .amazon : .charredBone)
                             }
                         )
                     })
-                    .disabled(!reconstructionEnabled)
+                    .disabled(!processorsEnabled)
                 }
             })
         }
@@ -157,10 +157,7 @@ struct CaptureViewerControl: View {
                         processing = true
                         model.voxelDownsampling(object, parameters: processorParameters.voxelDownSampling)
                             .receive(on: DispatchQueue.main)
-                            .sink(receiveCompletion: {_ in processing = false },
-                                  receiveValue: { object in
-                                    self.update(with: object)
-                                  })
+                            .sink(receiveCompletion: processingCompleted, receiveValue: receivedFromProcessing)
                             .store(in: &model.cancellables)
                     }, label: {
                         Label(title: { Text("Voxel DownSampling").foregroundColor(.bone) },
@@ -177,10 +174,7 @@ struct CaptureViewerControl: View {
                         processing = true
                         model.statisticalOutlierRemoval(object, parameters: processorParameters.outlierRemoval.statistical)
                             .receive(on: DispatchQueue.main)
-                            .sink(receiveCompletion: {_ in processing = false },
-                                  receiveValue: { object in
-                                    self.update(with: object)
-                                  })
+                            .sink(receiveCompletion: processingCompleted, receiveValue: receivedFromProcessing)
                             .store(in: &model.cancellables)
                     }, label: {
                         Label(title: { Text("Statistical O.R.").foregroundColor(.bone) },
@@ -197,10 +191,7 @@ struct CaptureViewerControl: View {
                         processing = true
                         model.radiusOutlierRemoval(object, parameters: processorParameters.outlierRemoval.radius)
                             .receive(on: DispatchQueue.main)
-                            .sink(receiveCompletion: {_ in processing = false },
-                                  receiveValue: { object in
-                                    self.update(with: object)
-                                  })
+                            .sink(receiveCompletion: processingCompleted, receiveValue: receivedFromProcessing)
                             .store(in: &model.cancellables)
                     }, label: {
                         Label(title: { Text("Radius O.R.").foregroundColor(.bone) },
@@ -283,18 +274,14 @@ struct CaptureViewerControl: View {
 
                 Button(action: {
                     withAnimation {
-                        showInformation = true
+                        activeAlert = .information
+                        showAlert = true
                     }
                 }, label: {
                     Image(systemName: "info.circle")
                         .font(.title)
                         .foregroundColor(.bone)
                 })
-                .alert(isPresented: $showInformation) {
-                    Alert(title: Text("Processing and export"),
-                          message: Text("The Viewer allows you to navigate in your capture and further denoise/enhance it using on device processing! \nNo more uploading your surroundings to the cloud and waiting hours for processing, this app respect your privacy and cannot be compromised.\n Once satisfied, the right bottom export allow you to save your capture on your phone and share it to the world."),
-                          dismissButton: .default(Text("Got it!")))
-                }
             }
 
             Spacer()
@@ -368,12 +355,43 @@ struct CaptureViewerControl: View {
                       onCompletion: { _ in })
         .onAppear {
             if firstAppearance {
-                showInformation = true
+                activeAlert = .information
+                showAlert = true
                 firstAppearance = false
             }
         }
         .onDisappear {
             model.cancellables.forEach { cancellable in cancellable.cancel() }
+        }
+        .alert(isPresented: $showAlert) {
+            switch activeAlert {
+            case let .error(message) :
+                return Alert(title: Text("Oops"),
+                             message: Text(message),
+                             dismissButton: .default(Text("Ok")))
+            case .information:
+                return Alert(title: Text("Processing and export"),
+                             message: Text("The Viewer allows you to navigate in your capture and further denoise/enhance it using on device processing! \nNo more uploading your surroundings to the cloud and waiting hours for processing, this app respect your privacy and cannot be compromised.\n Once satisfied, the right bottom export allow you to save your capture on your phone and share it to the world."),
+                             dismissButton: .default(Text("Got it!")))
+            }
+        }
+    }
+}
+
+// MARK: - Completion helper for processing functions
+extension CaptureViewerControl {
+    private func receivedFromProcessing(object: Object3D) {
+        update(with: object)
+    }
+
+    private func processingCompleted(with result: Subscribers.Completion<ProcessorServiceError>) {
+        processing = false
+        switch result {
+        case let .failure(error):
+            activeAlert = .error(message: error.localizedDescription)
+            showAlert = true
+        default:
+            return
         }
     }
 }
