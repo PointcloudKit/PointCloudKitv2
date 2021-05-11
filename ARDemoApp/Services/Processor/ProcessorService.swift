@@ -225,7 +225,7 @@ final public class ProcessorService: ObservableObject {
 // MARK: - Converters
 extension ProcessorService {
 
-    // MARK: - PointCloudKit -> Open3D
+    // MARK: - Object3D -> O3D pointCLoud
     func convertObject3DPointCloud(_ object: Object3D) -> Open3DPointCloud {
         /* * */ let start = DispatchTime.now()
         let pythonPoints = object.vertices.map { [$0.x, $0.y, $0.z] }
@@ -241,7 +241,7 @@ extension ProcessorService {
         return pointCloud
     }
 
-    // MARK: - PointCloudKit -> Open3D
+    // MARK: - Object3D -> O3D triangleMeshes
     func convertObject3DTriangleMesh(_ object: Object3D) -> Open3DTriangleMeshes {
         /* * */ let start = DispatchTime.now()
         let points = object.vertices.map { [$0.x, $0.y, $0.z] }
@@ -259,7 +259,7 @@ extension ProcessorService {
         return triangleMeshes
     }
 
-    // MARK: - Open3D -> PointCloudKit
+    // MARK: - O3D pointCloud -> Object3D
     func convertOpen3D(pointCloud: Open3DPointCloud) -> Object3D {
         /* * */ let start = DispatchTime.now()
         let vertices: [Float3] = // Array(numpy: numpy.asarray(pointCloud.points))
@@ -284,6 +284,7 @@ extension ProcessorService {
                         vertexNormals: normals)
     }
 
+    // MARK: - O3D Triangles -> Object3D
     func convertOpen3D(triangleMeshes: Open3DTriangleMeshes) -> Object3D {
         /* * */ let start = DispatchTime.now()
         let vertices: [Float3] = numpy.asarray(triangleMeshes.vertices).map { vertex in Float3(Float(vertex[0])!,
