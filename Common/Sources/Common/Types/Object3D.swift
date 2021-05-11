@@ -40,6 +40,8 @@ public struct Object3D {
     public var hasVertexColors: Bool { !vertexColors.isEmpty }
     public var hasVertexNormals: Bool { !vertexNormals.isEmpty }
     public var hasTriangles: Bool { !triangles.isEmpty }
+
+    public var hash: Int { vertices.hashValue & vertexNormals.hashValue & triangles.hashValue }
 }
 
 extension Object3D {

@@ -130,3 +130,14 @@ extension CaptureViewerModel {
         }
     }
 }
+
+extension VertexProcessor {
+    var requiresLowVerticesCount: Bool {
+        switch self {
+        case .normalsEstimation, .poissonSurfaceReconstruction:
+            return true
+        default:
+            return false
+        }
+    }
+}
