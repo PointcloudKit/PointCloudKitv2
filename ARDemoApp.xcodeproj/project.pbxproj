@@ -26,7 +26,7 @@
 		EE5F3A8E260AD18800945107 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EE5F3A8D260AD18800945107 /* Preview Assets.xcassets */; };
 		EE5F3A99260AD18800945107 /* ARDemoAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5F3A98260AD18800945107 /* ARDemoAppTests.swift */; };
 		EE5F3AA4260AD18800945107 /* ARDemoAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5F3AA3260AD18800945107 /* ARDemoAppUITests.swift */; };
-		EE6031872643BED300DEBBED /* CaptureViewerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6031862643BED300DEBBED /* CaptureViewerViewModel.swift */; };
+		EE6031872643BED300DEBBED /* CaptureViewerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6031862643BED300DEBBED /* CaptureViewerModel.swift */; };
 		EE6A3DA226144FAD00D0203B /* CaptureToggleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6A3DA126144FAD00D0203B /* CaptureToggleStyle.swift */; };
 		EE7AE5C8263AB0A500D60B95 /* CaptureControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7AE5C7263AB0A500D60B95 /* CaptureControl.swift */; };
 		EE7B400A2649279400E91B03 /* ProcessorServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7B40092649279400E91B03 /* ProcessorServiceError.swift */; };
@@ -80,7 +80,7 @@
 		EE5F3A9F260AD18800945107 /* ARDemoAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ARDemoAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE5F3AA3260AD18800945107 /* ARDemoAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARDemoAppUITests.swift; sourceTree = "<group>"; };
 		EE5F3AA5260AD18800945107 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		EE6031862643BED300DEBBED /* CaptureViewerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureViewerViewModel.swift; sourceTree = "<group>"; };
+		EE6031862643BED300DEBBED /* CaptureViewerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureViewerModel.swift; sourceTree = "<group>"; };
 		EE6A3DA126144FAD00D0203B /* CaptureToggleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureToggleStyle.swift; sourceTree = "<group>"; };
 		EE7AE5C7263AB0A500D60B95 /* CaptureControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureControl.swift; sourceTree = "<group>"; };
 		EE7B40092649279400E91B03 /* ProcessorServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessorServiceError.swift; sourceTree = "<group>"; };
@@ -146,7 +146,7 @@
 			children = (
 				EE53FD6D263BB04100F6C86F /* Subview */,
 				EE53FD67263BB02B00F6C86F /* CaptureViewer.swift */,
-				EE6031862643BED300DEBBED /* CaptureViewerViewModel.swift */,
+				EE6031862643BED300DEBBED /* CaptureViewerModel.swift */,
 			);
 			path = CaptureViewer;
 			sourceTree = "<group>";
@@ -475,7 +475,7 @@
 				EE53FD7F263BD46600F6C86F /* ProcessorService.swift in Sources */,
 				EE7B400A2649279400E91B03 /* ProcessorServiceError.swift in Sources */,
 				EE6A3DA226144FAD00D0203B /* CaptureToggleStyle.swift in Sources */,
-				EE6031872643BED300DEBBED /* CaptureViewerViewModel.swift in Sources */,
+				EE6031872643BED300DEBBED /* CaptureViewerModel.swift in Sources */,
 				EE53FD78263BB2ED00F6C86F /* CaptureRendering.swift in Sources */,
 				EE7B400C264A0DA400E91B03 /* UnsupportedDeviceView.swift in Sources */,
 				EE53FD71263BB06400F6C86F /* ProcessorParametersEditor.swift in Sources */,

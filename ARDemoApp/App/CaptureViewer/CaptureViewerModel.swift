@@ -1,5 +1,5 @@
 //
-//  CaptureViewerViewModel.swift
+//  CaptureViewerModel.swift
 //  PointCloudKit
 //
 //  Created by Alexandre Camilleri on 06/05/2021.
@@ -41,6 +41,7 @@ final class CaptureViewerModel: ObservableObject {
     init() {
         cameraNode.camera = SCNCamera()
         cameraNode.name = NodeIdentifier.camera.rawValue
+        cameraNode.position.z += 5
         scene.rootNode.addChildNode(cameraNode)
 
         let ambientLightNode = SCNNode()
@@ -63,7 +64,6 @@ final class CaptureViewerModel: ObservableObject {
                 self.scene.rootNode.addChildNode(pointCloudRootNode)
                 // Adjust camera
                 self.cameraNode.look(at: pointCloudRootNode.position)
-                self.cameraNode.position.z += 5
             }
             .store(in: &cancellables)
 
