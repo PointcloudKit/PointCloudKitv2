@@ -134,9 +134,9 @@
 		8EEF76A32616D1DD00A6BDC1 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				EE53FD62263BA75300F6C86F /* FlashlightService.swift */,
+				EE7B400E264A1B6800E91B03 /* ExportService */,
+				EE7B400D264A1B6000E91B03 /* FlashlightService */,
 				EE53FD80263BD46F00F6C86F /* Processor */,
-				EE53FD8B263BEA1400F6C86F /* ExportService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -248,6 +248,22 @@
 				EE7AE5C7263AB0A500D60B95 /* CaptureControl.swift */,
 			);
 			path = Subviews;
+			sourceTree = "<group>";
+		};
+		EE7B400D264A1B6000E91B03 /* FlashlightService */ = {
+			isa = PBXGroup;
+			children = (
+				EE53FD62263BA75300F6C86F /* FlashlightService.swift */,
+			);
+			path = FlashlightService;
+			sourceTree = "<group>";
+		};
+		EE7B400E264A1B6800E91B03 /* ExportService */ = {
+			isa = PBXGroup;
+			children = (
+				EE53FD8B263BEA1400F6C86F /* ExportService.swift */,
+			);
+			path = ExportService;
 			sourceTree = "<group>";
 		};
 		EE7D811E263FF25100133FD1 /* Controls */ = {
