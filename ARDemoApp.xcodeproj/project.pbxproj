@@ -30,6 +30,7 @@
 		EE6A3DA226144FAD00D0203B /* CaptureToggleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6A3DA126144FAD00D0203B /* CaptureToggleStyle.swift */; };
 		EE7AE5C8263AB0A500D60B95 /* CaptureControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7AE5C7263AB0A500D60B95 /* CaptureControl.swift */; };
 		EE7B400A2649279400E91B03 /* ProcessorServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7B40092649279400E91B03 /* ProcessorServiceError.swift */; };
+		EE7B400C264A0DA400E91B03 /* UnsupportedDeviceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7B400B264A0DA400E91B03 /* UnsupportedDeviceView.swift */; };
 		EE7D8114263F8B4E00133FD1 /* PointCloudRendererService in Frameworks */ = {isa = PBXBuildFile; productRef = EE7D8113263F8B4E00133FD1 /* PointCloudRendererService */; };
 		EE7D8116263F8B5100133FD1 /* Common in Frameworks */ = {isa = PBXBuildFile; productRef = EE7D8115263F8B5100133FD1 /* Common */; };
 		EE7D8120263FF26B00133FD1 /* CaptureViewerControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7D811F263FF26B00133FD1 /* CaptureViewerControl.swift */; };
@@ -83,6 +84,7 @@
 		EE6A3DA126144FAD00D0203B /* CaptureToggleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureToggleStyle.swift; sourceTree = "<group>"; };
 		EE7AE5C7263AB0A500D60B95 /* CaptureControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureControl.swift; sourceTree = "<group>"; };
 		EE7B40092649279400E91B03 /* ProcessorServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessorServiceError.swift; sourceTree = "<group>"; };
+		EE7B400B264A0DA400E91B03 /* UnsupportedDeviceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsupportedDeviceView.swift; sourceTree = "<group>"; };
 		EE7D811F263FF26B00133FD1 /* CaptureViewerControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureViewerControl.swift; sourceTree = "<group>"; };
 		EE7D8121263FFF6300133FD1 /* CaptureViewerControlModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureViewerControlModel.swift; sourceTree = "<group>"; };
 		EE849103262ED0DC00F231B1 /* PointCloudRendererService */ = {isa = PBXFileReference; lastKnownFileType = folder; path = PointCloudRendererService; sourceTree = "<group>"; };
@@ -272,6 +274,7 @@
 			isa = PBXGroup;
 			children = (
 				EE5F3A86260AD18700945107 /* ARDemoApp.swift */,
+				EE7B400B264A0DA400E91B03 /* UnsupportedDeviceView.swift */,
 				EE5F3A88260AD18700945107 /* HomeView.swift */,
 				EEC0D437260D9B020093141F /* Capture */,
 				EE53FD66263BB00C00F6C86F /* CaptureViewer */,
@@ -458,6 +461,7 @@
 				EE6A3DA226144FAD00D0203B /* CaptureToggleStyle.swift in Sources */,
 				EE6031872643BED300DEBBED /* CaptureViewerViewModel.swift in Sources */,
 				EE53FD78263BB2ED00F6C86F /* CaptureRendering.swift in Sources */,
+				EE7B400C264A0DA400E91B03 /* UnsupportedDeviceView.swift in Sources */,
 				EE53FD71263BB06400F6C86F /* ProcessorParametersEditor.swift in Sources */,
 				EE53FD63263BA75300F6C86F /* FlashlightService.swift in Sources */,
 				EE53FD65263BAF2900F6C86F /* Metrics.swift in Sources */,
