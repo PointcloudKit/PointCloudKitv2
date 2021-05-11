@@ -250,7 +250,7 @@
 			isa = PBXGroup;
 			children = (
 				EEFD7675264A6F730097E63F /* Metrics */,
-				EEFD7674264A6F560097E63F /* Control */,
+				EEFD7674264A6F560097E63F /* Controls */,
 				EE53FD72263BB2E400F6C86F /* CaptureRendering */,
 			);
 			path = Subviews;
@@ -313,13 +313,13 @@
 			path = FastlaneSnapshots;
 			sourceTree = "<group>";
 		};
-		EEFD7674264A6F560097E63F /* Control */ = {
+		EEFD7674264A6F560097E63F /* Controls */ = {
 			isa = PBXGroup;
 			children = (
 				EE7AE5C7263AB0A500D60B95 /* CaptureControlView.swift */,
 				EEFD7676264A6F7E0097E63F /* Parameters */,
 			);
-			path = Control;
+			path = Controls;
 			sourceTree = "<group>";
 		};
 		EEFD7675264A6F730097E63F /* Metrics */ = {
