@@ -140,7 +140,7 @@ final public class ProcessorService: ObservableObject {
                             return promise(.failure(.missingNormals))
                         }
                         let pointCloud = self.convertObject3DPointCloud(object)
-                        let triangleMeshes = self.surfaceReconstruction(pointCloud, depth: depth)
+                        let triangleMeshes = self.poissonSurfaceReconstruction(pointCloud, depth: depth)
                         // Convert Open3D TriangleMesh back to our Face Uniform
                         let object = self.convertOpen3D(triangleMeshes: triangleMeshes)
                         promise(.success(object))
@@ -217,7 +217,7 @@ final public class ProcessorService: ObservableObject {
     ///
     ///  Returns
     ///  Tuple[open3d.cpu.pybind.geometry.TriangleMesh, open3d.cpu.pybind.utility.DoubleVector]
-    private func surfaceReconstruction(_ pointCloud: PythonObject, depth: Int) -> Open3DTriangleMeshes {
+    private func poissonSurfaceReconstruction(_ pointCloud: PythonObject, depth: Int) -> Open3DTriangleMeshes {
         o3d.geometry.TriangleMesh.create_from_point_cloud_poisson(pointCloud, depth)[0]
     }
 }
@@ -228,9 +228,9 @@ extension ProcessorService {
     // MARK: - PointCloudKit -> Open3D
     func convertObject3DPointCloud(_ object: Object3D) -> Open3DPointCloud {
         /* * */ let start = DispatchTime.now()
-        let pythonPoints = PythonObject(object.vertices.map { PythonObject([$0.x, $0.y, $0.z]) })
-        let pythonColors = PythonObject(object.vertexColors.map { PythonObject([$0.x, $0.y, $0.z]) })
-        let pythonNormals = PythonObject(object.vertexNormals.map { PythonObject([$0.x, $0.y, $0.z]) })
+        let pythonPoints = object.vertices.map { [$0.x, $0.y, $0.z] }
+        let pythonColors = object.vertexColors.map { [$0.x, $0.y, $0.z] }
+        let pythonNormals = object.vertexNormals.map { [$0.x, $0.y, $0.z] }
         let pointCloud = o3d.geometry.PointCloud()
         pointCloud.points = o3d.utility.Vector3dVector(pythonPoints)
         pointCloud.colors = o3d.utility.Vector3dVector(pythonColors)
@@ -244,10 +244,10 @@ extension ProcessorService {
     // MARK: - PointCloudKit -> Open3D
     func convertObject3DTriangleMesh(_ object: Object3D) -> Open3DTriangleMeshes {
         /* * */ let start = DispatchTime.now()
-        let points = object.vertices.map { PythonObject([$0.x, $0.y, $0.z]) }
-        let colors = object.vertexColors.map { PythonObject([$0.x, $0.y, $0.z]) }
-        let normals = object.vertexNormals.map { PythonObject([$0.x, $0.y, $0.z]) }
-        let triangles = object.triangles.map { PythonObject([$0.x, $0.y, $0.z]) }
+        let points = object.vertices.map { [$0.x, $0.y, $0.z] }
+        let colors = object.vertexColors.map { [$0.x, $0.y, $0.z] }
+        let normals = object.vertexNormals.map { [$0.x, $0.y, $0.z] }
+        let triangles = object.triangles.map { [$0.x, $0.y, $0.z] }
         let triangleMeshes = o3d.geometry.TriangleMesh()
         triangleMeshes.vertices = o3d.Vector3dVector(points)
         triangleMeshes.vertex_colors = o3d.utility.Vector3dVector(colors)
