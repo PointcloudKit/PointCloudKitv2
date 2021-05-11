@@ -8,7 +8,7 @@
 import ARKit
 
 // MARK: - `ARCoachingOverlayViewDelegate` protocol conformance
-extension CaptureRendering: ARCoachingOverlayViewDelegate {
+extension CaptureRenderingView: ARCoachingOverlayViewDelegate {
     func coachingOverlayViewWillActivate(_ coachingOverlayView: ARCoachingOverlayView) {
         showCoachingOverlay = true
         renderingService.capturing = false

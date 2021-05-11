@@ -1,5 +1,5 @@
 //
-//  CaptureRendering.swift
+//  CaptureRenderingView.swift
 //  ARDemoApp
 //
 //  Created by Alexandre Camilleri on 25/03/2021.
@@ -11,7 +11,7 @@ import ARKit
 import PointCloudRendererService
 
 /// Helper for making Capture available in SwiftUI.
-final class CaptureRendering: NSObject, UIViewRepresentable {
+final class CaptureRenderingView: NSObject, UIViewRepresentable {
 
     // Cannot use the power of swiftUI here?
     unowned private(set) var renderingService: RenderingService

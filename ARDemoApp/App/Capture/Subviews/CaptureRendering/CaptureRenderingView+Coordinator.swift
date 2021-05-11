@@ -1,5 +1,5 @@
 //
-//  CaptureRendering+Coordinator.swift
+//  CaptureRenderingView+Coordinator.swift
 //  
 //
 //  Created by Alexandre Camilleri on 30/03/2021.
@@ -11,11 +11,11 @@ import ARKit
 
 // MARK: - Coordinator
 
-extension CaptureRendering {
+extension CaptureRenderingView {
     class Coordinator: NSObject, MTKViewDelegate {
-        private(set) var parent: CaptureRendering
+        private(set) var parent: CaptureRenderingView
 
-        init(_ parent: CaptureRendering) {
+        init(_ parent: CaptureRenderingView) {
             self.parent = parent
             super.init()
         }

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Metrics: View {
+struct MetricsView: View {
 
     // MARK: - Bindings
 

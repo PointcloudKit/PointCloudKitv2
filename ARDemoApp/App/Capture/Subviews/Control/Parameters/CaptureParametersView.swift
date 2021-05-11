@@ -1,5 +1,5 @@
 //
-//  CaptureParameters.swift
+//  CaptureParametersView.swift
 //  PointCloudKit
 //
 //  Created by Alexandre Camilleri on 11/05/2021.
@@ -8,7 +8,7 @@
 import SwiftUI
 import PointCloudRendererService
 
-struct CaptureParameters: View {
+struct CaptureParametersView: View {
 
     @EnvironmentObject var renderingService: RenderingService
 
@@ -81,10 +81,10 @@ struct CaptureParameters: View {
 
             Group {
                 if showConfidence {
-                    ConfidenceCaptureSubParameter(confidenceThreshold: $renderingService.confidenceThreshold)
+                    ConfidenceCaptureSubParameterView(confidenceThreshold: $renderingService.confidenceThreshold)
                 }
                 if showSamplingRate {
-                    SamplingRateCaptureSubParameter(verticalSamplingRate: $renderingService.verticalSamplingRate,
+                    SamplingRateCaptureSubParameterView(verticalSamplingRate: $renderingService.verticalSamplingRate,
                                          horizontalSamplingRate: $renderingService.horizontalSamplingRate)
                 }
             }

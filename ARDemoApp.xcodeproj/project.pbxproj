@@ -8,12 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		EE53FD63263BA75300F6C86F /* FlashlightService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE53FD62263BA75300F6C86F /* FlashlightService.swift */; };
-		EE53FD65263BAF2900F6C86F /* Metrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE53FD64263BAF2900F6C86F /* Metrics.swift */; };
-		EE53FD6B263BB02B00F6C86F /* CaptureViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE53FD67263BB02B00F6C86F /* CaptureViewer.swift */; };
-		EE53FD71263BB06400F6C86F /* ProcessorParametersEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE53FD6F263BB06400F6C86F /* ProcessorParametersEditor.swift */; };
-		EE53FD76263BB2ED00F6C86F /* CaptureRendering+CoachingOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE53FD73263BB2ED00F6C86F /* CaptureRendering+CoachingOverlay.swift */; };
-		EE53FD77263BB2ED00F6C86F /* CaptureRendering+Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE53FD74263BB2ED00F6C86F /* CaptureRendering+Coordinator.swift */; };
-		EE53FD78263BB2ED00F6C86F /* CaptureRendering.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE53FD75263BB2ED00F6C86F /* CaptureRendering.swift */; };
+		EE53FD65263BAF2900F6C86F /* MetricsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE53FD64263BAF2900F6C86F /* MetricsView.swift */; };
+		EE53FD6B263BB02B00F6C86F /* CaptureViewerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE53FD67263BB02B00F6C86F /* CaptureViewerView.swift */; };
+		EE53FD71263BB06400F6C86F /* ProcessorParametersEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE53FD6F263BB06400F6C86F /* ProcessorParametersEditorView.swift */; };
+		EE53FD76263BB2ED00F6C86F /* CaptureRenderingView+CoachingOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE53FD73263BB2ED00F6C86F /* CaptureRenderingView+CoachingOverlay.swift */; };
+		EE53FD77263BB2ED00F6C86F /* CaptureRenderingView+Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE53FD74263BB2ED00F6C86F /* CaptureRenderingView+Coordinator.swift */; };
+		EE53FD78263BB2ED00F6C86F /* CaptureRenderingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE53FD75263BB2ED00F6C86F /* CaptureRenderingView.swift */; };
 		EE53FD7F263BD46600F6C86F /* ProcessorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE53FD7E263BD46600F6C86F /* ProcessorService.swift */; };
 		EE53FD83263BD47900F6C86F /* ProcessorParameters+RawRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE53FD81263BD47900F6C86F /* ProcessorParameters+RawRepresentable.swift */; };
 		EE53FD84263BD47900F6C86F /* ProcessorParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE53FD82263BD47900F6C86F /* ProcessorParameters.swift */; };
@@ -28,17 +28,17 @@
 		EE5F3AA4260AD18800945107 /* ARDemoAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5F3AA3260AD18800945107 /* ARDemoAppUITests.swift */; };
 		EE6031872643BED300DEBBED /* CaptureViewerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6031862643BED300DEBBED /* CaptureViewerModel.swift */; };
 		EE6A3DA226144FAD00D0203B /* CaptureToggleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6A3DA126144FAD00D0203B /* CaptureToggleStyle.swift */; };
-		EE7AE5C8263AB0A500D60B95 /* CaptureControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7AE5C7263AB0A500D60B95 /* CaptureControl.swift */; };
+		EE7AE5C8263AB0A500D60B95 /* CaptureControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7AE5C7263AB0A500D60B95 /* CaptureControlView.swift */; };
 		EE7B400A2649279400E91B03 /* ProcessorServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7B40092649279400E91B03 /* ProcessorServiceError.swift */; };
 		EE7B400C264A0DA400E91B03 /* UnsupportedDeviceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7B400B264A0DA400E91B03 /* UnsupportedDeviceView.swift */; };
 		EE7D8114263F8B4E00133FD1 /* PointCloudRendererService in Frameworks */ = {isa = PBXBuildFile; productRef = EE7D8113263F8B4E00133FD1 /* PointCloudRendererService */; };
 		EE7D8116263F8B5100133FD1 /* Common in Frameworks */ = {isa = PBXBuildFile; productRef = EE7D8115263F8B5100133FD1 /* Common */; };
-		EE7D8120263FF26B00133FD1 /* CaptureViewerControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7D811F263FF26B00133FD1 /* CaptureViewerControl.swift */; };
+		EE7D8120263FF26B00133FD1 /* CaptureViewerControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7D811F263FF26B00133FD1 /* CaptureViewerControlView.swift */; };
 		EE7D8122263FFF6300133FD1 /* CaptureViewerControlModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7D8121263FFF6300133FD1 /* CaptureViewerControlModel.swift */; };
-		EEC0D439260D9B140093141F /* Capture.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEC0D438260D9B140093141F /* Capture.swift */; };
-		EEFD7673264A6C120097E63F /* CaptureParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEFD7672264A6C120097E63F /* CaptureParameters.swift */; };
-		EEFD767A264A6FA80097E63F /* ConfidenceCaptureSubParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEFD7679264A6FA80097E63F /* ConfidenceCaptureSubParameter.swift */; };
-		EEFD767D264A6FCE0097E63F /* SamplingRateCaptureSubParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEFD767C264A6FCE0097E63F /* SamplingRateCaptureSubParameter.swift */; };
+		EEC0D439260D9B140093141F /* CaptureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEC0D438260D9B140093141F /* CaptureView.swift */; };
+		EEFD7673264A6C120097E63F /* CaptureParametersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEFD7672264A6C120097E63F /* CaptureParametersView.swift */; };
+		EEFD767A264A6FA80097E63F /* ConfidenceCaptureSubParameterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEFD7679264A6FA80097E63F /* ConfidenceCaptureSubParameterView.swift */; };
+		EEFD767D264A6FCE0097E63F /* SamplingRateCaptureSubParameterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEFD767C264A6FCE0097E63F /* SamplingRateCaptureSubParameterView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,12 +61,12 @@
 /* Begin PBXFileReference section */
 		EE4EC37F261EF0DE00B2D858 /* Common */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Common; sourceTree = "<group>"; };
 		EE53FD62263BA75300F6C86F /* FlashlightService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashlightService.swift; sourceTree = "<group>"; };
-		EE53FD64263BAF2900F6C86F /* Metrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Metrics.swift; sourceTree = "<group>"; };
-		EE53FD67263BB02B00F6C86F /* CaptureViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureViewer.swift; sourceTree = "<group>"; };
-		EE53FD6F263BB06400F6C86F /* ProcessorParametersEditor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProcessorParametersEditor.swift; sourceTree = "<group>"; };
-		EE53FD73263BB2ED00F6C86F /* CaptureRendering+CoachingOverlay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CaptureRendering+CoachingOverlay.swift"; sourceTree = "<group>"; };
-		EE53FD74263BB2ED00F6C86F /* CaptureRendering+Coordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CaptureRendering+Coordinator.swift"; sourceTree = "<group>"; };
-		EE53FD75263BB2ED00F6C86F /* CaptureRendering.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaptureRendering.swift; sourceTree = "<group>"; };
+		EE53FD64263BAF2900F6C86F /* MetricsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricsView.swift; sourceTree = "<group>"; };
+		EE53FD67263BB02B00F6C86F /* CaptureViewerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureViewerView.swift; sourceTree = "<group>"; };
+		EE53FD6F263BB06400F6C86F /* ProcessorParametersEditorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProcessorParametersEditorView.swift; sourceTree = "<group>"; };
+		EE53FD73263BB2ED00F6C86F /* CaptureRenderingView+CoachingOverlay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CaptureRenderingView+CoachingOverlay.swift"; sourceTree = "<group>"; };
+		EE53FD74263BB2ED00F6C86F /* CaptureRenderingView+Coordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CaptureRenderingView+Coordinator.swift"; sourceTree = "<group>"; };
+		EE53FD75263BB2ED00F6C86F /* CaptureRenderingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaptureRenderingView.swift; sourceTree = "<group>"; };
 		EE53FD7E263BD46600F6C86F /* ProcessorService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessorService.swift; sourceTree = "<group>"; };
 		EE53FD81263BD47900F6C86F /* ProcessorParameters+RawRepresentable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ProcessorParameters+RawRepresentable.swift"; sourceTree = "<group>"; };
 		EE53FD82263BD47900F6C86F /* ProcessorParameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProcessorParameters.swift; sourceTree = "<group>"; };
@@ -85,18 +85,18 @@
 		EE5F3AA5260AD18800945107 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EE6031862643BED300DEBBED /* CaptureViewerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureViewerModel.swift; sourceTree = "<group>"; };
 		EE6A3DA126144FAD00D0203B /* CaptureToggleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureToggleStyle.swift; sourceTree = "<group>"; };
-		EE7AE5C7263AB0A500D60B95 /* CaptureControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureControl.swift; sourceTree = "<group>"; };
+		EE7AE5C7263AB0A500D60B95 /* CaptureControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureControlView.swift; sourceTree = "<group>"; };
 		EE7B40092649279400E91B03 /* ProcessorServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessorServiceError.swift; sourceTree = "<group>"; };
 		EE7B400B264A0DA400E91B03 /* UnsupportedDeviceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsupportedDeviceView.swift; sourceTree = "<group>"; };
-		EE7D811F263FF26B00133FD1 /* CaptureViewerControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureViewerControl.swift; sourceTree = "<group>"; };
+		EE7D811F263FF26B00133FD1 /* CaptureViewerControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureViewerControlView.swift; sourceTree = "<group>"; };
 		EE7D8121263FFF6300133FD1 /* CaptureViewerControlModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureViewerControlModel.swift; sourceTree = "<group>"; };
 		EE849103262ED0DC00F231B1 /* PointCloudRendererService */ = {isa = PBXFileReference; lastKnownFileType = folder; path = PointCloudRendererService; sourceTree = "<group>"; };
-		EEC0D438260D9B140093141F /* Capture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Capture.swift; sourceTree = "<group>"; };
+		EEC0D438260D9B140093141F /* CaptureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureView.swift; sourceTree = "<group>"; };
 		EEF3608D263A5C3700342B6F /* FastlaneSnapshots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FastlaneSnapshots.swift; sourceTree = "<group>"; };
 		EEF3608F263A5C3700342B6F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		EEFD7672264A6C120097E63F /* CaptureParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureParameters.swift; sourceTree = "<group>"; };
-		EEFD7679264A6FA80097E63F /* ConfidenceCaptureSubParameter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfidenceCaptureSubParameter.swift; sourceTree = "<group>"; };
-		EEFD767C264A6FCE0097E63F /* SamplingRateCaptureSubParameter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SamplingRateCaptureSubParameter.swift; sourceTree = "<group>"; };
+		EEFD7672264A6C120097E63F /* CaptureParametersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureParametersView.swift; sourceTree = "<group>"; };
+		EEFD7679264A6FA80097E63F /* ConfidenceCaptureSubParameterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfidenceCaptureSubParameterView.swift; sourceTree = "<group>"; };
+		EEFD767C264A6FCE0097E63F /* SamplingRateCaptureSubParameterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SamplingRateCaptureSubParameterView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,7 +150,7 @@
 		EE53FD66263BB00C00F6C86F /* CaptureViewer */ = {
 			isa = PBXGroup;
 			children = (
-				EE53FD67263BB02B00F6C86F /* CaptureViewer.swift */,
+				EE53FD67263BB02B00F6C86F /* CaptureViewerView.swift */,
 				EE6031862643BED300DEBBED /* CaptureViewerModel.swift */,
 				EE53FD6D263BB04100F6C86F /* Subview */,
 			);
@@ -168,9 +168,9 @@
 		EE53FD72263BB2E400F6C86F /* CaptureRendering */ = {
 			isa = PBXGroup;
 			children = (
-				EE53FD75263BB2ED00F6C86F /* CaptureRendering.swift */,
-				EE53FD73263BB2ED00F6C86F /* CaptureRendering+CoachingOverlay.swift */,
-				EE53FD74263BB2ED00F6C86F /* CaptureRendering+Coordinator.swift */,
+				EE53FD75263BB2ED00F6C86F /* CaptureRenderingView.swift */,
+				EE53FD73263BB2ED00F6C86F /* CaptureRenderingView+CoachingOverlay.swift */,
+				EE53FD74263BB2ED00F6C86F /* CaptureRenderingView+Coordinator.swift */,
 			);
 			path = CaptureRendering;
 			sourceTree = "<group>";
@@ -275,9 +275,9 @@
 		EE7D811E263FF25100133FD1 /* Controls */ = {
 			isa = PBXGroup;
 			children = (
-				EE7D811F263FF26B00133FD1 /* CaptureViewerControl.swift */,
+				EE7D811F263FF26B00133FD1 /* CaptureViewerControlView.swift */,
 				EE7D8121263FFF6300133FD1 /* CaptureViewerControlModel.swift */,
-				EE53FD6F263BB06400F6C86F /* ProcessorParametersEditor.swift */,
+				EE53FD6F263BB06400F6C86F /* ProcessorParametersEditorView.swift */,
 			);
 			path = Controls;
 			sourceTree = "<group>";
@@ -285,7 +285,7 @@
 		EEC0D437260D9B020093141F /* Capture */ = {
 			isa = PBXGroup;
 			children = (
-				EEC0D438260D9B140093141F /* Capture.swift */,
+				EEC0D438260D9B140093141F /* CaptureView.swift */,
 				EE6A3DA126144FAD00D0203B /* CaptureToggleStyle.swift */,
 				EE7AE5C9263AB0C300D60B95 /* Subviews */,
 			);
@@ -316,7 +316,7 @@
 		EEFD7674264A6F560097E63F /* Control */ = {
 			isa = PBXGroup;
 			children = (
-				EE7AE5C7263AB0A500D60B95 /* CaptureControl.swift */,
+				EE7AE5C7263AB0A500D60B95 /* CaptureControlView.swift */,
 				EEFD7676264A6F7E0097E63F /* Parameters */,
 			);
 			path = Control;
@@ -325,7 +325,7 @@
 		EEFD7675264A6F730097E63F /* Metrics */ = {
 			isa = PBXGroup;
 			children = (
-				EE53FD64263BAF2900F6C86F /* Metrics.swift */,
+				EE53FD64263BAF2900F6C86F /* MetricsView.swift */,
 			);
 			path = Metrics;
 			sourceTree = "<group>";
@@ -333,7 +333,7 @@
 		EEFD7676264A6F7E0097E63F /* Parameters */ = {
 			isa = PBXGroup;
 			children = (
-				EEFD7672264A6C120097E63F /* CaptureParameters.swift */,
+				EEFD7672264A6C120097E63F /* CaptureParametersView.swift */,
 				EEFD7677264A6F890097E63F /* SubParameters */,
 			);
 			path = Parameters;
@@ -342,8 +342,8 @@
 		EEFD7677264A6F890097E63F /* SubParameters */ = {
 			isa = PBXGroup;
 			children = (
-				EEFD7679264A6FA80097E63F /* ConfidenceCaptureSubParameter.swift */,
-				EEFD767C264A6FCE0097E63F /* SamplingRateCaptureSubParameter.swift */,
+				EEFD7679264A6FA80097E63F /* ConfidenceCaptureSubParameterView.swift */,
+				EEFD767C264A6FCE0097E63F /* SamplingRateCaptureSubParameterView.swift */,
 			);
 			path = SubParameters;
 			sourceTree = "<group>";
@@ -510,29 +510,29 @@
 			buildActionMask = 2147483647;
 			files = (
 				EE5F3A89260AD18700945107 /* HomeView.swift in Sources */,
-				EEC0D439260D9B140093141F /* Capture.swift in Sources */,
+				EEC0D439260D9B140093141F /* CaptureView.swift in Sources */,
 				EE7D8122263FFF6300133FD1 /* CaptureViewerControlModel.swift in Sources */,
 				EE53FD8C263BEA1400F6C86F /* ExportService.swift in Sources */,
 				EE53FD7F263BD46600F6C86F /* ProcessorService.swift in Sources */,
 				EE7B400A2649279400E91B03 /* ProcessorServiceError.swift in Sources */,
-				EEFD767D264A6FCE0097E63F /* SamplingRateCaptureSubParameter.swift in Sources */,
+				EEFD767D264A6FCE0097E63F /* SamplingRateCaptureSubParameterView.swift in Sources */,
 				EE6A3DA226144FAD00D0203B /* CaptureToggleStyle.swift in Sources */,
 				EE6031872643BED300DEBBED /* CaptureViewerModel.swift in Sources */,
-				EE53FD78263BB2ED00F6C86F /* CaptureRendering.swift in Sources */,
-				EEFD767A264A6FA80097E63F /* ConfidenceCaptureSubParameter.swift in Sources */,
+				EE53FD78263BB2ED00F6C86F /* CaptureRenderingView.swift in Sources */,
+				EEFD767A264A6FA80097E63F /* ConfidenceCaptureSubParameterView.swift in Sources */,
 				EE7B400C264A0DA400E91B03 /* UnsupportedDeviceView.swift in Sources */,
-				EE53FD71263BB06400F6C86F /* ProcessorParametersEditor.swift in Sources */,
+				EE53FD71263BB06400F6C86F /* ProcessorParametersEditorView.swift in Sources */,
 				EE53FD63263BA75300F6C86F /* FlashlightService.swift in Sources */,
-				EE53FD65263BAF2900F6C86F /* Metrics.swift in Sources */,
-				EE53FD77263BB2ED00F6C86F /* CaptureRendering+Coordinator.swift in Sources */,
-				EEFD7673264A6C120097E63F /* CaptureParameters.swift in Sources */,
-				EE7D8120263FF26B00133FD1 /* CaptureViewerControl.swift in Sources */,
+				EE53FD65263BAF2900F6C86F /* MetricsView.swift in Sources */,
+				EE53FD77263BB2ED00F6C86F /* CaptureRenderingView+Coordinator.swift in Sources */,
+				EEFD7673264A6C120097E63F /* CaptureParametersView.swift in Sources */,
+				EE7D8120263FF26B00133FD1 /* CaptureViewerControlView.swift in Sources */,
 				EE53FD83263BD47900F6C86F /* ProcessorParameters+RawRepresentable.swift in Sources */,
-				EE53FD76263BB2ED00F6C86F /* CaptureRendering+CoachingOverlay.swift in Sources */,
+				EE53FD76263BB2ED00F6C86F /* CaptureRenderingView+CoachingOverlay.swift in Sources */,
 				EE53FD84263BD47900F6C86F /* ProcessorParameters.swift in Sources */,
-				EE53FD6B263BB02B00F6C86F /* CaptureViewer.swift in Sources */,
+				EE53FD6B263BB02B00F6C86F /* CaptureViewerView.swift in Sources */,
 				EE5F3A87260AD18700945107 /* ARDemoApp.swift in Sources */,
-				EE7AE5C8263AB0A500D60B95 /* CaptureControl.swift in Sources */,
+				EE7AE5C8263AB0A500D60B95 /* CaptureControlView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

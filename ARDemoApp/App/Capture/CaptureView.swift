@@ -1,5 +1,5 @@
 //
-//  Capture.swift
+//  CaptureView.swift
 //  ARDemoApp
 //
 //  Created by Alexandre Camilleri on 26/03/2021.
@@ -9,7 +9,7 @@ import SwiftUI
 import Common
 import PointCloudRendererService
 
-struct Capture: View {
+struct CaptureView: View {
 
     // MARK: - Owned
 
@@ -21,23 +21,23 @@ struct Capture: View {
     var body: some View {
         NavigationView {
             ZStack {
-                NavigationLink(destination: CaptureViewer(particleBuffer: renderingService.particleBufferWrapper,
+                NavigationLink(destination: CaptureViewerView(particleBuffer: renderingService.particleBufferWrapper,
                                                           initialCaptureParticleCount: renderingService.currentPointCount,
                                                           confidenceTreshold: renderingService.confidenceThreshold),
                                isActive: $navigateToCaptureViewer) { }
 
-                CaptureRendering(renderingService: renderingService,
+                CaptureRenderingView(renderingService: renderingService,
                                  showCoachingOverlay: $showCoachingOverlay)
 
                 VStack {
-                    Metrics(currentPointCount: renderingService.currentPointCount,
+                    MetricsView(currentPointCount: renderingService.currentPointCount,
                             currentNormalCount: 0,
                             currentFaceCount: 0,
                             activity: renderingService.capturing)
 
                     Spacer()
 
-                    CaptureControl(showCoachingOverlay: $showCoachingOverlay,
+                    CaptureControlView(showCoachingOverlay: $showCoachingOverlay,
                                    navigateToCaptureViewer: $navigateToCaptureViewer)
                         .padding(.top, 10)
                         .padding(.bottom, 20)

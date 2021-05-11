@@ -1,5 +1,5 @@
 //
-//  SamplingRateCaptureSubParameter.swift
+//  SamplingRateCaptureSubParameterView.swift
 //  PointCloudKit
 //
 //  Created by Alexandre Camilleri on 11/05/2021.
@@ -8,7 +8,7 @@
 import SwiftUI
 import PointCloudRendererService
 
-struct SamplingRateCaptureSubParameter: View {
+struct SamplingRateCaptureSubParameterView: View {
     @Binding var verticalSamplingRate: SamplingRate
     @Binding var horizontalSamplingRate: SamplingRate
 

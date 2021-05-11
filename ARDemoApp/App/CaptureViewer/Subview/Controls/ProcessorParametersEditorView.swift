@@ -1,5 +1,5 @@
 //
-//  ProcessorParametersEditor.swift
+//  ProcessorParametersEditorView.swift
 //  
 //
 //  Created by Alexandre Camilleri on 23/04/2021.
@@ -9,7 +9,7 @@ import SwiftUI
 import SceneKit
 import Common
 
-struct ProcessorParametersEditor: View {
+struct ProcessorParametersEditorView: View {
 
     @Binding var parameters: ProcessorParameters
 

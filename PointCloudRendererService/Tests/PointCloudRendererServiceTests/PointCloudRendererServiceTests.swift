@@ -5,7 +5,7 @@ final class PointCloudRendererServiceTests: XCTestCase {
     func testExample() {
         let pointCloudRendererService = RenderingService(metalDevice: MTLCreateSystemDefaultDevice()!)
 
-        // CaptureRendering' View Model
+        // CaptureRenderingView' View Model
         let viewModel = CaptureRendering.ViewModel(renderingService: pointCloudRenderingService)
         let view = CaptureRendering(viewModel: viewModel)
 

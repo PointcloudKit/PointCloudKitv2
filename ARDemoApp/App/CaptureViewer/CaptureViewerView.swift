@@ -1,5 +1,5 @@
 //
-//  CaptureViewer.swift
+//  CaptureViewerView.swift
 //  ARDemoApp
 //
 //  Created by Alexandre Camilleri on 01/04/2021.
@@ -11,7 +11,7 @@ import PointCloudRendererService
 import Combine
 import SceneKit
 
-struct CaptureViewer: View {
+struct CaptureViewerView: View {
 
     @StateObject var model = CaptureViewerModel()
 
@@ -31,14 +31,14 @@ struct CaptureViewer: View {
 
             VStack {
 
-                Metrics(currentPointCount: object.vertices.count,
+                MetricsView(currentPointCount: object.vertices.count,
                         currentNormalCount: object.vertexNormals.count,
                         currentFaceCount: object.triangles.count,
                         activity: true)
 
                 Spacer()
 
-                CaptureViewerControl(particleBuffer: particleBuffer,
+                CaptureViewerControlView(particleBuffer: particleBuffer,
                                      object: $object,
                                      confidenceTreshold: confidenceTreshold)
                     .environmentObject(model.captureViewerControlModel)

@@ -1,5 +1,5 @@
 //
-//  CaptureControl.swift
+//  CaptureControlView.swift
 //  PointCloudKit
 //
 //  Created by Alexandre Camilleri on 29/04/2021.
@@ -10,7 +10,7 @@ import SwiftUI
 import Common
 import PointCloudRendererService
 
-struct CaptureControl: View {
+struct CaptureControlView: View {
     @AppStorage("Capture.firstAppearance") private var firstAppearance = true
 
     // MARK: - Bindings
@@ -106,7 +106,7 @@ struct CaptureControl: View {
     var body: some View {
         VStack(spacing: 0) {
             if showParameters {
-                CaptureParameters()
+                CaptureParametersView()
 
                 Divider()
                     .padding(.bottom, 10)

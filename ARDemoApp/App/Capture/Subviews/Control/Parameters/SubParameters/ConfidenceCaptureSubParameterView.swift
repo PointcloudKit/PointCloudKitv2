@@ -1,5 +1,5 @@
 //
-//  ConfidenceCaptureSubParameter.swift
+//  ConfidenceCaptureSubParameterView.swift
 //  PointCloudKit
 //
 //  Created by Alexandre Camilleri on 11/05/2021.
@@ -8,7 +8,7 @@
 import SwiftUI
 import PointCloudRendererService
 
-struct ConfidenceCaptureSubParameter: View {
+struct ConfidenceCaptureSubParameterView: View {
     @Binding var confidenceThreshold: ConfidenceTreshold
 
     var body: some View {
