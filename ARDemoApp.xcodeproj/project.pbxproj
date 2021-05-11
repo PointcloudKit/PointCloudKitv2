@@ -36,6 +36,9 @@
 		EE7D8120263FF26B00133FD1 /* CaptureViewerControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7D811F263FF26B00133FD1 /* CaptureViewerControl.swift */; };
 		EE7D8122263FFF6300133FD1 /* CaptureViewerControlModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7D8121263FFF6300133FD1 /* CaptureViewerControlModel.swift */; };
 		EEC0D439260D9B140093141F /* Capture.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEC0D438260D9B140093141F /* Capture.swift */; };
+		EEFD7673264A6C120097E63F /* CaptureParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEFD7672264A6C120097E63F /* CaptureParameters.swift */; };
+		EEFD767A264A6FA80097E63F /* ConfidenceCaptureSubParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEFD7679264A6FA80097E63F /* ConfidenceCaptureSubParameter.swift */; };
+		EEFD767D264A6FCE0097E63F /* SamplingRateCaptureSubParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEFD767C264A6FCE0097E63F /* SamplingRateCaptureSubParameter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -91,6 +94,9 @@
 		EEC0D438260D9B140093141F /* Capture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Capture.swift; sourceTree = "<group>"; };
 		EEF3608D263A5C3700342B6F /* FastlaneSnapshots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FastlaneSnapshots.swift; sourceTree = "<group>"; };
 		EEF3608F263A5C3700342B6F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EEFD7672264A6C120097E63F /* CaptureParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureParameters.swift; sourceTree = "<group>"; };
+		EEFD7679264A6FA80097E63F /* ConfidenceCaptureSubParameter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfidenceCaptureSubParameter.swift; sourceTree = "<group>"; };
+		EEFD767C264A6FCE0097E63F /* SamplingRateCaptureSubParameter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SamplingRateCaptureSubParameter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -144,9 +150,9 @@
 		EE53FD66263BB00C00F6C86F /* CaptureViewer */ = {
 			isa = PBXGroup;
 			children = (
-				EE53FD6D263BB04100F6C86F /* Subview */,
 				EE53FD67263BB02B00F6C86F /* CaptureViewer.swift */,
 				EE6031862643BED300DEBBED /* CaptureViewerModel.swift */,
+				EE53FD6D263BB04100F6C86F /* Subview */,
 			);
 			path = CaptureViewer;
 			sourceTree = "<group>";
@@ -243,9 +249,9 @@
 		EE7AE5C9263AB0C300D60B95 /* Subviews */ = {
 			isa = PBXGroup;
 			children = (
+				EEFD7675264A6F730097E63F /* Metrics */,
+				EEFD7674264A6F560097E63F /* Control */,
 				EE53FD72263BB2E400F6C86F /* CaptureRendering */,
-				EE53FD64263BAF2900F6C86F /* Metrics.swift */,
-				EE7AE5C7263AB0A500D60B95 /* CaptureControl.swift */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -279,9 +285,9 @@
 		EEC0D437260D9B020093141F /* Capture */ = {
 			isa = PBXGroup;
 			children = (
-				EE7AE5C9263AB0C300D60B95 /* Subviews */,
 				EEC0D438260D9B140093141F /* Capture.swift */,
 				EE6A3DA126144FAD00D0203B /* CaptureToggleStyle.swift */,
+				EE7AE5C9263AB0C300D60B95 /* Subviews */,
 			);
 			path = Capture;
 			sourceTree = "<group>";
@@ -305,6 +311,41 @@
 				EEF3608F263A5C3700342B6F /* Info.plist */,
 			);
 			path = FastlaneSnapshots;
+			sourceTree = "<group>";
+		};
+		EEFD7674264A6F560097E63F /* Control */ = {
+			isa = PBXGroup;
+			children = (
+				EE7AE5C7263AB0A500D60B95 /* CaptureControl.swift */,
+				EEFD7676264A6F7E0097E63F /* Parameters */,
+			);
+			path = Control;
+			sourceTree = "<group>";
+		};
+		EEFD7675264A6F730097E63F /* Metrics */ = {
+			isa = PBXGroup;
+			children = (
+				EE53FD64263BAF2900F6C86F /* Metrics.swift */,
+			);
+			path = Metrics;
+			sourceTree = "<group>";
+		};
+		EEFD7676264A6F7E0097E63F /* Parameters */ = {
+			isa = PBXGroup;
+			children = (
+				EEFD7672264A6C120097E63F /* CaptureParameters.swift */,
+				EEFD7677264A6F890097E63F /* SubParameters */,
+			);
+			path = Parameters;
+			sourceTree = "<group>";
+		};
+		EEFD7677264A6F890097E63F /* SubParameters */ = {
+			isa = PBXGroup;
+			children = (
+				EEFD7679264A6FA80097E63F /* ConfidenceCaptureSubParameter.swift */,
+				EEFD767C264A6FCE0097E63F /* SamplingRateCaptureSubParameter.swift */,
+			);
+			path = SubParameters;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -474,14 +515,17 @@
 				EE53FD8C263BEA1400F6C86F /* ExportService.swift in Sources */,
 				EE53FD7F263BD46600F6C86F /* ProcessorService.swift in Sources */,
 				EE7B400A2649279400E91B03 /* ProcessorServiceError.swift in Sources */,
+				EEFD767D264A6FCE0097E63F /* SamplingRateCaptureSubParameter.swift in Sources */,
 				EE6A3DA226144FAD00D0203B /* CaptureToggleStyle.swift in Sources */,
 				EE6031872643BED300DEBBED /* CaptureViewerModel.swift in Sources */,
 				EE53FD78263BB2ED00F6C86F /* CaptureRendering.swift in Sources */,
+				EEFD767A264A6FA80097E63F /* ConfidenceCaptureSubParameter.swift in Sources */,
 				EE7B400C264A0DA400E91B03 /* UnsupportedDeviceView.swift in Sources */,
 				EE53FD71263BB06400F6C86F /* ProcessorParametersEditor.swift in Sources */,
 				EE53FD63263BA75300F6C86F /* FlashlightService.swift in Sources */,
 				EE53FD65263BAF2900F6C86F /* Metrics.swift in Sources */,
 				EE53FD77263BB2ED00F6C86F /* CaptureRendering+Coordinator.swift in Sources */,
+				EEFD7673264A6C120097E63F /* CaptureParameters.swift in Sources */,
 				EE7D8120263FF26B00133FD1 /* CaptureViewerControl.swift in Sources */,
 				EE53FD83263BD47900F6C86F /* ProcessorParameters+RawRepresentable.swift in Sources */,
 				EE53FD76263BB2ED00F6C86F /* CaptureRendering+CoachingOverlay.swift in Sources */,
