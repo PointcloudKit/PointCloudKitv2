@@ -14,13 +14,9 @@ import PythonSupport
 @main
 struct ARDemoApp: App {
 
-    @State var lidarCapableDevice = false
+    @State var lidarCapableDevice = ARWorldTrackingConfiguration.supportsSceneReconstruction(.mesh)
 
     init() {
-        #if !targetEnvironment(simulator)
-        guard ARWorldTrackingConfiguration.supportsSceneReconstruction(.mesh) else { return}
-        #endif
-        lidarCapableDevice = true
         // Initialize Python environment
         PythonSupport.initialize()
         Open3DSupport.sitePackagesURL.insertPythonPath()
