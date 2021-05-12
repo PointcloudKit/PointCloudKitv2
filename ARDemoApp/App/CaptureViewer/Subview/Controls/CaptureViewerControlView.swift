@@ -16,7 +16,7 @@ struct CaptureViewerControlView: View {
         case information, error(message: String)
     }
 
-    @AppStorage("CaptureViewerView.firstAppearance") private var firstAppearance = true
+    @AppStorage("CaptureViewerControlView.firstAppearance") private var firstAppearance = true
     @AppStorage(ProcessorParameters.storageKey) private var processorParameters = ProcessorParameters()
 
     @EnvironmentObject var model: CaptureViewerControlModel
