@@ -1,5 +1,5 @@
 //
-//  CaptureViewerControlModel.swift
+//  CaptureViewerControlsModel.swift
 //  PointCloudKit
 //
 //  Created by Alexandre Camilleri on 03/05/2021.
@@ -10,7 +10,7 @@ import Common
 import PointCloudRendererService
 import Combine
 
-final class CaptureViewerControlModel: ObservableObject {
+final class CaptureViewerControlsModel: ObservableObject {
     public var cancellables = Set<AnyCancellable>()
 
     let processorService: ProcessorService

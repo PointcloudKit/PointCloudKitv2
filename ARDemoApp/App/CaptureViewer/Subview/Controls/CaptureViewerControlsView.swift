@@ -19,7 +19,7 @@ struct CaptureViewerControlsView: View {
     @AppStorage("CaptureViewerControlsView.firstAppearance") private var firstAppearance = true
     @AppStorage(ProcessorParameters.storageKey) private var processorParameters = ProcessorParameters()
 
-    @EnvironmentObject var model: CaptureViewerControlModel
+    @EnvironmentObject var model: CaptureViewerControlsModel
 
     let particleBuffer: ParticleBufferWrapper
     @Binding var object: Object3D

@@ -19,7 +19,7 @@ enum NodeIdentifier: String {
 final class CaptureViewerModel: ObservableObject {
     var cancellables = Set<AnyCancellable>()
 
-    let captureViewerControlModel = CaptureViewerControlModel(processorService: ProcessorService(), exportService: ExportService())
+    let captureViewerControlModel = CaptureViewerControlsModel(processorService: ProcessorService(), exportService: ExportService())
 
     private let scene = SCNScene()
     let cameraNode = SCNNode()
