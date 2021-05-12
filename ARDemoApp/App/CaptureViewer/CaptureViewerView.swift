@@ -38,7 +38,7 @@ struct CaptureViewerView: View {
 
                 Spacer()
 
-                CaptureViewerControlView(particleBuffer: particleBuffer,
+                CaptureViewerControlsView(particleBuffer: particleBuffer,
                                      object: $object,
                                      confidenceTreshold: confidenceTreshold)
                     .environmentObject(model.captureViewerControlModel)

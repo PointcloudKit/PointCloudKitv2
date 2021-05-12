@@ -1,5 +1,5 @@
 //
-//  CaptureViewerControlView.swift
+//  CaptureViewerControlsView.swift
 //  PointCloudKit
 //
 //  Created by Alexandre Camilleri on 03/05/2021.
@@ -10,13 +10,13 @@ import PointCloudRendererService
 import Common
 import Combine
 
-struct CaptureViewerControlView: View {
+struct CaptureViewerControlsView: View {
 
     enum AlertType {
         case information, error(message: String)
     }
 
-    @AppStorage("CaptureViewerControlView.firstAppearance") private var firstAppearance = true
+    @AppStorage("CaptureViewerControlsView.firstAppearance") private var firstAppearance = true
     @AppStorage(ProcessorParameters.storageKey) private var processorParameters = ProcessorParameters()
 
     @EnvironmentObject var model: CaptureViewerControlModel
@@ -379,7 +379,7 @@ struct CaptureViewerControlView: View {
 }
 
 // MARK: - Completion helper for processing functions
-extension CaptureViewerControlView {
+extension CaptureViewerControlsView {
     private func receivedFromProcessing(object: Object3D) {
         update(with: object)
     }
