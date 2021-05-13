@@ -6,11 +6,11 @@ import Combine
 import Common
 
 public enum ConfidenceThreshold: Int32, CaseIterable {
-    case low = 0, medium, high
+    case /*low = 0,*/ medium = 1, high
 }
 
 public enum SamplingRate: Float, CaseIterable {
-    case slow = 0.2, regular = 1, fast = 1.5
+    case slow = 0.5, regular = 1, fast = 1.5
 }
 
 public final class RenderingService: ObservableObject {
@@ -32,12 +32,12 @@ public final class RenderingService: ObservableObject {
     lazy var rotateToARCamera = Self.makeRotateToARCameraMatrix(orientation: orientation)
 
     private class func updateCameraRotationThreshold(with rate: SamplingRate = .regular) -> Float {
-        let degree = (2 * (1 / rate.rawValue))
+        let degree = (2 / rate.rawValue)
         return cos(degree * .degreesToRadian)
     }
 
     private class func updateCameraTranslationThreshold(with rate: SamplingRate = .regular) -> Float {
-        let meter = (0.02 * rate.rawValue)
+        let meter = (0.02 / rate.rawValue)
         return pow(meter, 2) // (meter-squared)
     }
 
@@ -138,7 +138,7 @@ public final class RenderingService: ObservableObject {
         }
     }
 
-    public var confidenceThreshold = ConfidenceThreshold.low {
+    public var confidenceThreshold: ConfidenceThreshold = .medium {
         didSet {
             // apply the change for the shader
             pointCloudUniforms.confidenceThreshold = confidenceThreshold
