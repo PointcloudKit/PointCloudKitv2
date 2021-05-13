@@ -254,7 +254,7 @@ extension ProcessorService {
             numpy.asarray(pointCloud.normals).map { normal in Float3(Float(normal[0])!,
                                                                      Float(normal[1])!,
                                                                      Float(normal[2])!) }
-        let confidence = [UInt].init(repeating: UInt(ConfidenceTreshold.high.rawValue), count: vertices.count)
+        let confidence = [UInt].init(repeating: UInt(ConfidenceThreshold.high.rawValue), count: vertices.count)
         /* * */ let end = DispatchTime.now()
         /* * */ let nanoTime = end.uptimeNanoseconds - start.uptimeNanoseconds
         /* * */ print(" <*> Processor - O3D pointCloud -> Object3D \(#function): \(Double(nanoTime) / 1_000_000) ms")
@@ -279,7 +279,7 @@ extension ProcessorService {
         let triangles: [UInt3] = numpy.asarray(triangleMeshes.triangles).map { triangle in UInt3(UInt(triangle[0])!,
                                                                                                  UInt(triangle[1])!,
                                                                                                  UInt(triangle[2])!)}
-        let confidence = [UInt].init(repeating: UInt(ConfidenceTreshold.high.rawValue), count: vertices.count)
+        let confidence = [UInt].init(repeating: UInt(ConfidenceThreshold.high.rawValue), count: vertices.count)
         /* * */ let end = DispatchTime.now()
         /* * */ let nanoTime = end.uptimeNanoseconds - start.uptimeNanoseconds
         /* * */ print(" <*> Processor - O3D Triangles -> Object3D \(#function): \(Double(nanoTime) / 1_000_000) ms")

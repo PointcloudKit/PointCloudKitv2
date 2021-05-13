@@ -13,32 +13,20 @@ import Combine
 final class CaptureViewerControlsModel: ObservableObject {
     public var cancellables = Set<AnyCancellable>()
 
-    let processorService: ProcessorService
     let exportService: ExportService
+    let particleBuffer: ParticleBufferWrapper
+    let confidenceThreshold: ConfidenceThreshold
+    let captureViewerParametersModel: CaptureViewerParametersModel
 
-    init(processorService: ProcessorService, exportService: ExportService) {
-        self.processorService = processorService
+    init(
+        exportService: ExportService,
+        particleBuffer: ParticleBufferWrapper,
+        confidenceThreshold: ConfidenceThreshold
+    ) {
         self.exportService = exportService
-    }
-
-    // MARK: - Point Cloud Processing operations - Parameters are from the `ProcessorParameters` in Model
-    func voxelDownsampling(_ object: Object3D, parameters: ProcessorParameters.VoxelDownSampling) -> Future<Object3D, ProcessorServiceError> {
-        return processorService.voxelDownsampling(of: object, with: parameters)
-    }
-
-    func statisticalOutlierRemoval(_ object: Object3D, parameters: ProcessorParameters.OutlierRemoval.Statistical) -> Future<Object3D, ProcessorServiceError> {
-        return processorService.statisticalOutlierRemoval(of: object, with: parameters)
-    }
-
-    func radiusOutlierRemoval(_ object: Object3D, parameters: ProcessorParameters.OutlierRemoval.Radius) -> Future<Object3D, ProcessorServiceError> {
-        return processorService.radiusOutlierRemoval(of: object, with: parameters)
-    }
-
-    func normalsEstimation(_ object: Object3D, parameters: ProcessorParameters.NormalsEstimation) -> Future<Object3D, ProcessorServiceError> {
-       return processorService.normalsEstimation(of: object, with: parameters)
-    }
-
-    func poissonSurfaceReconstruction(_ object: Object3D, parameters: ProcessorParameters.SurfaceReconstruction.Poisson) -> Future<Object3D, ProcessorServiceError> {
-        return processorService.poissonSurfaceReconstruction(of: object, with: parameters)
+        self.particleBuffer = particleBuffer
+        self.confidenceThreshold = confidenceThreshold
+        captureViewerParametersModel = CaptureViewerParametersModel(particleBuffer: particleBuffer,
+                                                                    processorService: ProcessorService())
     }
 }

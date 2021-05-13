@@ -10,45 +10,34 @@ import MetalKit
 import ARKit
 import PointCloudRendererService
 
-/// Helper for making Capture available in SwiftUI.
-final class CaptureRenderingView: NSObject, UIViewRepresentable {
+struct CaptureRenderingView: UIViewRepresentable {
 
-    // Cannot use the power of swiftUI here?
-    unowned private(set) var renderingService: RenderingService
-
-    private let coachingOverlay = ARCoachingOverlayView()
-
-    @Binding var showCoachingOverlay: Bool
-
-    public init(renderingService: RenderingService, showCoachingOverlay: Binding<Bool>) {
-        self.renderingService = renderingService
-        self._showCoachingOverlay = showCoachingOverlay
-        super.init()
-    }
+    @EnvironmentObject var model: CaptureRenderingModel
 
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
     }
 
     func makeUIView(context: Context) -> PointCloudCaptureMTKView {
-        let mtkView = PointCloudCaptureMTKView(device: renderingService.device)
+        let mtkView = PointCloudCaptureMTKView(device: model.device)
 
         // Need to setup the render destination a posteriori
-        renderingService.renderDestination = mtkView
+        model.setRenderDestination(to: mtkView)
         mtkView.delegate = context.coordinator
 
         // Setup coaching overlay
+        model.coachingOverlay.removeFromSuperview()
         #if !targetEnvironment(simulator)
-        coachingOverlay.session = renderingService.session
+        model.coachingOverlay.session = model.session
         #endif
-        coachingOverlay.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        coachingOverlay.goal = .tracking
+        model.coachingOverlay.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        model.coachingOverlay.goal = .tracking
 
         // Add coaching overlay
-        mtkView.addSubview(coachingOverlay)
-        coachingOverlay.delegate = self
-        coachingOverlay.didMoveToSuperview()
-        coachingOverlay.setActive(true, animated: true)
+        mtkView.addSubview(model.coachingOverlay)
+        model.coachingOverlay.delegate = context.coordinator
+        model.coachingOverlay.didMoveToSuperview()
+        model.coachingOverlay.setActive(true, animated: true)
 
         return mtkView
     }

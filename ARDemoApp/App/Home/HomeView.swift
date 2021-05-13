@@ -8,7 +8,11 @@
 import SwiftUI
 
 struct HomeView: View {
+
+    @StateObject var model = HomeModel()
+
     var body: some View {
         CaptureView()
+            .environmentObject(CaptureModel(renderingService: model.renderingService))
     }
 }

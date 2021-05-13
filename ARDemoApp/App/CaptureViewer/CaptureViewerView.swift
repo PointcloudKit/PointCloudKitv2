@@ -13,34 +13,23 @@ import SceneKit
 
 struct CaptureViewerView: View {
 
-    @StateObject var model = CaptureViewerModel()
-
-    let particleBuffer: ParticleBufferWrapper
-    let initialCaptureParticleCount: Int
-    let confidenceTreshold: ConfidenceTreshold
-
-    @State var object: Object3D = Object3D()
+    @EnvironmentObject var model: CaptureViewerModel
 
     public var body: some View {
         ZStack {
-            SceneView(scene: model.updatedScene(using: particleBuffer, particleCount: object.vertices.count),
+            SceneView(scene: model.scene,
                       pointOfView: model.cameraNode,
                       options: [.allowsCameraControl,
                                 .autoenablesDefaultLighting,
                                 .rendersContinuously])
 
             VStack {
-
-                MetricsView(currentPointCount: object.vertices.count,
-                        currentNormalCount: object.vertexNormals.count,
-                        currentFaceCount: object.triangles.count,
-                        activity: true)
+                MetricsView()
+                    .environmentObject(model.metricsModel)
 
                 Spacer()
 
-                CaptureViewerControlsView(particleBuffer: particleBuffer,
-                                     object: $object,
-                                     confidenceTreshold: confidenceTreshold)
+                CaptureViewerControlsView(object: $model.object)
                     .environmentObject(model.captureViewerControlModel)
                     .padding(.bottom, 20)
                     .background(Color.black.opacity(0.8))
@@ -48,17 +37,10 @@ struct CaptureViewerView: View {
 
         }
         .navigationBarTitle("Viewer", displayMode: .inline)
-        .onAppear {
-            CaptureViewerModel.convert(particleBuffer, particleCount: initialCaptureParticleCount)
-                .receive(on: DispatchQueue.main)
-                .sink(receiveValue: { object in
-                    self.object = object
-                })
-                .store(in: &model.cancellables)
-        }
-        .onDisappear {
-            model.cancellables.forEach { cancellable in cancellable.cancel() }
-        }
         .edgesIgnoringSafeArea(.bottom)
+        .onAppear {
+            // This convert the initial particle buffer into the first Object3D, triggering initial render.
+            model.generateFirstObjectFromParticleBuffer()
+        }
     }
 }

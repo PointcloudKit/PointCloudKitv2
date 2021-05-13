@@ -7,42 +7,44 @@
 
 import SwiftUI
 
+final class MetricsModel: ObservableObject {
+    @Published var currentPointCount: Int = 0
+    @Published var currentNormalCount: Int = 0
+    @Published var currentFaceCount: Int = 0
+    @Published var activity: Bool = true
+}
+
 struct MetricsView: View {
 
-    // MARK: - Bindings
-
-    private(set) var currentPointCount: Int
-    private(set) var currentNormalCount: Int
-    private(set) var currentFaceCount: Int
-    private(set) var activity: Bool
+    @EnvironmentObject var model: MetricsModel
 
     var body: some View {
         HStack(alignment: .center) {
             VStack(alignment: .leading, spacing: 10) {
                 Label(
-                    title: { Text("\(currentPointCount)").foregroundColor(.bone) },
+                    title: { Text("\(model.currentPointCount)").foregroundColor(.bone) },
                     icon: {
                         Image(systemName: "aqi.medium")
                             .font(.body)
-                            .foregroundColor(!activity ? .charredBone : .amazon)
+                            .foregroundColor(!model.activity ? .charredBone : .amazon)
                     }
                 )
 
                 Label(
-                    title: { Text(" \(currentNormalCount)").foregroundColor(.bone) },
+                    title: { Text(" \(model.currentNormalCount)").foregroundColor(.bone) },
                     icon: {
                         Image(systemName: "line.diagonal.arrow")
                             .font(.body)
-                            .foregroundColor(!activity ? .charredBone : .amazon)
+                            .foregroundColor(!model.activity ? .charredBone : .amazon)
                     }
                 )
 
                 Label(
-                    title: { Text("\(currentFaceCount)").foregroundColor(.bone) },
+                    title: { Text("\(model.currentFaceCount)").foregroundColor(.bone) },
                     icon: {
                         Image(systemName: "square.2.stack.3d")
                             .font(.body)
-                            .foregroundColor(!activity ? .charredBone : .amazon)
+                            .foregroundColor(!model.activity ? .charredBone : .amazon)
                     }
                 )
             }

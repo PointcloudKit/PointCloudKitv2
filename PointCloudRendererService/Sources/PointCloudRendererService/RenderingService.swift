@@ -5,7 +5,7 @@ import ARKit
 import Combine
 import Common
 
-public enum ConfidenceTreshold: Int32, CaseIterable {
+public enum ConfidenceThreshold: Int32, CaseIterable {
     case low = 0, medium, high
 }
 
@@ -124,13 +124,12 @@ public final class RenderingService: ObservableObject {
         }
     }
 
-    // A.k.a. accumulating
+    // A.k.a. accumulate
     @Published public var capturing: Bool = false
 
     @Published public var flush: Bool = false {
         didSet {
             if flush == true {
-                capturing = false
                 particlesBuffer.assign(Array(repeating: ParticleUniforms(), count: particlesBuffer.count))
                 currentPointCount = 0
                 currentPointIndex = 0
@@ -139,7 +138,7 @@ public final class RenderingService: ObservableObject {
         }
     }
 
-    public var confidenceThreshold = ConfidenceTreshold.low {
+    public var confidenceThreshold = ConfidenceThreshold.low {
         didSet {
             // apply the change for the shader
             pointCloudUniforms.confidenceThreshold = confidenceThreshold

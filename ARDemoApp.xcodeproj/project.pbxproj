@@ -11,7 +11,6 @@
 		EE53FD65263BAF2900F6C86F /* MetricsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE53FD64263BAF2900F6C86F /* MetricsView.swift */; };
 		EE53FD6B263BB02B00F6C86F /* CaptureViewerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE53FD67263BB02B00F6C86F /* CaptureViewerView.swift */; };
 		EE53FD71263BB06400F6C86F /* ProcessorParametersEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE53FD6F263BB06400F6C86F /* ProcessorParametersEditorView.swift */; };
-		EE53FD76263BB2ED00F6C86F /* CaptureRenderingView+CoachingOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE53FD73263BB2ED00F6C86F /* CaptureRenderingView+CoachingOverlay.swift */; };
 		EE53FD77263BB2ED00F6C86F /* CaptureRenderingView+Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE53FD74263BB2ED00F6C86F /* CaptureRenderingView+Coordinator.swift */; };
 		EE53FD78263BB2ED00F6C86F /* CaptureRenderingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE53FD75263BB2ED00F6C86F /* CaptureRenderingView.swift */; };
 		EE53FD7F263BD46600F6C86F /* ProcessorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE53FD7E263BD46600F6C86F /* ProcessorService.swift */; };
@@ -39,6 +38,11 @@
 		EEFD7673264A6C120097E63F /* CaptureParametersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEFD7672264A6C120097E63F /* CaptureParametersView.swift */; };
 		EEFD767A264A6FA80097E63F /* ConfidenceCaptureSubParameterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEFD7679264A6FA80097E63F /* ConfidenceCaptureSubParameterView.swift */; };
 		EEFD767D264A6FCE0097E63F /* SamplingRateCaptureSubParameterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEFD767C264A6FCE0097E63F /* SamplingRateCaptureSubParameterView.swift */; };
+		EEFD7680264B5E390097E63F /* CaptureViewerParametersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEFD767F264B5E390097E63F /* CaptureViewerParametersView.swift */; };
+		EEFD7682264BAFEC0097E63F /* CaptureModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEFD7681264BAFEC0097E63F /* CaptureModel.swift */; };
+		EEFD7685264BB00A0097E63F /* HomeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEFD7684264BB00A0097E63F /* HomeModel.swift */; };
+		EEFD7687264CDB9F0097E63F /* CaptureRenderingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEFD7686264CDB9F0097E63F /* CaptureRenderingModel.swift */; };
+		EEFD7689264CF6470097E63F /* CaptureControlModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEFD7688264CF6470097E63F /* CaptureControlModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,7 +68,6 @@
 		EE53FD64263BAF2900F6C86F /* MetricsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricsView.swift; sourceTree = "<group>"; };
 		EE53FD67263BB02B00F6C86F /* CaptureViewerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureViewerView.swift; sourceTree = "<group>"; };
 		EE53FD6F263BB06400F6C86F /* ProcessorParametersEditorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProcessorParametersEditorView.swift; sourceTree = "<group>"; };
-		EE53FD73263BB2ED00F6C86F /* CaptureRenderingView+CoachingOverlay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CaptureRenderingView+CoachingOverlay.swift"; sourceTree = "<group>"; };
 		EE53FD74263BB2ED00F6C86F /* CaptureRenderingView+Coordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CaptureRenderingView+Coordinator.swift"; sourceTree = "<group>"; };
 		EE53FD75263BB2ED00F6C86F /* CaptureRenderingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaptureRenderingView.swift; sourceTree = "<group>"; };
 		EE53FD7E263BD46600F6C86F /* ProcessorService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessorService.swift; sourceTree = "<group>"; };
@@ -97,6 +100,11 @@
 		EEFD7672264A6C120097E63F /* CaptureParametersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureParametersView.swift; sourceTree = "<group>"; };
 		EEFD7679264A6FA80097E63F /* ConfidenceCaptureSubParameterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfidenceCaptureSubParameterView.swift; sourceTree = "<group>"; };
 		EEFD767C264A6FCE0097E63F /* SamplingRateCaptureSubParameterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SamplingRateCaptureSubParameterView.swift; sourceTree = "<group>"; };
+		EEFD767F264B5E390097E63F /* CaptureViewerParametersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureViewerParametersView.swift; sourceTree = "<group>"; };
+		EEFD7681264BAFEC0097E63F /* CaptureModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureModel.swift; sourceTree = "<group>"; };
+		EEFD7684264BB00A0097E63F /* HomeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeModel.swift; sourceTree = "<group>"; };
+		EEFD7686264CDB9F0097E63F /* CaptureRenderingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureRenderingModel.swift; sourceTree = "<group>"; };
+		EEFD7688264CF6470097E63F /* CaptureControlModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureControlModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -169,7 +177,7 @@
 			isa = PBXGroup;
 			children = (
 				EE53FD75263BB2ED00F6C86F /* CaptureRenderingView.swift */,
-				EE53FD73263BB2ED00F6C86F /* CaptureRenderingView+CoachingOverlay.swift */,
+				EEFD7686264CDB9F0097E63F /* CaptureRenderingModel.swift */,
 				EE53FD74263BB2ED00F6C86F /* CaptureRenderingView+Coordinator.swift */,
 			);
 			path = CaptureRendering;
@@ -275,9 +283,10 @@
 		EE7D811E263FF25100133FD1 /* Controls */ = {
 			isa = PBXGroup;
 			children = (
+				EE53FD6F263BB06400F6C86F /* ProcessorParametersEditorView.swift */,
+				EEFD767F264B5E390097E63F /* CaptureViewerParametersView.swift */,
 				EE7D811F263FF26B00133FD1 /* CaptureViewerControlsView.swift */,
 				EE7D8121263FFF6300133FD1 /* CaptureViewerControlsModel.swift */,
-				EE53FD6F263BB06400F6C86F /* ProcessorParametersEditorView.swift */,
 			);
 			path = Controls;
 			sourceTree = "<group>";
@@ -286,6 +295,7 @@
 			isa = PBXGroup;
 			children = (
 				EEC0D438260D9B140093141F /* CaptureView.swift */,
+				EEFD7681264BAFEC0097E63F /* CaptureModel.swift */,
 				EE6A3DA126144FAD00D0203B /* CaptureToggleStyle.swift */,
 				EE7AE5C9263AB0C300D60B95 /* Subviews */,
 			);
@@ -297,7 +307,7 @@
 			children = (
 				EE5F3A86260AD18700945107 /* ARDemoApp.swift */,
 				EE7B400B264A0DA400E91B03 /* UnsupportedDeviceView.swift */,
-				EE5F3A88260AD18700945107 /* HomeView.swift */,
+				EEFD7683264BAFFD0097E63F /* Home */,
 				EEC0D437260D9B020093141F /* Capture */,
 				EE53FD66263BB00C00F6C86F /* CaptureViewer */,
 			);
@@ -317,6 +327,7 @@
 			isa = PBXGroup;
 			children = (
 				EE7AE5C7263AB0A500D60B95 /* CaptureControlView.swift */,
+				EEFD7688264CF6470097E63F /* CaptureControlModel.swift */,
 				EEFD7676264A6F7E0097E63F /* Parameters */,
 			);
 			path = Controls;
@@ -346,6 +357,15 @@
 				EEFD767C264A6FCE0097E63F /* SamplingRateCaptureSubParameterView.swift */,
 			);
 			path = SubParameters;
+			sourceTree = "<group>";
+		};
+		EEFD7683264BAFFD0097E63F /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				EE5F3A88260AD18700945107 /* HomeView.swift */,
+				EEFD7684264BB00A0097E63F /* HomeModel.swift */,
+			);
+			path = Home;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -520,18 +540,22 @@
 				EE6031872643BED300DEBBED /* CaptureViewerModel.swift in Sources */,
 				EE53FD78263BB2ED00F6C86F /* CaptureRenderingView.swift in Sources */,
 				EEFD767A264A6FA80097E63F /* ConfidenceCaptureSubParameterView.swift in Sources */,
+				EEFD7680264B5E390097E63F /* CaptureViewerParametersView.swift in Sources */,
 				EE7B400C264A0DA400E91B03 /* UnsupportedDeviceView.swift in Sources */,
 				EE53FD71263BB06400F6C86F /* ProcessorParametersEditorView.swift in Sources */,
 				EE53FD63263BA75300F6C86F /* FlashlightService.swift in Sources */,
 				EE53FD65263BAF2900F6C86F /* MetricsView.swift in Sources */,
 				EE53FD77263BB2ED00F6C86F /* CaptureRenderingView+Coordinator.swift in Sources */,
 				EEFD7673264A6C120097E63F /* CaptureParametersView.swift in Sources */,
+				EEFD7687264CDB9F0097E63F /* CaptureRenderingModel.swift in Sources */,
 				EE7D8120263FF26B00133FD1 /* CaptureViewerControlsView.swift in Sources */,
 				EE53FD83263BD47900F6C86F /* ProcessorParameters+RawRepresentable.swift in Sources */,
-				EE53FD76263BB2ED00F6C86F /* CaptureRenderingView+CoachingOverlay.swift in Sources */,
 				EE53FD84263BD47900F6C86F /* ProcessorParameters.swift in Sources */,
 				EE53FD6B263BB02B00F6C86F /* CaptureViewerView.swift in Sources */,
+				EEFD7685264BB00A0097E63F /* HomeModel.swift in Sources */,
 				EE5F3A87260AD18700945107 /* ARDemoApp.swift in Sources */,
+				EEFD7682264BAFEC0097E63F /* CaptureModel.swift in Sources */,
+				EEFD7689264CF6470097E63F /* CaptureControlModel.swift in Sources */,
 				EE7AE5C8263AB0A500D60B95 /* CaptureControlView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
