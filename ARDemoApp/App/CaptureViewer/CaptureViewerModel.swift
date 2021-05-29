@@ -19,26 +19,34 @@ enum NodeIdentifier: String {
 final class CaptureViewerModel: ObservableObject {
     var cancellables = Set<AnyCancellable>()
 
-    let captureViewerControlModel = CaptureViewerControlsModel(processorService: ProcessorService(), exportService: ExportService())
+    // Injected
+    unowned let renderingService: RenderingService
 
-    private let scene = SCNScene()
+    let captureViewerControlModel: CaptureViewerControlsModel
+    let metricsModel = MetricsModel()
+    @Published var object = Object3D()
+
+    let scene = SCNScene()
     let cameraNode = SCNNode()
     var pointCloudNode: SCNNode?
 
-    // MARK: - PointCloudKit -> PointCloudKit
-    class func convert(_ particleBuffer: ParticleBufferWrapper, particleCount: Int) -> Future<Object3D, Never> {
-        Future { promise in
-            DispatchQueue.global(qos: .userInitiated).async {
-                let particles = particleBuffer.buffer.getMemoryRepresentationCopy(for: particleCount)
-                let object = Object3D(vertices: particles.map(\.position),
-                                      vertexConfidence: particles.map({ particle in UInt(particle.confidence) }),
-                                      vertexColors: particles.map(\.color))
-                promise(.success(object))
-            }
-        }
-    }
+    init(renderingService: RenderingService) {
+        self.renderingService = renderingService
+        self.captureViewerControlModel = CaptureViewerControlsModel(exportService: ExportService(),
+                                                                    particleBuffer: renderingService.particleBufferWrapper,
+                                                                    confidenceThreshold: renderingService.confidenceThreshold)
+        $object.sink { [weak self] object in
+            guard let self = self else { return }
+            self.metricsModel.currentPointCount = object.vertices.count
+            self.metricsModel.currentNormalCount = object.vertexNormals.count
+            self.metricsModel.currentFaceCount = object.triangles.count
 
-    init() {
+            self.updateScene(using: renderingService.particleBufferWrapper,
+                               particleCount: object.vertices.count)
+        }
+        .store(in: &cancellables)
+
+        // Initialize Scene
         cameraNode.camera = SCNCamera()
         cameraNode.name = NodeIdentifier.camera.rawValue
         cameraNode.position.z += 5
@@ -53,11 +61,24 @@ final class CaptureViewerModel: ObservableObject {
         scene.background.contents = UIColor.black
     }
 
-    func updatedScene(using particleBuffer: ParticleBufferWrapper, particleCount: Int) -> SCNScene {
+    func generateFirstObjectFromParticleBuffer() {
+        Self.convert(renderingService.particleBufferWrapper,
+                     particleCount: renderingService.currentPointCount)
+            .receive(on: DispatchQueue.main)
+            .sink(receiveValue: { [weak self] object in
+                self?.object = object
+            })
+            .store(in: &cancellables)
+    }
+
+    private func updateScene(using particleBuffer: ParticleBufferWrapper, particleCount: Int) {
         pointCloudNode(from: particleBuffer, particleCount: particleCount)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] pointCloudRootNode in
                 guard let self = self else { return }
+                // update SOURCE pointCount
+                self.renderingService.currentPointCount = particleCount
+
                 self.pointCloudNode?.removeFromParentNode()
                 self.pointCloudNode = pointCloudRootNode
                 // Add new pointCloudNode
@@ -66,8 +87,19 @@ final class CaptureViewerModel: ObservableObject {
                 self.cameraNode.look(at: pointCloudRootNode.position)
             }
             .store(in: &cancellables)
+    }
 
-        return scene
+    // MARK: - PointCloudKit -> PointCloudKit
+    private class func convert(_ particleBuffer: ParticleBufferWrapper, particleCount: Int) -> Future<Object3D, Never> {
+        Future { promise in
+            DispatchQueue.global(qos: .userInitiated).async {
+                let particles = particleBuffer.buffer.getMemoryRepresentationCopy(for: particleCount)
+                let object = Object3D(vertices: particles.map(\.position),
+                                      vertexConfidence: particles.map({ particle in UInt(particle.confidence) }),
+                                      vertexColors: particles.map(\.color))
+                promise(.success(object))
+            }
+        }
     }
 }
 
@@ -127,17 +159,6 @@ extension CaptureViewerModel {
                 /* * */ let nanoTime = end.uptimeNanoseconds - start.uptimeNanoseconds
                 /* * */ print(" <*> CaptureViewerModel - Generate SCNNode from particleBuffer \(#function): \(Double(nanoTime) / 1_000_000) ms")
             }
-        }
-    }
-}
-
-extension VertexProcessor {
-    var requiresLowVerticesCount: Bool {
-        switch self {
-        case .normalsEstimation, .poissonSurfaceReconstruction:
-            return true
-        default:
-            return false
         }
     }
 }

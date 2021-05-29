@@ -23,11 +23,26 @@ extension CaptureRenderingView {
         // MARK: - MTKViewDelegate conformance
 
         func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
-            parent.renderingService.resizeDrawRect(to: size)
+            parent.model.resizeDrawRect(to: size)
         }
 
         func draw(in view: MTKView) {
-            parent.renderingService.draw()
+            parent.model.draw()
         }
+    }
+}
+
+// MARK: - `ARCoachingOverlayViewDelegate` protocol conformance
+extension CaptureRenderingView.Coordinator: ARCoachingOverlayViewDelegate {
+    func coachingOverlayViewWillActivate(_ coachingOverlayView: ARCoachingOverlayView) {
+        parent.model.coachingOverlayStatusUpdate(to: .activated)
+    }
+
+    func coachingOverlayViewDidDeactivate(_ coachingOverlayView: ARCoachingOverlayView) {
+        parent.model.coachingOverlayStatusUpdate(to: .deactivated)
+    }
+
+    func coachingOverlayViewDidRequestSessionReset(_ coachingOverlayView: ARCoachingOverlayView) {
+        parent.model.flushCapture()
     }
 }

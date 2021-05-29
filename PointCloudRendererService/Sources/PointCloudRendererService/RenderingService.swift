@@ -5,12 +5,12 @@ import ARKit
 import Combine
 import Common
 
-public enum ConfidenceTreshold: Int32, CaseIterable {
-    case low = 0, medium, high
+public enum ConfidenceThreshold: Int32, CaseIterable {
+    case /*low = 0,*/ medium = 1, high
 }
 
 public enum SamplingRate: Float, CaseIterable {
-    case slow = 0.2, regular = 1, fast = 1.5
+    case slow = 0.5, regular = 1, fast = 1.5
 }
 
 public final class RenderingService: ObservableObject {
@@ -18,7 +18,7 @@ public final class RenderingService: ObservableObject {
     // MARK: - Settings and Constants
 
     // Maximum number of points we store in the point cloud
-    let maxPoints = 524288 // 4096 * 128 // Apples's default was 500k
+    let maxPoints = 524288 * 3 // 4096 * 128 // Apples's default was 500k
     // Number of sample points on the grid <=> How many point are sampled per frame
     let numGridPoints = 512 // Apple's Default 500
     // Particle's size in pixels
@@ -32,12 +32,12 @@ public final class RenderingService: ObservableObject {
     lazy var rotateToARCamera = Self.makeRotateToARCameraMatrix(orientation: orientation)
 
     private class func updateCameraRotationThreshold(with rate: SamplingRate = .regular) -> Float {
-        let degree = (2 * (1 / rate.rawValue))
+        let degree = (2 / rate.rawValue)
         return cos(degree * .degreesToRadian)
     }
 
     private class func updateCameraTranslationThreshold(with rate: SamplingRate = .regular) -> Float {
-        let meter = (0.02 * rate.rawValue)
+        let meter = (0.02 / rate.rawValue)
         return pow(meter, 2) // (meter-squared)
     }
 
@@ -124,13 +124,12 @@ public final class RenderingService: ObservableObject {
         }
     }
 
-    // A.k.a. accumulating
+    // A.k.a. accumulate
     @Published public var capturing: Bool = false
 
     @Published public var flush: Bool = false {
         didSet {
             if flush == true {
-                capturing = false
                 particlesBuffer.assign(Array(repeating: ParticleUniforms(), count: particlesBuffer.count))
                 currentPointCount = 0
                 currentPointIndex = 0
@@ -139,7 +138,7 @@ public final class RenderingService: ObservableObject {
         }
     }
 
-    public var confidenceThreshold = ConfidenceTreshold.low {
+    public var confidenceThreshold: ConfidenceThreshold = .medium {
         didSet {
             // apply the change for the shader
             pointCloudUniforms.confidenceThreshold = confidenceThreshold

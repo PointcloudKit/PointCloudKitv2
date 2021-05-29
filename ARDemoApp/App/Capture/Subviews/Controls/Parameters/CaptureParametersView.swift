@@ -8,14 +8,22 @@
 import SwiftUI
 import PointCloudRendererService
 
+final class CaptureParametersModel: ObservableObject {
+
+    var renderingService: RenderingService
+
+    init(renderingService: RenderingService) {
+        self.renderingService = renderingService
+    }
+}
+
 struct CaptureParametersView: View {
 
-    @EnvironmentObject var renderingService: RenderingService
+    @EnvironmentObject var model: CaptureParametersModel
 
     @State private var showSubParameter: Bool = false
     @State private var showConfidence: Bool = false
     @State private var showSamplingRate: Bool = false
-
     @State private var flashlightActive: Bool = false
 
     var parameters: some View {
@@ -81,11 +89,11 @@ struct CaptureParametersView: View {
 
             Group {
                 if showConfidence {
-                    ConfidenceCaptureSubParameterView(confidenceThreshold: $renderingService.confidenceThreshold)
+                    ConfidenceCaptureSubParameterView(confidenceThreshold: $model.renderingService.confidenceThreshold)
                 }
                 if showSamplingRate {
-                    SamplingRateCaptureSubParameterView(verticalSamplingRate: $renderingService.verticalSamplingRate,
-                                         horizontalSamplingRate: $renderingService.horizontalSamplingRate)
+                    SamplingRateCaptureSubParameterView(verticalSamplingRate: $model.renderingService.verticalSamplingRate,
+                                         horizontalSamplingRate: $model.renderingService.horizontalSamplingRate)
                 }
             }
             .padding(.horizontal, 20)

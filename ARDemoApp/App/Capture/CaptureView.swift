@@ -11,34 +11,23 @@ import PointCloudRendererService
 
 struct CaptureView: View {
 
-    // MARK: - Owned
-
-    @StateObject var renderingService = RenderingService(metalDevice: MTLCreateSystemDefaultDevice()!)
-
-    @State var showCoachingOverlay = false
-    @State var navigateToCaptureViewer = false
+    @EnvironmentObject var model: CaptureModel
 
     var body: some View {
         NavigationView {
             ZStack {
-                NavigationLink(destination: CaptureViewerView(particleBuffer: renderingService.particleBufferWrapper,
-                                                          initialCaptureParticleCount: renderingService.currentPointCount,
-                                                          confidenceTreshold: renderingService.confidenceThreshold),
-                               isActive: $navigateToCaptureViewer) { }
 
-                CaptureRenderingView(renderingService: renderingService,
-                                 showCoachingOverlay: $showCoachingOverlay)
+                CaptureRenderingView()
+                    .environmentObject(model.captureRenderingModel)
 
                 VStack {
-                    MetricsView(currentPointCount: renderingService.currentPointCount,
-                            currentNormalCount: 0,
-                            currentFaceCount: 0,
-                            activity: renderingService.capturing)
+                    MetricsView()
+                        .environmentObject(model.metricsModel)
 
                     Spacer()
 
-                    CaptureControlView(showCoachingOverlay: $showCoachingOverlay,
-                                   navigateToCaptureViewer: $navigateToCaptureViewer)
+                    CaptureControlView()
+                        .environmentObject(model.captureControlModel)
                         .padding(.top, 10)
                         .padding(.bottom, 20)
                         .padding(.horizontal, 20)
@@ -53,9 +42,5 @@ struct CaptureView: View {
         }
         // For Ipad
         .navigationViewStyle(StackNavigationViewStyle())
-        .onDisappear {
-            renderingService.capturing = false
-        }
-        .environmentObject(renderingService)
     }
 }

@@ -9,7 +9,7 @@ import SwiftUI
 import PointCloudRendererService
 
 struct ConfidenceCaptureSubParameterView: View {
-    @Binding var confidenceThreshold: ConfidenceTreshold
+    @Binding var confidenceThreshold: ConfidenceThreshold
 
     var body: some View {
         VStack {
@@ -20,7 +20,7 @@ struct ConfidenceCaptureSubParameterView: View {
                 .foregroundColor(.bone)
             HStack {
                 Picker(selection: $confidenceThreshold, label: Text("")) {
-                    ForEach(ConfidenceTreshold.allCases, id: \.self) {
+                    ForEach(ConfidenceThreshold.allCases, id: \.self) {
                         Text($0.description)
                     }
                 }
@@ -30,11 +30,11 @@ struct ConfidenceCaptureSubParameterView: View {
     }
 }
 
-extension ConfidenceTreshold {
+extension ConfidenceThreshold {
     fileprivate var description: String {
         switch self {
-        case .low:
-            return "Low"
+//        case .low:
+//            return "Low"
         case .medium:
             return "Medium"
         case .high:
