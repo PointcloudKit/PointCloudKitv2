@@ -41,7 +41,7 @@ public struct PointCloudUniforms {
     public var particleSize: Float = 0.0
     public var maxPoints: Int32 = 0
     public var pointCloudCurrentIndex: Int32 = 0
-    public var confidenceThreshold: ConfidenceThreshold = .low
+    public var confidenceThreshold: ConfidenceThreshold = .medium
 }
 
 // ParticleUniform defined in Common

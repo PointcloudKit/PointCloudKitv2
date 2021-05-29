@@ -18,7 +18,7 @@ public final class RenderingService: ObservableObject {
     // MARK: - Settings and Constants
 
     // Maximum number of points we store in the point cloud
-    let maxPoints = 524288 // 4096 * 128 // Apples's default was 500k
+    let maxPoints = 524288 * 3 // 4096 * 128 // Apples's default was 500k
     // Number of sample points on the grid <=> How many point are sampled per frame
     let numGridPoints = 512 // Apple's Default 500
     // Particle's size in pixels

@@ -33,8 +33,8 @@ struct ConfidenceCaptureSubParameterView: View {
 extension ConfidenceThreshold {
     fileprivate var description: String {
         switch self {
-        case .low:
-            return "Low"
+//        case .low:
+//            return "Low"
         case .medium:
             return "Medium"
         case .high:
